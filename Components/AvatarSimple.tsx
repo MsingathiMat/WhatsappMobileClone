@@ -5,29 +5,9 @@ import { useNavigation } from '@react-navigation/native';
 
 
 
-type Message = {
-  id: number;
-  WoIs: string;
-  Message: string;
-  TimeStamp: string;
-  ArivalStatus: string;
-  Date: string;
-  EmojiResponse: string;
-  MessageType: string;
-};
-
-type Contact = {
-  id: number;
-  ImageUrl: string;
-  ContactName: string;
-  ContactNumber: string;
-  HasStatus: boolean;
-  Conversation: Message[];
-};
 
 
-
-const AvatarAndDetail = ({Contact,width,colorWhite=false,RightComponent=false,RingScale=1,AvatarScale=1,AvatarRing=false ,Icon,ImageUrl,MessageIconShown=false,Title, TitleMessage}:{ImageUrl:string,Title:string, TitleMessage:string,MessageIconShown?:boolean,Icon?:ReactNode, AvatarRing?:boolean,RingScale?:number,AvatarScale?:number,RightComponent?:boolean,colorWhite?:boolean,width?:number,Contact:Contact}) => {
+const AvatarSimple = ({width,colorWhite=false,RightComponent=false,RingScale=1,AvatarScale=1,AvatarRing=false ,Icon,ImageUrl,MessageIconShown=false,Title, TitleMessage}:{ImageUrl:string,Title:string, TitleMessage:string,MessageIconShown?:boolean,Icon?:ReactNode, AvatarRing?:boolean,RingScale?:number,AvatarScale?:number,RightComponent?:boolean,colorWhite?:boolean,width?:number}) => {
 
 
   const navigation = useNavigation();
@@ -126,4 +106,4 @@ width:RightComponent?width-78:'auto'
   )
 }
 
-export default AvatarAndDetail
+export default AvatarSimple

@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 import { Ionicons } from '@expo/vector-icons';
-const GreenConvo = () => {
+const GreenConvo = ({Message}:{Message:string}) => {
   return (
     <View style ={{
 
@@ -15,6 +15,7 @@ const GreenConvo = () => {
         borderColor:'#E4E4E4',
         borderWidth:1,
         marginBottom:25,
+        marginHorizontal:10
       
        
     }}>
@@ -23,7 +24,7 @@ const GreenConvo = () => {
 
         <Text>
 
-        When it comes to developing mobile applications, we typically rely on using Android Emulator / iOS simulator or real devices. However, in the world of React Native mobile app development, Expo has brought innovation to a whole new level with its fascinating feature called Expo Snack.
+     {Message}
         </Text>
 
         <View style={{

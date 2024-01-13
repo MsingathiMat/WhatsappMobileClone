@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 import { Ionicons } from '@expo/vector-icons';
-const WhiteConvo = () => {
+const WhiteConvo = ({Message,TimeStamp}:{Message:string,TimeStamp:string}) => {
   return (
     <View style ={{
 
@@ -11,10 +11,11 @@ const WhiteConvo = () => {
         borderRadius:10,
         borderTopLeftRadius:0,
         width:'85%',
-        alignSelf:'flex-end',
+        alignSelf:'flex-start',
         borderColor:'#E4E4E4',
         borderWidth:1,
         marginBottom:25,
+        marginHorizontal:10
       
        
     }}>
@@ -22,8 +23,7 @@ const WhiteConvo = () => {
        
 
         <Text>
-
-        When it comes to developing mobile applications
+{Message}
         </Text>
 
         <View style={{
@@ -58,7 +58,7 @@ alignItems:'center'
 fontSize:11,
             color:'gray',
          
-        }}>12:00</Text>
+        }}>{TimeStamp}</Text>
 
 <Ionicons style={{
 

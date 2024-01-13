@@ -46,6 +46,7 @@ const ChatFooter = () => {
       backgroundColor:'#F1F6EC',
       
       height:60,
+      paddingBottom:15,
     justifyContent:'center' ,
   alignItems:'center'   }}
     resizeMode='cover'

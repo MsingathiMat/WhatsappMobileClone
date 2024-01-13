@@ -3,12 +3,11 @@ import React from 'react'
 
 import { FlatList, ScrollView } from 'react-native-gesture-handler'
 import { Ionicons } from '@expo/vector-icons';
-
+import { useRoute } from '@react-navigation/native';
 import { chatData } from '../Components/Chats';
 import AvatarAndDetail from '../Components/AvatarAndDetail';
 
 
-type MessageType = "Text"; // Add more types as needed
 
 type Message = {
   id: number;
@@ -18,7 +17,7 @@ type Message = {
   ArivalStatus: string;
   Date: string;
   EmojiResponse: string;
-  MessageType: MessageType;
+  MessageType: string;
 };
 
 type Contact = {
@@ -34,7 +33,7 @@ type Contact = {
 type chatDataProp=Contact[];
 
 const Chats = ({navigation}) => {
-console.warn(chatData[2].Conversation[0].Message)
+
   
   return (
     <View style={{
@@ -58,7 +57,7 @@ data={chatData}
 
 renderItem={({item})=>(
 
-  <AvatarAndDetail width={Dimensions.get('screen').width} RightComponent={true} AvatarRing={item.HasStatus} Icon={<Ionicons name="checkmark-done" size={18} color="gray" />} Title={item.ContactName} TitleMessage={item.Conversation[item.Conversation.length-1].Message} ImageUrl={item.ImageUrl}/>
+  <AvatarAndDetail Contact={item} width={Dimensions.get('screen').width} RightComponent={true} AvatarRing={item.HasStatus} Icon={<Ionicons name="checkmark-done" size={18} color="gray" />} Title={item.ContactName} TitleMessage={item.Conversation[item.Conversation.length-1].Message} ImageUrl={item.ImageUrl}/>
 
 )}
 />
