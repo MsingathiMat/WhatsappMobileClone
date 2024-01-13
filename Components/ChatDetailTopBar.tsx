@@ -11,14 +11,15 @@ const ChatDetailTopBar = () => {
     const navigation=useNavigation();
   return (
 
-    <SafeAreaView>
+  
     <View style={{
 
   
         height: 60,
-       
-        top:-15,
-    paddingLeft:8,
+     
+ 
+     
+   
 
         flexDirection:'row',
      
@@ -28,7 +29,7 @@ const ChatDetailTopBar = () => {
 
 <TouchableOpacity onPress={()=>{navigation.goBack()}}>
 
-<AntDesign name="arrowleft" size={24} color="gray" />
+<AntDesign name="arrowleft" size={24} color="white" />
 </TouchableOpacity>
       <View style={{
     
@@ -38,18 +39,18 @@ const ChatDetailTopBar = () => {
       }}>
 
       <View style={{
-        position:'relative'
+     
       }}>
 
 
 
-<AvatarAndDetail AvatarScale={0.8} MessageIconShown={true} Title="Zanele" TitleMessage='Please subscribe to my channel'  ImageUrl='https://expertphotography.b-cdn.net/wp-content/uploads/2020/08/profile-photos-4.jpg'/>
+<AvatarAndDetail colorWhite={true} AvatarScale={0.8} MessageIconShown={true} Title="Zanele" TitleMessage='Last seen at 19:00'  ImageUrl='https://expertphotography.b-cdn.net/wp-content/uploads/2020/08/profile-photos-4.jpg'/>
 
      
       </View>
       </View>
     </View>
-    </SafeAreaView>
+   
   )
 }
 

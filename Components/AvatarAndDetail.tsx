@@ -2,7 +2,7 @@ import { View, Text, Dimensions, Image } from 'react-native'
 import React, { ReactNode } from 'react'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
-const AvatarAndDetail = ({RightComponent=false,RingScale=1,AvatarScale=1,AvatarRing=false ,Icon,ImageUrl,MessageIconShown=false,Title, TitleMessage}:{ImageUrl:string,Title:string, TitleMessage:string,MessageIconShown?:boolean,Icon?:ReactNode, AvatarRing?:boolean,RingScale?:number,AvatarScale?:number,RightComponent?:boolean}) => {
+const AvatarAndDetail = ({width,colorWhite=false,RightComponent=false,RingScale=1,AvatarScale=1,AvatarRing=false ,Icon,ImageUrl,MessageIconShown=false,Title, TitleMessage}:{ImageUrl:string,Title:string, TitleMessage:string,MessageIconShown?:boolean,Icon?:ReactNode, AvatarRing?:boolean,RingScale?:number,AvatarScale?:number,RightComponent?:boolean,colorWhite?:boolean,width?:number}) => {
 
   const navigation = useNavigation();
   return (
@@ -11,14 +11,14 @@ const AvatarAndDetail = ({RightComponent=false,RingScale=1,AvatarScale=1,AvatarR
 
 <View style={{
   
-  width:Dimensions.get('screen').width-20,
+  width:width?width-20:'auto',
   height:60,
   justifyContent:'flex-start',
   alignItems:'center',
   flexDirection:'row',
 gap:8,
  
-  position:'relative'
+ 
 
 }}> 
 
@@ -61,15 +61,15 @@ transform: [{ scale:AvatarScale}]
 
 }
 
-<View style={{width:'100%'}}>
+<View >
 
 <View style={{flexDirection:'row',justifyContent:'space-between',
-width:Dimensions.get('screen').width-78
+width:RightComponent?width-78:'auto'
 
 }}>
 
 
-<Text style={{fontWeight:'bold'}}>{Title}</Text>
+<Text style={{fontWeight:'bold',color:colorWhite?'white':'black'}}>{Title}</Text>
 
 {RightComponent?
 <Text style={{fontSize:12, color:'#B4B3B3', position:'absolute', right:5}}>12:00</Text>:""
@@ -82,7 +82,7 @@ width:Dimensions.get('screen').width-78
 
 {Icon?Icon:''}
 
-<Text style={{fontSize:12,color:'gray'}}>
+<Text style={{fontSize:12,color:colorWhite?'white':'gray'}}>
   {TitleMessage} </Text>
   
 </View>
