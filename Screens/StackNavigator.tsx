@@ -62,9 +62,7 @@ const StackNavigator = () => {
        }} 
      />
 
-{/* <Stack.Screen name="BarcodeScanner">
-  {(props) => <BarcodeScanner {...props}  />}
-</Stack.Screen> */}
+
 
 <Stack.Screen name="BarcodeScanner" component={BarcodeScanner}
         

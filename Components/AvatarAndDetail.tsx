@@ -7,6 +7,8 @@ const AvatarAndDetail = ({width,colorWhite=false,RightComponent=false,RingScale=
   const navigation = useNavigation();
   return (
    
+  //   eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error 
 <TouchableOpacity onPress={()=>{navigation.navigate('ChatDetail',{data:"More over"})}}>
 
 <View style={{
@@ -32,7 +34,7 @@ gap:8,
   width:48,
   height:48,
   borderRadius:25,
-  borderBlockColor:'#128C7E',
+  borderColor:'#25D38A',
   borderWidth:2,
   justifyContent:'center',
   alignItems:'center',

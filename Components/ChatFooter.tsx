@@ -1,11 +1,14 @@
-import { View, Text, ImageBackground, KeyboardAvoidingView, Button, TouchableOpacity } from 'react-native'
+import { View,Text, ImageBackground, KeyboardAvoidingView, Button, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import { TextInput } from 'react-native-gesture-handler'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { FontAwesome } from '@expo/vector-icons';
 
+import{useEffect}   from 'react';
+import { Audio } from 'expo-av';
 import Animated, { useSharedValue, withSpring,Easing, FadeIn, FadeOut } from 'react-native-reanimated';
 const ChatFooter = () => {
 
@@ -15,8 +18,9 @@ const ChatFooter = () => {
   const translateX = useSharedValue(0);
   const [isCameraShown,SetIsCameraShown] = useState(true);
 
- 
+  
 
+  // END HERE -------------------------
   const handlePress = (value:string) => {
 
     SetInputValue(value);
@@ -24,11 +28,13 @@ const ChatFooter = () => {
     if(value.trim().length==1 &&translateX.value<=0){
       SetIsCameraShown(false);
       translateX.value = withSpring(translateX.value + 10);
+      SetIsFirstCharacter(true);
     }
 
     if(value.trim().length==0){
       SetIsCameraShown(true);
       translateX.value = withSpring(translateX.value =0);
+      SetIsFirstCharacter(false)
     }
 
   };
@@ -46,7 +52,7 @@ const ChatFooter = () => {
     source={require("../assets/appAssets/bg1.jpg")}
     >
     
- 
+   
     
 <View style={{
 
@@ -113,7 +119,7 @@ padding:10,
   borderRadius:26,
 }]}>
 
-{isFirstCharacter?<FontAwesome5 name="telegram-plane" size={22} color="white" />:<FontAwesome5 name="microphone" size={22} color="white" />}
+{isFirstCharacter?<FontAwesome name="paper-plane" size={18} color="white" />:<FontAwesome name="microphone" size={20} color="white" />}
 
 
 </View>
