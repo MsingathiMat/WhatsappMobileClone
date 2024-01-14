@@ -1,5 +1,5 @@
 import { View, Text, ImageBackground } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRoute } from "@react-navigation/native";
 import ChatFooter from "../Components/ChatFooter";
 import GreenConvo from "../Components/GreenConvo";
@@ -39,6 +39,8 @@ type Message = {
 const ChatDetail = () => {
 
 const [ImageUri,setImageUri]=useState(null);
+const flatListRef = useRef<FlatList<Message>>();
+
 
 const [IsImageCaptured,setIsImageCaptured]=useState(false);
   const route = useRoute<RouteProps>();
@@ -73,6 +75,12 @@ const SendImage = (ChatImage:string)=>{
     setConversations(ArrayOmessages)
   },[])
 
+  useEffect(() => {
+    // Use scrollToEnd method to scroll to the bottom when the component mounts or when data changes
+   if(flatListRef.current){
+    flatListRef.current?.scrollToEnd({ animated: true });
+   }
+  }, [Conversations]);
 
   return (
     <ImageBackground
@@ -94,7 +102,7 @@ const SendImage = (ChatImage:string)=>{
 
 
 <FlatList data={Conversations}
-
+ ref={flatListRef}
 showsVerticalScrollIndicator={false}
 renderItem={({item})=>(
 
