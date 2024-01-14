@@ -2,7 +2,7 @@ import { View, Text, Image } from 'react-native'
 import React from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
-const AudioWhiteConvo = () => {
+const AudioWhiteConvo = ({ImageUrl}:{ImageUrl:string}) => {
   return (
     <View style ={{
 
@@ -69,7 +69,7 @@ width:40,
 height:40,
 borderRadius:30,
 
-}} resizeMode='cover' source={{uri:'https://www.billboard.com/wp-content/uploads/2023/08/nicki-minaj-World-Premiere-Of-Barbie-Arrivals-billboard-1548.jpg?w=1024'}}/>
+}} resizeMode='cover' source={{uri:ImageUrl}}/>
       </View>
 
         <View style={{

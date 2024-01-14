@@ -14,7 +14,7 @@ export const chatData = [
           ArivalStatus: "sent",
           Date: "07/09/2024",
           EmojiResponse: "",
-          MessageType: "Text"
+          MessageType: "Audio"
         },
         {
           id: 2,
@@ -44,7 +44,7 @@ export const chatData = [
           ArivalStatus: "sent",
           Date: "07/09/2024",
           EmojiResponse: "",
-          MessageType: "Text"
+          MessageType: "Audio"
         },
         {
           id: 5,
@@ -74,7 +74,7 @@ export const chatData = [
           ArivalStatus: "sent",
           Date: "07/09/2024",
           EmojiResponse: "",
-          MessageType: "Text"
+          MessageType: "Audio"
         },
         {
           id: 8,
@@ -94,7 +94,7 @@ export const chatData = [
           ArivalStatus: "sent",
           Date: "07/09/2024",
           EmojiResponse: "",
-          MessageType: "Text"
+          MessageType: "Audio"
         },
         {
           id: 10,
@@ -275,7 +275,7 @@ export const chatData = [
           ArivalStatus: "sent",
           Date: "12/09/2024",
           EmojiResponse: "",
-          MessageType: "Text"
+          MessageType: "Audio"
         },
         {
           id: 2,

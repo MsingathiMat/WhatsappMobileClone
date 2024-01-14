@@ -1,11 +1,13 @@
 import { View, Text, ImageBackground } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useRoute } from "@react-navigation/native";
 import ChatFooter from "../Components/ChatFooter";
 import GreenConvo from "../Components/GreenConvo";
 import WhiteConvo from "../Components/WhiteConvo";
 import AudioWhiteConvo from "../Components/AudioWhiteConvo";
 import { FlatList } from "react-native-gesture-handler";
+import GreenImageCard from "../Components/GreenImageCard";
+import ChatImage from "../Components/ChatImage";
 
 
 
@@ -36,11 +38,42 @@ type Message = {
   };
 const ChatDetail = () => {
 
+const [ImageUri,setImageUri]=useState(null);
 
-
+const [IsImageCaptured,setIsImageCaptured]=useState(false);
   const route = useRoute<RouteProps>();
 
   const ArrayOmessages = route.params.Contact.Conversation;
+const [Conversations, setConversations]=useState<Message[] | null>(null);
+
+
+const SendImage = (ChatImage:string)=>{
+
+  
+  setConversations([...Conversations,
+    {
+      id:Conversations.length+1 ,
+      WoIs: "Me",
+      Message: ChatImage,
+    
+      TimeStamp: "13:06",
+      ArivalStatus: "sent",
+      Date: "07/09/2024",
+      EmojiResponse: "",
+      MessageType: "Image"
+    }
+ 
+  ])
+
+  setIsImageCaptured(false);
+
+}
+  useEffect(()=>{
+
+    setConversations(ArrayOmessages)
+  },[])
+
+
   return (
     <ImageBackground
       style={{
@@ -60,14 +93,14 @@ const ChatDetail = () => {
 
 
 
-<FlatList data={ArrayOmessages}
+<FlatList data={Conversations}
 
 showsVerticalScrollIndicator={false}
 renderItem={({item})=>(
 
 
 
-    item.WoIs=="Me"?<GreenConvo  Message={item.Message}/>:<WhiteConvo TimeStamp={item.TimeStamp} Message={item.Message}/>
+   ( item.WoIs=="Me"&& item.MessageType=='Text')? <GreenConvo  Message={item.Message}/>:(item.MessageType=='Text')?<WhiteConvo TimeStamp={item.TimeStamp} Message={item.Message}/>:(item.MessageType!='Audio')?<ChatImage  igamgeUri={ImageUri}/>:<AudioWhiteConvo ImageUrl={route.params.Contact.ImageUrl}/>
 
 
 
@@ -75,7 +108,10 @@ renderItem={({item})=>(
 
 />
 
-{/* <AudioWhiteConvo/> */}
+{
+
+IsImageCaptured?<GreenImageCard CallBack={()=>SendImage(ImageUri)} igamgeUri={ImageUri}/>:''
+}
 
 
 
@@ -84,7 +120,7 @@ renderItem={({item})=>(
        
       </View>
 
-      <ChatFooter />
+      <ChatFooter CallBack={setImageUri} SetCaptured={setIsImageCaptured} />
     </ImageBackground>
   );
 };

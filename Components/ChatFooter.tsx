@@ -6,11 +6,12 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
 
 import{useEffect}   from 'react';
 import { Audio } from 'expo-av';
 import Animated, { useSharedValue, withSpring,Easing, FadeIn, FadeOut } from 'react-native-reanimated';
-const ChatFooter = () => {
+const ChatFooter = ({CallBack,SetCaptured}:{CallBack:React.Dispatch<React.SetStateAction<string>>,SetCaptured:React.Dispatch<React.SetStateAction<boolean>>}) => {
 
   const navigation = useNavigation();
   const [isFirstCharacter,SetIsFirstCharacter] = useState(false);
@@ -18,7 +19,30 @@ const ChatFooter = () => {
   const translateX = useSharedValue(0);
   const [isCameraShown,SetIsCameraShown] = useState(true);
 
-  
+ 
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await ImagePicker.requestCameraPermissionsAsync();
+      if (status !== 'granted') {
+        alert('Sorry, we need camera permissions to make this work!');
+      }
+    })();
+  }, []);
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: false,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+   if(result.assets[0].uri){
+CallBack(result.assets[0].uri);
+SetCaptured(true);
+   }
+  };
 
   // END HERE -------------------------
   const handlePress = (value:string) => {
@@ -51,6 +75,7 @@ const ChatFooter = () => {
   alignItems:'center'   }}
     resizeMode='cover'
     source={require("../assets/appAssets/bg1.jpg")}
+ 
     >
     
    
@@ -102,10 +127,9 @@ padding:10,
 {isCameraShown&&
 
          
-//           eslint-disable-next-line @typescript-eslint/ban-ts-comment
-//  @ts-expect-error 
+
  
-<TouchableOpacity onPress={() => navigation.navigate('CameraScreen')}>
+<TouchableOpacity onPress={() => {pickImage()}}>
 <FontAwesome5 name="camera" size={23} color="gray" />
 </TouchableOpacity>}
 </Animated.View>
