@@ -1,6 +1,6 @@
 export const chatData = [
     {
-      id: 1,
+      id: 0,
       ImageUrl:'https://lh3.googleusercontent.com/2M76fvf6zqSYJ7K4Ejr8qRTTtVylUFCbk8qs1VR_AZwHw8bRsGzsYF9zx0tvyq-EYFRt1tbPiowD=w544-h544-p-l90-rj',
       ContactName: 'Nasty C',
       ContactNumber: '0766634454',

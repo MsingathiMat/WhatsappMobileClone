@@ -61,7 +61,7 @@ const ChatDetailTopBar = () => {
 
 <AntDesign name="arrowleft" size={24} color="white" />
 </TouchableOpacity>
-      <View style={{
+      {/* <View style={{
     
         justifyContent:'center',
         alignItems:'center',
@@ -78,7 +78,7 @@ const ChatDetailTopBar = () => {
 
      
       </View>
-      </View>
+      </View> */}
     </View>
    
   )

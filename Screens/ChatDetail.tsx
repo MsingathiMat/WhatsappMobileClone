@@ -8,6 +8,8 @@ import AudioWhiteConvo from "../Components/AudioWhiteConvo";
 import { FlatList } from "react-native-gesture-handler";
 import GreenImageCard from "../Components/GreenImageCard";
 import ChatImage from "../Components/ChatImage";
+import { ContactProps } from "../Types/Types";
+
 
 
 
@@ -34,9 +36,9 @@ type Message = {
   type RouteProps = {
     key: string;
     name: string;
-    params: { Contact: Contact };
+    params: { SelectedContactIndex: number };
   };
-const ChatDetail = () => {
+const ChatDetail = ({Contacts}:{Contacts:ContactProps[]}) => {
 
 const [ImageUri,setImageUri]=useState(null);
 const flatListRef = useRef<FlatList<Message>>();
@@ -45,7 +47,11 @@ const flatListRef = useRef<FlatList<Message>>();
 const [IsImageCaptured,setIsImageCaptured]=useState(false);
   const route = useRoute<RouteProps>();
 
-  const ArrayOmessages = route.params.Contact.Conversation;
+  // const ArrayOmessages = route.params.Contact.Conversation;
+  const SelectedContactIndex=route.params.SelectedContactIndex
+  const ArrayOmessages = Contacts[2].Conversation;
+  
+
 const [Conversations, setConversations]=useState<Message[] | null>(null);
 
 
@@ -77,9 +83,15 @@ const SendImage = (ChatImage:string)=>{
 
   useEffect(() => {
     // Use scrollToEnd method to scroll to the bottom when the component mounts or when data changes
-   if(flatListRef.current){
-    flatListRef.current?.scrollToEnd({ animated: true });
-   }
+   
+  //  if(ImageUri){
+  //   if(flatListRef.current){
+  //     // flatListRef.current?.scrollToEnd({ animated: true });
+  //     flatListRef.current?.scrollToIndex({ index:Conversations.length-1,animated: true });
+  //    }
+
+  //  }
+   
   }, [Conversations]);
 
   return (
@@ -108,7 +120,7 @@ renderItem={({item})=>(
 
 
 
-   ( item.WoIs=="Me"&& item.MessageType=='Text')? <GreenConvo  Message={item.Message}/>:(item.MessageType=='Text')?<WhiteConvo TimeStamp={item.TimeStamp} Message={item.Message}/>:(item.MessageType!='Audio')?<ChatImage  igamgeUri={ImageUri}/>:<AudioWhiteConvo ImageUrl={route.params.Contact.ImageUrl}/>
+   ( item.WoIs=="Me"&& item.MessageType=='Text')? <GreenConvo  Message={item.Message}/>:(item.MessageType=='Text')?<WhiteConvo TimeStamp={item.TimeStamp} Message={item.Message}/>:(item.MessageType!='Audio')?<ChatImage  igamgeUri={ImageUri}/>:<AudioWhiteConvo ImageUrl={Contacts[SelectedContactIndex].ImageUrl}/>
 
 
 

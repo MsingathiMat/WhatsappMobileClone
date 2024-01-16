@@ -35,7 +35,7 @@ const AvatarAndDetail = ({Contact,width,colorWhite=false,RightComponent=false,Ri
    
   //   eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-expect-error 
-<TouchableOpacity onPress={()=>{navigation.navigate('ChatDetail',{Contact:Contact})}}>
+<TouchableOpacity onPress={()=>{navigation.navigate('ChatDetail',{SelectedContactIndex:0})}}>
 
 <View style={{
   

@@ -27,15 +27,15 @@ type Contact = {
   Conversation: Message[];
 };
 
-type RouteProps = {
-  key: string;
-  name: string;
-  params: { Messages: Contact };
-};
+// type RouteProps = {
+//   key: string;
+//   name: string;
+//   params: { Messages: Contact };
+// };
 const ChatDetailHeader = () => {
-    const navigation=useNavigation();
+    // const navigation=useNavigation();
 
-    const route = useRoute<RouteProps>();
+    // const route = useRoute<RouteProps>();
 
   return (
     <SafeAreaView>

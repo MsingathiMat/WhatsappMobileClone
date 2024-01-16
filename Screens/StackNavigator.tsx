@@ -24,11 +24,28 @@ import ChatDetailTopBar from '../Components/ChatDetailTopBar';
 import MainHeader from '../Components/MainHeader';
 import MoreOptions from '../Components/MoreOptions';
 import ChatDetailHeader from '../Components/ChatDetailHeader';
+import HOCscreen from '../Components/HOC/HOCscreen';
+import { ContactProps } from '../Types/Types';
+
+interface newProps {
+  ChatData: ContactProps[];
+}
+
 const StackNavigator = () => {
 
     const [isMenuShown, setisMenuShown] = useState(false);
     const Stack = createStackNavigator();
   
+    const ScreenWrapper =({ChatData}:{ChatData:ContactProps[]})=>{
+
+      
+return <ChatDetail Contacts={ChatData}/>
+    
+
+    }
+
+   const NewChildDetail= HOCscreen(ScreenWrapper)
+
   return (
    
     <Stack.Navigator
@@ -80,8 +97,10 @@ const StackNavigator = () => {
         }} 
       />
 
-<Stack.Screen name="ChatDetail" component={ChatDetail}
-        
+
+
+
+<Stack.Screen name="ChatDetail" component={NewChildDetail}
         
         options={{
        
