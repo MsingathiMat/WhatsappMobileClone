@@ -52,7 +52,7 @@ const UseHygraph =()=>{
       
        );
    
-       console.warn(results)
+     
        SetSongData(results.contacts1);
     } catch (error) {
       console.error('Error fetching data:', error);

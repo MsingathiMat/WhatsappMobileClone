@@ -1,13 +1,20 @@
-import { View, Text, Image, Dimensions } from 'react-native'
+import { View, Text, Image, Dimensions, TouchableOpacity, Modal } from 'react-native'
 import React, { useEffect, useState } from 'react'
 
-import { FlatList, ScrollView } from 'react-native-gesture-handler'
+import { FlatList, ScrollView, TextInput } from 'react-native-gesture-handler'
 import { Ionicons } from '@expo/vector-icons';
 import { useRoute } from '@react-navigation/native';
 import { chatData } from '../Components/Chats';
 import AvatarAndDetail from '../Components/AvatarAndDetail';
 import request, { gql } from 'graphql-request';
 import UseHygraph from '../Components/Hooks/UseHygraph';
+import { Entypo } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
+import { BlurView } from 'expo-blur';
+import { FontAwesome5 } from '@expo/vector-icons';
+
+
 
 
 const MASTER_URL ='https://api-ap-southeast-2.hygraph.com/v2/clrl7cnr105jh01up5wcgj77o/master';
@@ -54,6 +61,7 @@ type chatDataProp=Contact[];
 
 const Chats = ({navigation}) => {
 
+  const [IsModalShown,setIsModalShown] = useState(false);
   const {GqlQuery}=UseHygraph();
   const [songData,SetSongData]=useState<Contact[] | null>(null)
   useEffect(()=>{
@@ -70,7 +78,7 @@ const Chats = ({navigation}) => {
 
     GqlQuery({ GqlString,SetSongData})
 
-    console.warn(songData)
+    // console.warn(songData)
 
 
   },[])
@@ -103,8 +111,99 @@ renderItem={({item})=>(
 />
 
 
+<TouchableOpacity onPress={()=>{setIsModalShown(true)}} style={{
+   bottom:40,
+   right:40,
+   position: 'absolute',
+}}>
+
+<View style={{
+  backgroundColor:'#128C7E',
+  width:45,
+  height:45,
+
+  borderRadius:25,
+ 
+  justifyContent:'center',
+  alignItems:'center'
+  }}>
+
+<Entypo name="plus" size={24} color="white" />
+</View>
+</TouchableOpacity>
+
+<Modal visible={IsModalShown} animationType='slide' >
 
 
+
+<BlurView intensity={20} style={{
+flex:1,
+padding:20,
+justifyContent:'center',
+alignItems:'center'  }}>
+
+<TouchableOpacity onPress={()=>{setIsModalShown(false)}} style={{
+
+  position:'absolute',
+  top:30,
+  right:30
+}} >
+
+<Feather name="x" size={24} color="green" />
+</TouchableOpacity>
+
+
+
+<View style={{flexDirection:'column', gap:30}}>
+
+
+<View > 
+
+  <TextInput placeholder="Contact Name"style={{
+
+    borderBottomColor:'green',
+    borderBottomWidth:1,
+    width:200,
+    paddingLeft:30,
+    padding:3
+  }}/>
+
+<FontAwesome style={{position:'absolute', top:8, left:0}} name="user-o" size={15} color="black" />
+</View>
+
+<View>
+
+  <TextInput placeholder="Contact Number"style={{
+
+    borderBottomColor:'green',
+    borderBottomWidth:1,
+    width:200,
+    paddingLeft:30,
+    padding:3
+  }}/>
+<FontAwesome5 style={{position:'absolute', top:8, left:0}} name="phone" size={15} color="black" />
+
+</View>
+
+<TouchableOpacity onPress={()=>{setIsModalShown(false)}}  >
+
+<View style={{ 
+  backgroundColor:'#128C7E' ,
+  height:35, width:90, 
+  borderRadius:5, 
+  justifyContent:'center', 
+  alignItems:'center'}}>
+
+  <Text style={{color:'white'}}>Save</Text>
+</View>
+
+</TouchableOpacity>
+</View>
+
+
+</BlurView>
+
+</Modal>
 </View>
   )
 }
