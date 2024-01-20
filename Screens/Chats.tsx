@@ -20,15 +20,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 const MASTER_URL ='https://api-ap-southeast-2.hygraph.com/v2/clrl7cnr105jh01up5wcgj77o/master';
 
 
-const CreateRec = gql`
- mutation CrateRecord {
-  createSong(
-    data: {artistName: "No header now", description: "Buchule Now to", genre: "Gospel", imageUrl: "https://images.pexels.com/photos/4132776/pexels-photo-4132776.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load", songTitle: "Hlalasik"}
-  ) {
-    id
-  }
-}
-`
+
 
 type Message = {
   id: number;
@@ -62,10 +54,19 @@ type chatDataProp=Contact[];
 const Chats = ({navigation}) => {
 
   const [IsModalShown,setIsModalShown] = useState(false);
-  const {GqlQuery}=UseHygraph();
+  const {GqlQuery,CreateARecord}=UseHygraph();
   const [songData,SetSongData]=useState<Contact[] | null>(null)
-  useEffect(()=>{
-    const GqlString = gql`
+  type ContactProp={
+    contactName:string, 
+    contactNumber: string, 
+    imageUrl: string, 
+    lastSeen: string}
+  
+  
+  const [cName, setcName]=useState<string | null>(null);
+  const [contact, setContact]=useState<string | null>(null);
+
+  const GqlString = gql`
     query Contacts1 {
       contacts1 {
       id
@@ -76,12 +77,44 @@ const Chats = ({navigation}) => {
   }
 }`
 
+  useEffect(()=>{
+    
+
+
+
     GqlQuery({ GqlString,SetSongData})
+
 
     // console.warn(songData)
 
 
   },[])
+ 
+
+  const CreateRecord =()=>{
+
+    const CreateRec = gql`
+mutation CreateContact {
+  createContacts(
+    data: {contactName: "`+cName+`", contactNumber:  "`+contact+`", imageUrl: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png", lastSeen: "Yesterday"}
+  ) {
+    id
+  }
+  publishManyContacts1(to: PUBLISHED) {
+    count
+  }
+}
+`
+CreateARecord(CreateRec).then(()=>{
+
+  SetSongData(null);
+
+GqlQuery({ GqlString,SetSongData})
+});
+
+
+
+  }
   
   return (
     <View style={{
@@ -154,14 +187,14 @@ alignItems:'center'  }}>
 
 
 
-<View style={{flexDirection:'column', gap:30}}>
+<View style={{flexDirection:'column', gap:30, justifyContent:'center', alignItems:'center'}}>
 
 
 <View > 
 
-  <TextInput placeholder="Contact Name"style={{
+  <TextInput value={cName}  onChangeText={(value)=>{setcName(value)}} placeholder="Contact Name"style={{
 
-    borderBottomColor:'green',
+    borderBottomColor:'#128C7E',
     borderBottomWidth:1,
     width:200,
     paddingLeft:30,
@@ -173,9 +206,9 @@ alignItems:'center'  }}>
 
 <View>
 
-  <TextInput placeholder="Contact Number"style={{
+  <TextInput value={contact}  onChangeText={(value)=>{setContact(value)}}  keyboardType='numeric' placeholder="Contact Number"style={{
 
-    borderBottomColor:'green',
+    borderBottomColor:'#128C7E',
     borderBottomWidth:1,
     width:200,
     paddingLeft:30,
@@ -185,7 +218,12 @@ alignItems:'center'  }}>
 
 </View>
 
-<TouchableOpacity onPress={()=>{setIsModalShown(false)}}  >
+<TouchableOpacity onPress={()=>{
+  
+  setIsModalShown(false);
+  CreateRecord();
+  
+  }}  >
 
 <View style={{ 
   backgroundColor:'#128C7E' ,
