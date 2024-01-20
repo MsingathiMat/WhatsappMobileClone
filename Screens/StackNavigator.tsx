@@ -36,15 +36,11 @@ const StackNavigator = () => {
     const [isMenuShown, setisMenuShown] = useState(false);
     const Stack = createStackNavigator();
   
-    const ScreenWrapper =({ChatData}:{ChatData:ContactProps[]})=>{
 
-      
-return <ChatDetail Contacts={ChatData}/>
-    
 
-    }
+    const NewChildDetail= HOCscreen(ChatDetail)
 
-   const NewChildDetail= HOCscreen(ScreenWrapper)
+
 
   return (
    

@@ -12,87 +12,68 @@ import { ContactProps } from "../Types/Types";
 
 
 
-
 type Message = {
-    id: number;
-    WoIs: string;
-    Message: string;
-    TimeStamp: string;
-    ArivalStatus: string;
-    Date: string;
-    EmojiResponse: string;
-    MessageType: string;
-  };
-  
-  type Contact = {
-    id: number;
-    ImageUrl: string;
-    ContactName: string;
-    ContactNumber: string;
-    HasStatus: boolean;
-    Conversation: Message[];
-  };
-  
-  type RouteProps = {
-    key: string;
-    name: string;
-    params: { SelectedContactIndex: number };
-  };
-const ChatDetail = ({Contacts}:{Contacts:ContactProps[]}) => {
+  id: number;
+  WoIs: string;
+  Message: string;
+  TimeStamp: string;
+  ArivalStatus: string;
+  Date: string;
+  EmojiResponse: string;
+  MessageType: string;
+};
 
-const [ImageUri,setImageUri]=useState(null);
-const flatListRef = useRef<FlatList<Message>>();
+type Contact = {
+  id: number;
+  ImageUrl: string;
+  ContactName: string;
+  ContactNumber: string;
+  HasStatus: boolean;
+  Conversation: Message[];
+};
+
+type RouteProps = {
+  key: string;
+  name: string;
+  params: { SelectedContactIndex: number };
+};
 
 
-const [IsImageCaptured,setIsImageCaptured]=useState(false);
+const ChatDetail = ({ChatData}:{ChatData:ContactProps[]})=> {
+  const [ImageUri, setImageUri] = useState(null);
+  const flatListRef = useRef<FlatList<Message>>();
+
+  const [IsImageCaptured, setIsImageCaptured] = useState(false);
   const route = useRoute<RouteProps>();
 
   // const ArrayOmessages = route.params.Contact.Conversation;
-  const SelectedContactIndex=route.params.SelectedContactIndex
-  const ArrayOmessages = Contacts[2].Conversation;
-  
+  const SelectedContactIndex = route.params.SelectedContactIndex;
+  const ArrayOmessages = ChatData[2].Conversation;
 
-const [Conversations, setConversations]=useState<Message[] | null>(null);
+  const [Conversations, setConversations] = useState<Message[] | null>(null);
 
+  const SendImage = (ChatImage: string) => {
+    setConversations([
+      ...Conversations,
+      {
+        id: Conversations.length + 1,
+        WoIs: "Me",
+        Message: ChatImage,
 
-const SendImage = (ChatImage:string)=>{
+        TimeStamp: "13:06",
+        ArivalStatus: "sent",
+        Date: "07/09/2024",
+        EmojiResponse: "",
+        MessageType: "Image",
+      },
+    ]);
 
-  
-  setConversations([...Conversations,
-    {
-      id:Conversations.length+1 ,
-      WoIs: "Me",
-      Message: ChatImage,
-    
-      TimeStamp: "13:06",
-      ArivalStatus: "sent",
-      Date: "07/09/2024",
-      EmojiResponse: "",
-      MessageType: "Image"
-    }
- 
-  ])
-
-  setIsImageCaptured(false);
-
-}
-  useEffect(()=>{
-
-    setConversations(ArrayOmessages)
-  },[])
-
+    setIsImageCaptured(false);
+  };
   useEffect(() => {
-    // Use scrollToEnd method to scroll to the bottom when the component mounts or when data changes
-   
-  //  if(ImageUri){
-  //   if(flatListRef.current){
-  //     // flatListRef.current?.scrollToEnd({ animated: true });
-  //     flatListRef.current?.scrollToIndex({ index:Conversations.length-1,animated: true });
-  //    }
+    setConversations(ArrayOmessages);
+  }, []);
 
-  //  }
-   
-  }, [Conversations]);
 
   return (
     <ImageBackground
@@ -103,41 +84,38 @@ const SendImage = (ChatImage:string)=>{
       source={require("../assets/appAssets/bg.jpg")}
     >
       <View
-       style={{
-        flex: 1,
-        padding:20,
-       
-      }}
+        style={{
+          flex: 1,
+          padding: 20,
+        }}
       >
-       
+        <FlatList
+          data={Conversations}
+          ref={flatListRef}
+          showsVerticalScrollIndicator={false}
+          renderItem={({ item }) =>
+            item.WoIs == "Me" && item.MessageType == "Text" ? (
+              <GreenConvo Message={item.Message} />
+            ) : item.MessageType == "Text" ? (
+              <WhiteConvo TimeStamp={item.TimeStamp} Message={item.Message} />
+            ) : item.MessageType != "Audio" ? (
+              <ChatImage igamgeUri={ImageUri} />
+            ) : (
+              <AudioWhiteConvo
+                ImageUrl={ChatData[SelectedContactIndex].ImageUrl}
+              />
+            )
+          }
+        />
 
-
-
-<FlatList data={Conversations}
- ref={flatListRef}
-showsVerticalScrollIndicator={false}
-renderItem={({item})=>(
-
-
-
-   ( item.WoIs=="Me"&& item.MessageType=='Text')? <GreenConvo  Message={item.Message}/>:(item.MessageType=='Text')?<WhiteConvo TimeStamp={item.TimeStamp} Message={item.Message}/>:(item.MessageType!='Audio')?<ChatImage  igamgeUri={ImageUri}/>:<AudioWhiteConvo ImageUrl={Contacts[SelectedContactIndex].ImageUrl}/>
-
-
-
-)}
-
-/>
-
-{
-
-IsImageCaptured?<GreenImageCard CallBack={()=>SendImage(ImageUri)} igamgeUri={ImageUri}/>:''
-}
-
-
-
-           
-          
-       
+        {IsImageCaptured ? (
+          <GreenImageCard
+            CallBack={() => SendImage(ImageUri)}
+            igamgeUri={ImageUri}
+          />
+        ) : (
+          ""
+        )}
       </View>
 
       <ChatFooter CallBack={setImageUri} SetCaptured={setIsImageCaptured} />

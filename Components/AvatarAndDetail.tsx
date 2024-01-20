@@ -16,18 +16,23 @@ type Message = {
   MessageType: string;
 };
 
+
+
 type Contact = {
-  id: number;
-  ImageUrl: string;
+  createdAt:string,
+  id: string;
+  imageUrl: string;
+  lastSeen: string,
   ContactName: string;
   ContactNumber: string;
   HasStatus: boolean;
-  Conversation: Message[];
+  publishedAt:string
 };
 
-
-
-const AvatarAndDetail = ({Contact,width,colorWhite=false,RightComponent=false,RingScale=1,AvatarScale=1,AvatarRing=false ,Icon,ImageUrl,MessageIconShown=false,Title, TitleMessage}:{ImageUrl:string,Title:string, TitleMessage:string,MessageIconShown?:boolean,Icon?:ReactNode, AvatarRing?:boolean,RingScale?:number,AvatarScale?:number,RightComponent?:boolean,colorWhite?:boolean,width?:number,Contact:Contact}) => {
+interface ContactProps {
+  contacts1: Contact[];
+}
+const AvatarAndDetail = ({ LastSeen,width,colorWhite=false,RightComponent=false,RingScale=1,AvatarScale=1,AvatarRing=false ,Icon,ImageUrl,MessageIconShown=false,Title}:{ImageUrl:string,Title:string,MessageIconShown?:boolean,Icon?:ReactNode, AvatarRing?:boolean,RingScale?:number,AvatarScale?:number,RightComponent?:boolean,colorWhite?:boolean,width?:number,LastSeen:string}) => {
 
 
   const navigation = useNavigation();
@@ -100,7 +105,7 @@ width:RightComponent?width-78:'auto'
 <Text style={{fontWeight:'bold',color:colorWhite?'white':'black'}}>{Title}</Text>
 
 {RightComponent?
-<Text style={{fontSize:12, color:'#B4B3B3', position:'absolute', right:5}}>12:00</Text>:""
+<Text style={{fontSize:12, color:'#B4B3B3', position:'absolute', right:5}}>{LastSeen}</Text>:""
 
 }
 
@@ -111,7 +116,7 @@ width:RightComponent?width-78:'auto'
 {Icon?Icon:''}
 
 <Text style={{fontSize:12,color:colorWhite?'white':'gray'}}>
-  {TitleMessage} </Text>
+  MSG Example </Text>
   
 </View>
 
