@@ -157,12 +157,15 @@ renderItem={({item})=>(
 {/* <AvatarAndDetail  width={Dimensions.get('screen').width} RightComponent={true} AvatarRing={item.hasStatus} Icon={<Ionicons name="checkmark-done" size={18} color="gray" />} Title={item.contactName} LastSeen={item.lastSeen}  ImageUrl={item.imageUrl}/> */}
 
 
-<Avatar  width={Dimensions.get('screen').width} RightComponent={true} AvatarRing={true} Icon={<Ionicons name="checkmark-done" size={18} color="gray" />}  LastSeen={item.lastSeen}  >
+<Avatar  RightComponent={true}  Icon={<Ionicons name="checkmark-done" size={18} color="gray" />}  LastSeen={item.lastSeen}  >
 
+<Avatar.AvatarImage RingScale={1} AvatarRing={true} AvatarScale={1} ImageUrl={item.imageUrl}></Avatar.AvatarImage>
 
-<Avatar.Title Title={item.contactName} Color="red"/>
-<Avatar.AvatarImage RingScale={1} AvatarScale={1} ImageUrl={item.imageUrl}></Avatar.AvatarImage>
-<Avatar.Title Title={item.contactName} Color="red"/>
+<Avatar.LabelSection width={Dimensions.get('screen').width} RightComponent={true} colorWhite={false} LastSeen="12:00">
+
+<Avatar.LabelSection.Title Title={item.contactName}Color="gray"/>
+
+</Avatar.LabelSection>
 </Avatar>
 
 </>
