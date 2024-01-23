@@ -1,4 +1,4 @@
-import { View, Text, Image, Dimensions, TouchableOpacity, Modal } from 'react-native'
+import { View, Text, Image, Dimensions, TouchableOpacity, Modal, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
 
 import { FlatList, ScrollView, TextInput } from 'react-native-gesture-handler'
@@ -13,6 +13,8 @@ import { Feather } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { BlurView } from 'expo-blur';
 import { FontAwesome5 } from '@expo/vector-icons';
+import LoadingButton from '../Components/LoadingButton';
+import Avatar from '../Components/Avatar';
 
 
 
@@ -54,6 +56,7 @@ type chatDataProp=Contact[];
 const Chats = ({navigation}) => {
 
   const [IsModalShown,setIsModalShown] = useState(false);
+  const [IsLoading,SetIsLoading] = useState(false);
   const {GqlQuery,CreateARecord}=UseHygraph();
   const [songData,SetSongData]=useState<Contact[] | null>(null)
   type ContactProp={
@@ -96,7 +99,7 @@ const Chats = ({navigation}) => {
     const CreateRec = gql`
 mutation CreateContact {
   createContacts(
-    data: {contactName: "`+cName+`", contactNumber:  "`+contact+`", imageUrl: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png", lastSeen: "Yesterday"}
+    data: {contactName: "`+cName+`", contactNumber:  "`+contact+`", imageUrl: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png", lastSeen: "`+Date.now()+`"}
   ) {
     id
   }
@@ -105,16 +108,27 @@ mutation CreateContact {
   }
 }
 `
-CreateARecord(CreateRec).then(()=>{
+CreateARecord(CreateRec).then((res)=>{
 
-  SetSongData(null);
 
 GqlQuery({ GqlString,SetSongData})
+setIsModalShown(false);
+SetIsLoading(false);
+
+}).catch((error)=>{
+
+  alert("Error Occured");
 });
 
 
 
   }
+
+ const SaveData=()=>{
+  SetIsLoading(true);
+
+  CreateRecord();
+ }
   
   return (
     <View style={{
@@ -138,7 +152,20 @@ data={songData}
 
 renderItem={({item})=>(
 
-  <AvatarAndDetail  width={Dimensions.get('screen').width} RightComponent={true} AvatarRing={item.hasStatus} Icon={<Ionicons name="checkmark-done" size={18} color="gray" />} Title={item.contactName} LastSeen={item.lastSeen}  ImageUrl={item.imageUrl}/>
+<>
+
+{/* <AvatarAndDetail  width={Dimensions.get('screen').width} RightComponent={true} AvatarRing={item.hasStatus} Icon={<Ionicons name="checkmark-done" size={18} color="gray" />} Title={item.contactName} LastSeen={item.lastSeen}  ImageUrl={item.imageUrl}/> */}
+
+
+<Avatar  width={Dimensions.get('screen').width} RightComponent={true} AvatarRing={true} Icon={<Ionicons name="checkmark-done" size={18} color="gray" />}  LastSeen={item.lastSeen}  >
+
+
+<Avatar.Title Title={item.contactName} Color="red"/>
+<Avatar.AvatarImage RingScale={1} AvatarScale={1} ImageUrl={item.imageUrl}></Avatar.AvatarImage>
+<Avatar.Title Title={item.contactName} Color="red"/>
+</Avatar>
+
+</>
 
 )}
 />
@@ -217,26 +244,17 @@ alignItems:'center'  }}>
 <FontAwesome5 style={{position:'absolute', top:8, left:0}} name="phone" size={15} color="black" />
 
 </View>
+<TouchableOpacity onPress={SaveData}>
 
-<TouchableOpacity onPress={()=>{
-  
-  setIsModalShown(false);
-  CreateRecord();
-  
-  }}  >
+<LoadingButton  IsLoading={IsLoading} OnPress={()=>{}}
 
-<View style={{ 
-  backgroundColor:'#128C7E' ,
-  height:35, width:90, 
-  borderRadius:5, 
-  justifyContent:'center', 
-  alignItems:'center'}}>
+Title="Save"
 
-  <Text style={{color:'white'}}>Save</Text>
-</View>
-
+/>
 </TouchableOpacity>
+
 </View>
+
 
 
 </BlurView>

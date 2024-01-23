@@ -1,7 +1,32 @@
 import { request, gql } from 'graphql-request'
 
 
-const MASTER_URL ='https://api-ap-southeast-2.hygraph.com/v2/clrl7cnr105jh01up5wcgj77o/master';
+const MASTER_URL ='https://ap-southeast-2.cdn.hygraph.com/content/clrl7cnr105jh01up5wcgj77o/master';
+
+
+
+// mutation MyMutation {
+//   createChat(data: {post: "Selling a House in Aslar for R70 000", contacts: {connect: {id: "clrnnklf808fy0a2wb1nnhkkv"}}}) {
+//     id
+//   }
+// }
+
+
+// query MyQuery {
+//   chat(where: {contacts1_every: {}}) {
+//     message
+//   }
+// }
+
+
+
+// mutation MyMutation {
+//   createChats(data: {message: "Secind hand car for R80 000", contacts1: {connect: {id: "clrnnl9zmzx0t0b1dy98ooxos"}}}) {
+//     id
+//   }
+// }
+
+
 const query = gql`
 query Contacts1 {
   contacts1 {
@@ -48,11 +73,9 @@ const UseHygraph =()=>{
     try {
 
 
-      const results: ContactProps = await request(MASTER_URL, GqlString,
-      
-       );
+      const results: ContactProps = await request(MASTER_URL, GqlString,{});
    
-     
+   
        SetSongData(results.contacts1);
     } catch (error) {
       console.error('Error fetching data:', error);
