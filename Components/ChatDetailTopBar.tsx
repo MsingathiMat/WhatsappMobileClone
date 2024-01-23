@@ -7,6 +7,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import AvatarAndDetail from './AvatarAndDetail';
 import AvatarSimple from './AvatarSimple';
+import { ContactProps } from '../Types/Types';
 
 
 type Message = {
@@ -34,7 +35,7 @@ type RouteProps = {
   name: string;
   params: { Contact: Contact };
 };
-const ChatDetailTopBar = () => {
+const ChatDetailTopBar = ({ConatctData}:{ConatctData:ContactProps}) => {
 
     const navigation=useNavigation();
 
@@ -61,7 +62,7 @@ const ChatDetailTopBar = () => {
 
 <AntDesign name="arrowleft" size={24} color="white" />
 </TouchableOpacity>
-      {/* <View style={{
+      <View style={{
     
         justifyContent:'center',
         alignItems:'center',
@@ -74,11 +75,11 @@ const ChatDetailTopBar = () => {
 
 
 
-<AvatarSimple colorWhite={true} AvatarScale={0.8} MessageIconShown={true} Title={route.params.Contact.ContactName} TitleMessage='Last seen at 19:00'  ImageUrl={route.params.Contact.ImageUrl}/>
+<AvatarSimple colorWhite={true} AvatarScale={0.8} MessageIconShown={true} Title={ConatctData.ContactName} TitleMessage='Last seen at 19:00'  ImageUrl={ConatctData.ImageUrl}/>
 
      
       </View>
-      </View> */}
+      </View>
     </View>
    
   )

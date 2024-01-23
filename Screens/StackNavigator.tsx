@@ -44,10 +44,8 @@ const StackNavigator = () => {
 
   return (
    
-    <Stack.Navigator
-        screenOptions={{
-        
-        }}
+    <Stack.Navigator 
+      
       >
         <Stack.Screen name="Welcome" component={MainSection} 
         
@@ -94,15 +92,11 @@ const StackNavigator = () => {
       />
 
 
-
+{/* ContactData:{ImageUrl:string, ContactName:string, LastScene:string}; */}
 
 <Stack.Screen name="ChatDetail" component={NewChildDetail}
         
-        options={{
-       
-          header:(navigation)=>(<ChatDetailHeader />)
-
-        }}
+       options={{headerShown:false}}
       
       />
       </Stack.Navigator>

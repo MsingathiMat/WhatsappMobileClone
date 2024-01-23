@@ -5,33 +5,21 @@ import { useNavigation } from "@react-navigation/native";
 
 const Avatar = ({
   children,
- 
 }: {
   children?: ReactNode;
-  MessageIconShown?: boolean;
-  Icon?: ReactNode;
-
-  RingScale?: number;
-  RightComponent?: boolean;
-  colorWhite?: boolean;
-
-  LastSeen: string;
+  
 }) => {
   let AvatarImage: React.ReactNode = null;
-
   let LabelSectionElement: React.ReactNode = null;
-
   const ChildrenToArray = React.Children.toArray(children);
 
   ChildrenToArray.forEach((child) => {
     let ComponentName = "";
-    let ElementName = "";
+  
     if (React.isValidElement(child)) {
       const componentType = child.type as React.ComponentType<any>;
 
-      if (componentType.displayName) {
-        ElementName = componentType.displayName;
-      } else if (componentType.name) {
+    if (componentType.name) {
         ComponentName = componentType.name;
       } else {
         console.warn("Unable to determine component name");
@@ -50,7 +38,7 @@ const Avatar = ({
   return (
     <TouchableOpacity
       onPress={() => {
-        //   eslint-disable-next-line @typescript-eslint/ban-ts-comment
+     
         // @ts-expect-error
         navigation.navigate("ChatDetail", { SelectedContactIndex: 0 });
       }}
@@ -65,14 +53,7 @@ const Avatar = ({
           gap: 8,
         }}
       >
-        {
-
-AvatarImage ? (
-  AvatarImage
-) : (
-  ""
-)
-        }
+        {AvatarImage ? AvatarImage : ""}
 
         {LabelSectionElement ? LabelSectionElement : <></>}
       </View>
@@ -81,7 +62,6 @@ AvatarImage ? (
 };
 
 Avatar.AvatarImage = AvatarImage;
-
 Avatar.LabelSection = LabelSection;
 LabelSection.Title = Title;
 function AvatarImage({

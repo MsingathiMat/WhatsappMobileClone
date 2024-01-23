@@ -9,6 +9,7 @@ import { FlatList } from "react-native-gesture-handler";
 import GreenImageCard from "../Components/GreenImageCard";
 import ChatImage from "../Components/ChatImage";
 import { ContactProps } from "../Types/Types";
+import ChatDetailHeader from "../Components/ChatDetailHeader";
 
 
 
@@ -83,6 +84,8 @@ const ChatDetail = ({ChatData}:{ChatData:ContactProps[]})=> {
       resizeMode="cover"
       source={require("../assets/appAssets/bg.jpg")}
     >
+
+<ChatDetailHeader ConatctData={ChatData[2]}  />
       <View
         style={{
           flex: 1,

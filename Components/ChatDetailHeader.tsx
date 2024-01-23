@@ -4,9 +4,12 @@ import ChatDetailTopBar from './ChatDetailTopBar'
 import MoreOptions from './MoreOptions'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigation, useRoute } from '@react-navigation/native'
+import { ContactProps } from '../Types/Types'
 
 
+// ContactData:{ImageUrl:string, ContactName:string, LastScene:string};
 
+type ContactDataProp={ImageUrl:string, ContactName:string, LastScene:string}
 type Message = {
   id: number;
   WoIs: string;
@@ -32,7 +35,7 @@ type Contact = {
 //   name: string;
 //   params: { Messages: Contact };
 // };
-const ChatDetailHeader = () => {
+const ChatDetailHeader = ({ConatctData}:{ConatctData:ContactProps}) => {
     // const navigation=useNavigation();
 
     // const route = useRoute<RouteProps>();
@@ -47,7 +50,7 @@ const ChatDetailHeader = () => {
     paddingHorizontal:10
     
     }}>
-<ChatDetailTopBar />
+<ChatDetailTopBar ConatctData={ConatctData} />
 <MoreOptions/>
 
     </View>
