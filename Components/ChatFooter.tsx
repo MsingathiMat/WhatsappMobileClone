@@ -33,16 +33,50 @@ const ChatFooter = ({CallBack,SetCaptured}:{CallBack:React.Dispatch<React.SetSta
   const pickImage = async () => {
     let result = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      base64:true,
       allowsEditing: false,
       aspect: [4, 3],
       quality: 1,
     });
 
+    
    if(result.assets[0].uri){
+
+  
+    
+   
+
+
+    const file = new FormData();
+
+  
+    const Base64 = `data:${result.assets[0].type};base64,${result.assets[0].base64}`
+
+file.append('file',Base64)
+    file.append('upload_preset', 'wclone');
+
+    const cloudName ='dzrqwm7xi';
+    const url = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
+  await fetch(url, {
+    method: "post",
+    headers:{   'Content-Type': 'multipart/form-data'},
+    body: file,
+    }).then((result)=>{
+
+      console.log(result.ok)
+    }).catch(error=>{
+
+      console.log("Cloudinary Error")
+
+    })
+
+  
 CallBack(result.assets[0].uri);
 SetCaptured(true);
    }
   };
+
+
 
   // END HERE -------------------------
   const handlePress = (value:string) => {
