@@ -47,7 +47,7 @@ const MainHeader=({navigation}) => {
               <Entypo name="dots-three-vertical" size={20} color="white" />
             </TouchableOpacity>
           </View>
-          {isMenuShown ? <ChatsMenu /> : ''}
+          {isMenuShown ? <ChatsMenu setisMenuShown={setisMenuShown} /> : ''}
         </SafeAreaView>
       </View>
     </View>

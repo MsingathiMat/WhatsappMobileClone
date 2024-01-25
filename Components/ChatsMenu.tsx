@@ -1,7 +1,19 @@
 import { View, Text } from 'react-native'
 import React from 'react'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { useNavigation } from '@react-navigation/native'
 
-const ChatsMenu = () => {
+
+const ChatsMenu = ({setisMenuShown}:{setisMenuShown:React.Dispatch<React.SetStateAction<boolean>>}) => {
+
+  const navigation = useNavigation();
+
+  const LogOut = ()=>{
+
+    setisMenuShown(false);
+    // @ts-expect-error
+    navigation.navigate('Register')
+  }
   return (
     <View style={{
 
@@ -20,6 +32,10 @@ const ChatsMenu = () => {
     <Text>Linked devices</Text>
  <Text>Starred messages</Text>
  <Text>Messages</Text>
+ <TouchableOpacity  onPress={()=>{LogOut()}}>
+
+  <Text>Logout</Text>
+ </TouchableOpacity>
     </View>
   )
 }
