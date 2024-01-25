@@ -1,4 +1,4 @@
-import { View,Text, ImageBackground, KeyboardAvoidingView, Button, TouchableOpacity } from 'react-native'
+import { View,Text, ImageBackground, KeyboardAvoidingView, Button, TouchableOpacity, Image } from 'react-native'
 import React, { useState } from 'react'
 import { TextInput } from 'react-native-gesture-handler'
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -8,6 +8,9 @@ import { useNavigation } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
+import { Foundation } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import{useEffect}   from 'react';
 import { Audio } from 'expo-av';
@@ -20,6 +23,7 @@ const ChatFooter = ({CallBack,SetCaptured}:{CallBack:React.Dispatch<React.SetSta
   const [InputValue,SetInputValue] = useState("");
   const translateX = useSharedValue(0);
   const [isCameraShown,SetIsCameraShown] = useState(true);
+  const [IsPlaying,SetIsPlaying] = useState(true);
 
  
 
@@ -28,22 +32,40 @@ const ChatFooter = ({CallBack,SetCaptured}:{CallBack:React.Dispatch<React.SetSta
   const [permissionResponse, requestPermission] = Audio.usePermissions();
   const [isPlaying, setIsPlaying] = useState(false);
 
+  const [ShowRecordingIcon,SetShowRecordingIcon] = useState(false);
+  const [ShowSendRecIcon,SetShowSendRecIcon] = useState(false);
+
   const [Uri,SetUri]= useState("")
 
 
 
 
-  const PlaySound=async()=>{
 
-    const { sound: playbackObject } = await Audio.Sound.createAsync(
+  const PlaySound = async () => {
+   
+
+    const { sound: playbackObject, status } = await Audio.Sound.createAsync(
       { uri: Uri },
-      { shouldPlay: true }
+      { shouldPlay: isPlaying }
     );
-
   
+    // Function to toggle play/pause
+    const togglePlayback = async () => {
+      if (isPlaying) {
+        await playbackObject.pauseAsync();
+      } else {
+        await playbackObject.playAsync();
+      }
   
+      setIsPlaying(!isPlaying);
+    };
   
-   let audioData="";
+    // Call the togglePlayback function when you want to play/pause
+    // For example, you can call it on a button press
+    togglePlayback();
+  };
+  const SenddFile = async()=>{
+    let audioData="";
    
     try {
        audioData = await FileSystem.readAsStringAsync(Uri, {
@@ -103,9 +125,6 @@ console.error('Audio to Base64 error',error);
     }
   }
 
-  const togglePlayback = () => {
-    setIsPlaying((prev) => !prev);
-  };
 
 
   async function stopRecording() {
@@ -261,10 +280,9 @@ padding:10,
   right:20
 },{ transform: [{ translateX }] }]}>
 
-  <TouchableOpacity onPress={()=>{  PlaySound()}}>
 
      <MaterialIcons name="attach-file" size={23} color="gray" />
-  </TouchableOpacity>
+
 
 {isCameraShown&&
 
@@ -274,6 +292,8 @@ padding:10,
 </TouchableOpacity>}
 </Animated.View>
 </View>
+
+
 <View style={[{
 
   justifyContent:'center',
@@ -284,12 +304,108 @@ padding:10,
   borderRadius:26,
 }]}>
 
+{ShowRecordingIcon&& <View style={{
+  backgroundColor:'white',
+  borderRadius:5,
+
+
+  justifyContent:'center',
+  alignItems:'center',
+  position: 'absolute',
+  top:-50,
+  overflow:'hidden',
+  height:40,
+  width:40,
+  elevation:3
+  }}>
+
+
+
+<Image  resizeMode='contain' source={(require('../assets/appAssets/recording.gif'))}
+style={{width:80, height:80}}
+
+/>
+
+</View>}
+
+{ShowSendRecIcon&&
+
+<View style={{
+
+position: 'absolute',
+top:-100,
+flexDirection:'column',
+gap:5
+}}>
+
+<TouchableOpacity onPress={()=>{ 
+  
+  PlaySound()
+  SetIsPlaying(!IsPlaying);
+
+}} style={{
+  backgroundColor:'white',
+  borderRadius:5,
+
+
+  justifyContent:'center',
+  alignItems:'center',
+
+  overflow:'hidden',
+  height:40,
+  width:40,
+  elevation:3
+  }}>
+
+
+{IsPlaying?
+
+<Ionicons name="play" size={24} color="green" />:
+
+<MaterialCommunityIcons name="pause" size={24} color="black" />
+}
+
+
+
+
+
+</TouchableOpacity>
+<TouchableOpacity onPress={()=>{  SenddFile()}} style={{
+  backgroundColor:'white',
+  borderRadius:5,
+
+
+  justifyContent:'center',
+  alignItems:'center',
+
+  overflow:'hidden',
+  height:40,
+  width:40,
+  elevation:3
+  }}>
+
+
+
+
+<FontAwesome name="paper-plane" size={18} color="red" />
+
+</TouchableOpacity>
+
+</View>
+
+}
+
 {isFirstCharacter?<FontAwesome name="paper-plane" size={18} color="white" />:
 
-<TouchableOpacity  onLongPress={()=>{startRecording()}} onPressOut={()=>{
-  stopRecording();
-
+<TouchableOpacity  onLongPress={()=>{
   
+  startRecording()
+  SetShowRecordingIcon(true)
+
+}} onPressOut={()=>{
+  stopRecording();
+  SetShowRecordingIcon(false)
+  SetShowSendRecIcon(true)
   }}  >
 <FontAwesome name="microphone" size={20} color="white" />
 
