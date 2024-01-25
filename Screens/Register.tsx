@@ -14,19 +14,20 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Entypo } from '@expo/vector-icons';
 import {useAppProvider} from '../Store/AppContext';
 import { gql } from 'graphql-request';
+import { useNavigation } from '@react-navigation/native';
 
 
 const Register = () => {
 
+  const navigation = useNavigation();
+
+
   const { GqlQuery, GqlQuery1 } = UseHygraph();
 
-  const [Password, SetPassword] = useState<string | null>(null)
+ 
   const [UserName, SetUserName] = useState<string | null>(null)
   const [Contact, SetContact] = useState<string | null>(null)
-
-
-
-  
+  const [IsLoading, SetIsLoading] = useState(false)
 
     type Contact ={
 
@@ -34,14 +35,12 @@ const Register = () => {
     }
 
  
-
-
-
 const AuthenticateUser = ()=>{
 
+  SetIsLoading(true);
   const GqlString = gql`
 query getContact {
-  contacts1(where: { contactName: "Tokoza Bhele"}) {
+  contacts1(where: { contactName:"`+UserName+`"}) {
     contactNumber
   }
 }
@@ -49,15 +48,32 @@ query getContact {
 
  GqlQuery1<Contact>({ GqlString,  }).then(results=>{
 
+  SetIsLoading(false)
+
+  // console.log(results.contacts1[0]);
+ if(results.contacts1[0]){
+
   const ContactNumber=results.contacts1[0].contactNumber
 
   if (ContactNumber===Contact){
-alert("Correct Number")
 
-  }else{
+    // @ts-expect-error
+    navigation.replace("Welcome");
+   
+   
+     }else{
+       alert('wrong number');
+     }
+ }else{
 
-    alert('wrong number');
-  }
+  alert("User does not exist");
+ }
+
+ 
+
+ }).catch(error=>{
+
+  console.log(error)
 
  });
 
@@ -67,27 +83,7 @@ alert("Correct Number")
     
 
 const {UserData,SetUserData} = useAppProvider()
-  const sendEmail = async()=>{
-    try {
-      const response = await fetch('http://localhost:3000/api/sendMail', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          // Add any other headers as needed
-        },
-       
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const data = await response.json();
-      console.log('Response data:', data);
-    } catch (error) {
-      console.error('Error during fetch:', error.message);
-    }
-  }
+ 
   return (
    <View style={{flex:1}}>
       <StatusBar hidden={true}/>
@@ -186,7 +182,7 @@ padding:40,
                   width: 200,
                   paddingLeft: 30,
                   padding: 3,
-                  color:'gray'
+                
                 }}
               />
               
@@ -198,7 +194,7 @@ padding:40,
             </View>
            
               <LoadingButton
-                IsLoading={false}
+                IsLoading={IsLoading}
                 OnPress={() => {AuthenticateUser()}}
                 Title={UserData}
               />
