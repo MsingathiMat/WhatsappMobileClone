@@ -43,32 +43,71 @@ const ChatFooter = ({CallBack,SetCaptured}:{CallBack:React.Dispatch<React.SetSta
    if(result.assets[0].uri){
 
   
-    
-   
+       
 
 
     const file = new FormData();
 
-  
+    const HYGRAPH_ASSET_TOKEN ='eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImdjbXMtbWFpbi1wcm9kdWN0aW9uIn0.eyJ2ZXJzaW9uIjozLCJpYXQiOjE3MDYwOTk3MDEsImF1ZCI6WyJodHRwczovL2FwaS1hcC1zb3V0aGVhc3QtMi5oeWdyYXBoLmNvbS92Mi9jbHJsN2NucjEwNWpoMDF1cDV3Y2dqNzdvL21hc3RlciIsIm1hbmFnZW1lbnQtbmV4dC5ncmFwaGNtcy5jb20iXSwiaXNzIjoiaHR0cHM6Ly9tYW5hZ2VtZW50LWFwLXNvdXRoZWFzdC0yLmh5Z3JhcGguY29tLyIsInN1YiI6Ijg0NTRkNmI0LTk0MDUtNDllNC04NWE1LTk2YzIyZGYxN2NhMSIsImp0aSI6ImNscnJycG12OTBlaGEwMTFmY2pyYzQxOWkifQ.5Yv5W8oSP-YLMDurSNVh9k5vKf6do_6586FrTsCxcv3pZeWEqqoYeIWHysDTfxx2Y_mOZh21-8GC5ssKdd_YSjk9RG-KsWfsB8b1soPjkmeKsEhxwhp2vk_wy1fD5QAahgAyRLiVwyQDJ534wO3mgt-E4xyalzkRIpY-zJ9PTygc4w-pVUXZ_6iLXABLyyrWm5R2rBPBx99FttxA2BAX0zgsV41hHgQFU5ToPedS-vjkMwHe2Q4U2by8Szxaod3nD8ndSeqlVF8jfwH5Lwa_DIkr1UN5MtMwYBCdlP_OPKUJm3F2paMjA1NzVe4QC3bzvzbHspQotVTV6SDqcl1oSTurdh5V015Iypq50wpNpr8E7skwPSJ3ay-cRtfFmYfD9JBgOFRI7GChxiHMbIID_eMjy0huiAdCsRp9ziJ4T4wayumDcHNAe8yg0vPgr_wJ74M2256ImCtrG3kI4kGlyNgfGR_rJGisVmnFO0-oK-eFyRQ_kH9EhqA2x7jGuM2Ev5VuPSeZKyYivR5r93tEulajlj5FUAqlhyizBo_ti9WJ4Tz2zbnYzPC90OyYGgZjaImX3dpkX7Q9rMYMnmreo-8LNWx_oDyxndZdLA-_UojrOkyWcfOiSMw7vUxQDMAIR1Z1Fl85ReWbbibMWdk9CaChnjWlKpORkBQn2zTQbcE';
     const Base64 = `data:${result.assets[0].type};base64,${result.assets[0].base64}`
 
-file.append('file',Base64)
-    file.append('upload_preset', 'wclone');
+file.append('fileUpload',Base64,'JPG')
+    // file.append('Authorization', `Bearer ${HYGRAPH_ASSET_TOKEN}`);
 
-    const cloudName ='dzrqwm7xi';
-    const url = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
-  await fetch(url, {
-    method: "post",
-    headers:{   'Content-Type': 'multipart/form-data'},
+
+    const url = 'https://api-ap-southeast-2.hygraph.com/v2/clrl7cnr105jh01up5wcgj77o/master/upload';
+ 
+  //   await fetch(url, {method: "post",
+  //   headers:{   
+  //   'Authorization': `Bearer ${HYGRAPH_ASSET_TOKEN}`,
+  
+  // },
+
+  //   body: file,
+  //   }).then((result)=>{
+
+  //     console.log(result)
+  //   }).catch(error=>{
+
+  //     console.log(error)
+
+  //   })
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${HYGRAPH_ASSET_TOKEN}`,
+    },
     body: file,
-    }).then((result)=>{
+  });
 
-      console.log(result.ok)
-    }).catch(error=>{
+  const data = await response.json();
+  console.log(data);
+   
+   
 
-      console.log("Cloudinary Error")
+//     const file = new FormData();
 
-    })
+  
+//     const Base64 = `data:${result.assets[0].type};base64,${result.assets[0].base64}`
+
+// file.append('file',Base64)
+//     file.append('upload_preset', 'wclone');
+
+//     const cloudName ='dzrqwm7xi';
+//     const url = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
+//   await fetch(url, {
+//     method: "post",
+//     headers:{   'Content-Type': 'multipart/form-data'},
+//     body: file,
+//     }).then((result)=>{
+
+//       console.log(result.ok)
+//     }).catch(error=>{
+
+//       console.log("Cloudinary Error")
+
+//     })
 
   
 CallBack(result.assets[0].uri);

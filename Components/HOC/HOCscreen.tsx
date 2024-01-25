@@ -9,7 +9,6 @@ interface newProps {
   ChatData: ContactProps[];
 }
 
-
 interface SongProps {
    songs: Song[];
  }
@@ -23,8 +22,6 @@ interface SongProps {
 
 function HOCscreen<P>(OriginalComponent: React.ComponentType<P & newProps>) {
 
-
-  
   const ComponentWithExtraInfo = (props: P) => {
    
     return <OriginalComponent {...props} ChatData={chatData} />;
@@ -33,7 +30,6 @@ function HOCscreen<P>(OriginalComponent: React.ComponentType<P & newProps>) {
 }
 
 export default HOCscreen;
-
 
 const UsedComp: React.FC<{ MyName: string } & newProps> = ({ MyName, ChatData }) => {
   return (

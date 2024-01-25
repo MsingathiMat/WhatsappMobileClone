@@ -6,7 +6,7 @@ import { StyleProp,ButtonProps } from 'react-native';
 
 export default function LoadingButton({Title, IsLoading, OnPress}:{Title:string, IsLoading:boolean,OnPress: () => void}) {
   return (
-    <TouchableOpacity onPress={()=>{OnPress}}  >
+    <TouchableOpacity onPress={()=>{OnPress()}}  >
       
       <View style={{ 
         backgroundColor:'#128C7E' ,
