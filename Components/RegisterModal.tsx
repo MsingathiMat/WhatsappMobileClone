@@ -22,6 +22,7 @@ import { gql } from "graphql-request";
 import { TextInput } from "react-native-gesture-handler";
 import { MaterialIcons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
+import SendEmail from "../rnAPI/SendEmail";
 
 
   const MASTER_URL =
@@ -59,9 +60,10 @@ import { Entypo } from '@expo/vector-icons';
    
 
 
-    const RegisterModal = ({SetIsLoading,IsModalShown,SetIsModalShown}:{IsModalShown:boolean,SetIsModalShown:React.Dispatch<React.SetStateAction<boolean>>,SetIsLoading:React.Dispatch<React.SetStateAction<boolean>>}) => {
+    const RegisterModal = ({SetVerificationCode,SetIsLoading,IsVerificationModal,SetIsVerificationModal,IsModalShown,SetIsModalShown}:{IsVerificationModal:boolean,IsModalShown:boolean,SetVerificationCode:React.Dispatch<React.SetStateAction<string>>,SetIsLoading:React.Dispatch<React.SetStateAction<boolean>>,SetIsModalShown:React.Dispatch<React.SetStateAction<boolean>>,SetIsVerificationModal:React.Dispatch<React.SetStateAction<boolean>>}) => {
      
 
+     
         const { GqlQuery, CreateARecord } = UseHygraph();
         const [songData, SetSongData] = useState<Contact[] | null>(null);
         type ContactProp = {
@@ -86,7 +88,20 @@ import { Entypo } from '@expo/vector-icons';
           }
         `;
       
+      const verify = ()=>{
+
+        const VerificationCode = (Math.floor(Math.random() * 9000) + 1000).toString();
+        SetVerificationCode(VerificationCode);
+        SendEmail({Email:  cName,Name:contact,VerificationCode:VerificationCode}).then((result)=>{
       
+          SetIsVerificationModal(true)
+          SetIsModalShown(false)
+          console.log(result.status)
+        }).catch((error)=>{
+      
+          console.log(error)
+        })
+      }
         const CreateRecord = () => {
           const CreateRec =
             gql`
@@ -185,7 +200,7 @@ import { Entypo } from '@expo/vector-icons';
                 backgroundColor:'white',
                 padding:30,
                 borderRadius:10,
-                paddingTop:60,
+                paddingTop:10,
                 height:350,
                 overflow:'hidden',
                 width:250
@@ -201,7 +216,7 @@ color:"#128C7E"
 
                 }}>Register</Text>
 
-<FontAwesome name="camera" size={24} color="black" />
+
               <View>
                 <TextInput
                   value={cName}
@@ -232,7 +247,7 @@ color:"#128C7E"
                   onChangeText={(value) => {
                     setContact(value);
                   }}
-                  keyboardType="numeric"
+                 
                   placeholder="Password"
                   style={{
                     borderBottomColor: "#128C7E",
@@ -250,7 +265,7 @@ color:"#128C7E"
                   color="black"
                 />
               </View>
-              <TouchableOpacity onPress={SaveData}>
+              <TouchableOpacity onPress={()=>{verify()}}>
                 <LoadingButton
                   IsLoading={false}
                   OnPress={() => {}}

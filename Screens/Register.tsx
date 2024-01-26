@@ -1,5 +1,5 @@
-import { Image, ImageBackground, StyleSheet, Text, TextInput, View } from 'react-native'
-import React, { useState } from 'react'
+import { Image, ImageBackground, Modal, StyleSheet, Text, TextInput, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
   import { FontAwesome } from "@expo/vector-icons";
@@ -16,11 +16,14 @@ import {useAppProvider} from '../Store/AppContext';
 import { gql } from 'graphql-request';
 import { useNavigation } from '@react-navigation/native';
 import RegisterModal from '../Components/RegisterModal';
+import SendEmail from '../rnAPI/SendEmail';
+import EmailVerification from '../Components/EmailVerification';
 
 
 const Register = () => {
 
   const navigation = useNavigation();
+
 
 
   const { GqlQuery, GqlQuery1 } = UseHygraph();
@@ -30,9 +33,14 @@ const Register = () => {
   const [Contact, SetContact] = useState<string | null>(null)
   const [IsLoginLoading, SetIsLoginLoading] = useState(false)
   const [IsRegisterLoading, SetIsRegisterLoading] = useState(false)
-
+  const [IsVerificationModal, SetIsVerificationModal] = useState(false)
   
+  const [VerificationCode, SetVerificationCode] = useState("")
+
   const [IsModalShown, SetIsModalShown] = useState(false);
+
+
+ 
 
     type Contact ={
 
@@ -41,6 +49,8 @@ const Register = () => {
 
  
 const AuthenticateUser = ()=>{
+
+
 
   SetIsLoginLoading(true);
   const GqlString = gql`
@@ -213,7 +223,8 @@ padding:40,
 
 <LoadingButton
                 IsLoading={IsRegisterLoading}
-                OnPress={() => {SetIsModalShown(true)}}
+                // OnPress={() => {SetIsModalShown(true)}}
+                OnPress={()=>{SetIsModalShown(true)}}
                 Title='Register'
                 BorderColor="white"
               BakcgroundColor='transparent'
@@ -226,7 +237,15 @@ padding:40,
     </LinearGradient>
 </ImageBackground>
 
-<RegisterModal  SetIsLoading={SetIsLoginLoading} SetIsModalShown ={SetIsModalShown} IsModalShown={IsModalShown}/>
+<RegisterModal SetVerificationCode={SetVerificationCode} SetIsLoading={SetIsLoginLoading} IsVerificationModal={IsVerificationModal} SetIsVerificationModal={SetIsVerificationModal} SetIsModalShown ={SetIsModalShown} IsModalShown={IsModalShown}/>
+   
+
+   
+<EmailVerification VerificationCode={VerificationCode}SetIsVerificationModal={SetIsVerificationModal} IsVerificationModal={IsVerificationModal}/>
+  
+  
+
+   
    </View>
   )
 }
