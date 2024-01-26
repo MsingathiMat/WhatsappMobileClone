@@ -129,6 +129,8 @@ padding:40,
   >
 
 <Image source={(require("../assets/appAssets/logoWhite.png"))} style={{marginTop:30}}/> 
+
+<Text style={{color:'white', fontWeight:'bold', marginTop:30}}>Login</Text>
  <View
             style={{
               flexDirection: "column",

@@ -1,4 +1,4 @@
-import { View,Text, ImageBackground, KeyboardAvoidingView, Button, TouchableOpacity, Image, StyleSheet } from 'react-native'
+import { View,Text, ImageBackground, KeyboardAvoidingView, Button, TouchableOpacity, Image, StyleSheet, ToastAndroid } from 'react-native'
 import React, { useRef, useState } from 'react'
 import { TextInput } from 'react-native-gesture-handler'
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -16,6 +16,7 @@ import{useEffect}   from 'react';
 import { Audio } from 'expo-av';
 import Animated, { useSharedValue, withSpring,Easing, FadeIn, FadeOut, withTiming } from 'react-native-reanimated';
 import UploadFile from '../rnAPI/UploadFile';
+import LoadingContainer from './LoadingContainer';
 
 const AnimatedView = Animated.createAnimatedComponent(View);
 
@@ -66,6 +67,8 @@ const ChatFooter = ({CallBack,SetCaptured}:{CallBack:React.Dispatch<React.SetSta
   const [ShowSendRecIcon,SetShowSendRecIcon] = useState(false);
   const [audioDuration, setAudioDuration] = useState(0);
 const [audioPosition, setAudioPosition] = useState(0);
+const [IsSending,SetIsSending] = useState(false);
+
   const sound = useRef<Audio.Sound | null>(null);
 
   const [Uri,SetUri]= useState("")
@@ -133,6 +136,8 @@ const [audioPosition, setAudioPosition] = useState(0);
   
   
   const SenddFile = async()=>{
+   
+    SetIsSending(true)
     let audioData="";
    
     try {
@@ -142,9 +147,15 @@ const [audioPosition, setAudioPosition] = useState(0);
     }catch(error){
 
 console.error('Audio to Base64 error',error);
+SetIsSending(false)
     }
    
    UploadFile({ Base64File:audioData, FileUri:'', FileType:'', EndPoint:''});
+  
+   SetShowSendRecIcon(false)
+   SetIsSending(false)
+   ToastAndroid.show('Uploaded Successfully', ToastAndroid.LONG);
+   
   }
 
 
@@ -441,9 +452,9 @@ gap:5
 
 
 
-
+<LoadingContainer IndicatorColor='red' OnPress={()=>{}} IsLoading={IsSending}>
 <FontAwesome name="paper-plane" size={18} color="red" />
-
+</LoadingContainer>
 </TouchableOpacity>
 
 
