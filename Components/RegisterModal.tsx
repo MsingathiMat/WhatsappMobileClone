@@ -5,6 +5,7 @@ import {
    
     TouchableOpacity,
     Modal,
+    Text,
    
   } from "react-native";
   import React, { useEffect, useState } from "react";
@@ -54,7 +55,7 @@ import { TextInput } from "react-native-gesture-handler";
    
 
 
-    const RegisterModal = ({SetIsLoading,IsModalShown,SetIsModalShown}:{IsModalShown:boolean,SetIsModalShown:React.Dispatch<React.SetStateAction<boolean>>,SetIsLoading:React.Dispatch<React.SetStateAction<boolean>>}) => {
+    const RegisterModal = ({SetIsRegisterLoading,IsRegisterLoading,SetIsLoading,IsModalShown,SetIsModalShown}:{SetIsRegisterLoading:React.Dispatch<React.SetStateAction<boolean>>,IsRegisterLoading:boolean,IsModalShown:boolean,SetIsModalShown:React.Dispatch<React.SetStateAction<boolean>>,SetIsLoading:React.Dispatch<React.SetStateAction<boolean>>}) => {
      
 
         const { GqlQuery, CreateARecord } = UseHygraph();
@@ -122,12 +123,14 @@ import { TextInput } from "react-native-gesture-handler";
         return (
           <Modal visible={IsModalShown} animationType="slide">
           <BlurView
-            intensity={20}
+            intensity={95}
+            
             style={{
               flex: 1,
               padding: 20,
               justifyContent: "center",
               alignItems: "center",
+            
             }}
           >
             <TouchableOpacity
@@ -149,8 +152,18 @@ import { TextInput } from "react-native-gesture-handler";
                 gap: 30,
                 justifyContent: "center",
                 alignItems: "center",
+                backgroundColor:'white',
+                padding:20,
+                borderRadius:10
               }}
             >
+
+                <Text style={{
+fontWeight:'bold',
+color:"#128C7E"
+
+
+                }}>Register</Text>
               <View>
                 <TextInput
                   value={cName}
@@ -203,6 +216,7 @@ import { TextInput } from "react-native-gesture-handler";
                   IsLoading={false}
                   OnPress={() => {}}
                   Title="Save"
+                  BakcgroundColor="#128C7E"
                 />
               </TouchableOpacity>
             </View>

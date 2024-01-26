@@ -28,7 +28,10 @@ const Register = () => {
  
   const [UserName, SetUserName] = useState<string | null>(null)
   const [Contact, SetContact] = useState<string | null>(null)
-  const [IsLoading, SetIsLoading] = useState(false)
+  const [IsLoginLoading, SetIsLoginLoading] = useState(false)
+  const [IsRegisterLoading, SetIsRegisterLoading] = useState(false)
+
+  
   const [IsModalShown, SetIsModalShown] = useState(false);
 
     type Contact ={
@@ -39,7 +42,7 @@ const Register = () => {
  
 const AuthenticateUser = ()=>{
 
-  SetIsLoading(true);
+  SetIsLoginLoading(true);
   const GqlString = gql`
 query getContact {
   contacts1(where: { contactName:"`+UserName+`"}) {
@@ -50,7 +53,7 @@ query getContact {
 
  GqlQuery1<Contact>({ GqlString,  }).then(results=>{
 
-  SetIsLoading(false)
+  SetIsLoginLoading(false)
 
   // console.log(results.contacts1[0]);
  if(results.contacts1[0]){
@@ -200,7 +203,7 @@ padding:40,
         <View style={{flexDirection:'row', gap:5}}>
 
         <LoadingButton
-                IsLoading={IsLoading}
+                IsLoading={IsLoginLoading}
                 OnPress={() => {AuthenticateUser()}}
                 Title='Login'
                 BakcgroundColor='white'
@@ -209,7 +212,7 @@ padding:40,
               />
 
 <LoadingButton
-                IsLoading={IsLoading}
+                IsLoading={IsRegisterLoading}
                 OnPress={() => {SetIsModalShown(true)}}
                 Title='Register'
                 BorderColor="white"
@@ -223,7 +226,7 @@ padding:40,
     </LinearGradient>
 </ImageBackground>
 
-<RegisterModal SetIsLoading={SetIsLoading} SetIsModalShown ={()=>{SetIsModalShown}} IsModalShown={IsModalShown}/>
+<RegisterModal IsRegisterLoading={IsRegisterLoading} SetIsRegisterLoading={SetIsRegisterLoading} SetIsLoading={SetIsLoginLoading} SetIsModalShown ={()=>{SetIsModalShown}} IsModalShown={IsModalShown}/>
    </View>
   )
 }
