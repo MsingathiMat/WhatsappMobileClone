@@ -86,25 +86,6 @@ const [audioPosition, setAudioPosition] = useState(0);
 
 
 
-
-  // useEffect(() => {
-  //   // Simulate audio position changes for demonstration purposes
-  //   const interval = setInterval(() => {
-  //     setAudioPosition((prevPosition) => (prevPosition + 1000) % audioDuration);
-  //   }, 1000);
-
-  //   return () => clearInterval(interval);
-  // }, [audioDuration]);
-
-
-
-
-
-
-
-
-
-
   const formatTime = (milliseconds) => {
     const minutes = Math.floor(milliseconds / 60000);
     const seconds = ((milliseconds % 60000) / 1000).toFixed(0);
@@ -439,7 +420,7 @@ gap:5
 
 <View style={{
   width:40,
-  top:1.7
+  bottom:-2
   }}>
 <AudioProgressBar audioPosition={audioPosition} audioDuration={audioDuration} />
 </View>
