@@ -1,4 +1,4 @@
-import { View,Text, ImageBackground, KeyboardAvoidingView, Button, TouchableOpacity, Image } from 'react-native'
+import { View,Text, ImageBackground, KeyboardAvoidingView, Button, TouchableOpacity, Image, StyleSheet } from 'react-native'
 import React, { useRef, useState } from 'react'
 import { TextInput } from 'react-native-gesture-handler'
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -14,8 +14,38 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import{useEffect}   from 'react';
 import { Audio } from 'expo-av';
-import Animated, { useSharedValue, withSpring,Easing, FadeIn, FadeOut } from 'react-native-reanimated';
+import Animated, { useSharedValue, withSpring,Easing, FadeIn, FadeOut, withTiming } from 'react-native-reanimated';
 import UploadFile from '../rnAPI/UploadFile';
+
+const AnimatedView = Animated.createAnimatedComponent(View);
+
+
+
+
+const AudioProgressBar = ({ audioPosition, audioDuration }) => {
+  const animatedBorderWidth = useSharedValue(0);
+let progressRatio=0;
+  useEffect(() => {
+    // Calculate the ratio of audio position to audio duration
+     progressRatio = audioPosition / audioDuration;
+
+  }, [audioPosition, audioDuration]);
+
+  return (
+    <View
+    style={{
+      width:`${(audioPosition/audioDuration)*100}%`,
+      height:2,
+      backgroundColor:'red'
+    }}
+    >
+
+
+    </View>
+  );
+};
+
+
 const ChatFooter = ({CallBack,SetCaptured}:{CallBack:React.Dispatch<React.SetStateAction<string>>,SetCaptured:React.Dispatch<React.SetStateAction<boolean>>}) => {
 
   const navigation = useNavigation();
@@ -23,7 +53,7 @@ const ChatFooter = ({CallBack,SetCaptured}:{CallBack:React.Dispatch<React.SetSta
   const [InputValue,SetInputValue] = useState("");
   const translateX = useSharedValue(0);
   const [isCameraShown,SetIsCameraShown] = useState(true);
-  const [IsPlaying,SetIsPlaying] = useState(true);
+  const [IsPlaying,SetIsPlaying] = useState(false);
 
  
 
@@ -39,6 +69,40 @@ const [audioPosition, setAudioPosition] = useState(0);
   const sound = useRef<Audio.Sound | null>(null);
 
   const [Uri,SetUri]= useState("")
+
+
+  const progress = useSharedValue(0);
+
+
+  useEffect(() => {
+    // Simulate progress changes for demonstration purposes
+    const interval = setInterval(() => {
+      progress.value = withTiming((progress.value + 0.1) % 1, { duration: 1000 });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+
+
+
+
+  // useEffect(() => {
+  //   // Simulate audio position changes for demonstration purposes
+  //   const interval = setInterval(() => {
+  //     setAudioPosition((prevPosition) => (prevPosition + 1000) % audioDuration);
+  //   }, 1000);
+
+  //   return () => clearInterval(interval);
+  // }, [audioDuration]);
+
+
+
+
+
+
+
+
 
 
   const formatTime = (milliseconds) => {
@@ -57,6 +121,10 @@ const [audioPosition, setAudioPosition] = useState(0);
           (status) => {
             // @ts-expect-error
             if (status.didJustFinish) {
+         (async()=>{
+
+          await sound.current?.stopAsync();
+         })()
               SetIsPlaying(false);
             }
             // @ts-expect-error
@@ -136,7 +204,7 @@ console.error('Audio to Base64 error',error);
       
     
       SetUri(uri);
-      // togglePlayback();
+   
       console.log('Recording stopped and stored at', uri);
     } catch (err) {
       console.error('Failed to stop recording', err);
@@ -335,6 +403,8 @@ flexDirection:'column',
 gap:5
 }}>
 
+
+
 <TouchableOpacity onPress={()=>{ 
   
   PlaySound()
@@ -355,17 +425,24 @@ gap:5
   }}>
 
 
+
 {IsPlaying?
   <MaterialCommunityIcons name="pause" size={24} color="black" />:
 <Ionicons name="play" size={24} color="green" />
+  
 
 
 }
 
+{formatTime(audioPosition)&&<Text style={{fontSize:6}}>{formatTime(audioPosition)} / {formatTime(audioDuration)}</Text>
+}
 
-<Text style={{fontSize:6}}>{formatTime(audioPosition)} / {formatTime(audioDuration)}</Text>
-
-
+<View style={{
+  width:40,
+  top:1.7
+  }}>
+<AudioProgressBar audioPosition={audioPosition} audioDuration={audioDuration} />
+</View>
 </TouchableOpacity>
 <TouchableOpacity onPress={()=>{  SenddFile()}} style={{
   backgroundColor:'white',
@@ -388,6 +465,7 @@ gap:5
 
 </TouchableOpacity>
 
+
 </View>
 
 }
@@ -403,6 +481,7 @@ gap:5
   stopRecording();
   SetShowRecordingIcon(false)
   SetShowSendRecIcon(true)
+  
   }}  >
 <FontAwesome name="microphone" size={20} color="white" />
 
@@ -415,5 +494,24 @@ gap:5
     </ImageBackground>
   )
 }
+
+
+const styles = StyleSheet.create({
+  container: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    overflow: 'hidden',
+  },
+  circularProgress: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 50,
+    borderWidth: 5,
+    borderColor: 'blue',
+    borderStyle: 'solid',
+    position: 'absolute',
+  },
+});
 
 export default ChatFooter
