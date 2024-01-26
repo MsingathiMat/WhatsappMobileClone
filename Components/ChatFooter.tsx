@@ -1,5 +1,5 @@
 import { View,Text, ImageBackground, KeyboardAvoidingView, Button, TouchableOpacity, Image } from 'react-native'
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { TextInput } from 'react-native-gesture-handler'
 import { FontAwesome5 } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -30,40 +30,59 @@ const ChatFooter = ({CallBack,SetCaptured}:{CallBack:React.Dispatch<React.SetSta
 
   const [recording, setRecording] = useState<Audio.Recording | undefined>(undefined);
   const [permissionResponse, requestPermission] = Audio.usePermissions();
-  const [isPlaying, setIsPlaying] = useState(false);
+
 
   const [ShowRecordingIcon,SetShowRecordingIcon] = useState(false);
   const [ShowSendRecIcon,SetShowSendRecIcon] = useState(false);
+  const [audioDuration, setAudioDuration] = useState(0);
+const [audioPosition, setAudioPosition] = useState(0);
+  const sound = useRef<Audio.Sound | null>(null);
 
   const [Uri,SetUri]= useState("")
 
 
-
+  const formatTime = (milliseconds) => {
+    const minutes = Math.floor(milliseconds / 60000);
+    const seconds = ((milliseconds % 60000) / 1000).toFixed(0);
+    return `${minutes}:${parseInt(seconds) < 10 ? '0' : ''}${seconds}`;
+  };
 
 
   const PlaySound = async () => {
-   
-
-    const { sound: playbackObject, status } = await Audio.Sound.createAsync(
-      { uri: Uri },
-      { shouldPlay: isPlaying }
-    );
-  
-    // Function to toggle play/pause
-    const togglePlayback = async () => {
-      if (isPlaying) {
-        await playbackObject.pauseAsync();
-      } else {
-        await playbackObject.playAsync();
+    try {
+      if (!sound.current) {
+        const { sound: audioSound, status } = await Audio.Sound.createAsync(
+          { uri: Uri },
+          { shouldPlay: IsPlaying },
+          (status) => {
+            // @ts-expect-error
+            if (status.didJustFinish) {
+              SetIsPlaying(false);
+            }
+            // @ts-expect-error
+            setAudioPosition(status.positionMillis);
+          }
+        );
+        sound.current = audioSound;
+        // @ts-expect-error
+        setAudioDuration(status.durationMillis);
       }
   
-      setIsPlaying(!isPlaying);
-    };
+      if (IsPlaying) {
+        await sound.current?.pauseAsync();
+      } else {
+        await sound.current?.replayAsync();
+      }
   
-    // Call the togglePlayback function when you want to play/pause
-    // For example, you can call it on a button press
-    togglePlayback();
+      // Invert the IsPlaying state after the play, replay, or pause operation
+      SetIsPlaying(!IsPlaying);
+  
+    } catch (error) {
+      console.error('Error playing sound: ', error);
+    }
   };
+  
+  
   const SenddFile = async()=>{
     let audioData="";
    
@@ -78,29 +97,7 @@ console.error('Audio to Base64 error',error);
    
    UploadFile({ Base64File:audioData, FileUri:'', FileType:'', EndPoint:''});
   }
-  useEffect(() => {
-    const playRecording = async () => {
-      try {
-        if (recording) {
-          const { sound } = await recording.createNewLoadedSoundAsync();
-          await sound.playAsync();
-          sound.setOnPlaybackStatusUpdate((status) => {
-             // @ts-expect-error
-            if (status.didJustFinish) {
-              setIsPlaying(false);
-            }
-          });
-          setIsPlaying(true);
-        }
-      } catch (error) {
-        console.error('Failed to play recording', error);
-      }
-    };
 
-    if (isPlaying) {
-      playRecording();
-    }
-  }, [isPlaying, recording]);
 
   async function startRecording() {
     try {
@@ -341,7 +338,7 @@ gap:5
 <TouchableOpacity onPress={()=>{ 
   
   PlaySound()
-  SetIsPlaying(!IsPlaying);
+ 
 
 }} style={{
   backgroundColor:'white',
@@ -359,14 +356,14 @@ gap:5
 
 
 {IsPlaying?
+  <MaterialCommunityIcons name="pause" size={24} color="black" />:
+<Ionicons name="play" size={24} color="green" />
 
-<Ionicons name="play" size={24} color="green" />:
 
-<MaterialCommunityIcons name="pause" size={24} color="black" />
 }
 
 
-
+<Text style={{fontSize:6}}>{formatTime(audioPosition)} / {formatTime(audioDuration)}</Text>
 
 
 </TouchableOpacity>
