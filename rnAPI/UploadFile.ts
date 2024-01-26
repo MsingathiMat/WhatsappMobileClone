@@ -3,13 +3,13 @@
 
 const UploadFile =({Base64File,FileUri, FileType,EndPoint}:{FileUri:string, FileType:string,Base64File:string,EndPoint:string})=>{
 
-  
+  FileType =  FileUri.split('.').pop();
   const cloudName ='dzrqwm7xi';
-  EndPoint=`https://api.cloudinary.com/v1_1/${cloudName}/upload`;
+  EndPoint=`https://api.cloudinary.com/v1_1/${cloudName}/upload/msingathi.${FileType}`;
   
 
 
-    FileType =  FileUri.split('.').pop();
+
       const PostData = async()=>{
 
         const file = new FormData();

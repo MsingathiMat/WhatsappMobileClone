@@ -15,6 +15,7 @@ import { Entypo } from '@expo/vector-icons';
 import {useAppProvider} from '../Store/AppContext';
 import { gql } from 'graphql-request';
 import { useNavigation } from '@react-navigation/native';
+import RegisterModal from '../Components/RegisterModal';
 
 
 const Register = () => {
@@ -28,6 +29,7 @@ const Register = () => {
   const [UserName, SetUserName] = useState<string | null>(null)
   const [Contact, SetContact] = useState<string | null>(null)
   const [IsLoading, SetIsLoading] = useState(false)
+  const [IsModalShown, SetIsModalShown] = useState(false);
 
     type Contact ={
 
@@ -128,9 +130,9 @@ padding:40,
     }}
   >
 
-<Image source={(require("../assets/appAssets/logoWhite.png"))} style={{marginTop:30}}/> 
+<Image source={(require("../assets/appAssets/logoWhite.png"))} style={{marginTop:10}}/> 
 
-<Text style={{color:'white', fontWeight:'bold', marginTop:30}}>Login</Text>
+<Text style={{color:'white', fontWeight:'bold', marginTop:20,marginBottom:20}}>Login</Text>
  <View
             style={{
               flexDirection: "column",
@@ -195,16 +197,33 @@ padding:40,
                 color="white" />
             </View>
            
-              <LoadingButton
+        <View style={{flexDirection:'row', gap:5}}>
+
+        <LoadingButton
                 IsLoading={IsLoading}
                 OnPress={() => {AuthenticateUser()}}
-                Title={UserData}
+                Title='Login'
+                BakcgroundColor='white'
+                BtnColor='#128C7E'
+                IndicatorColor='#128C7E'
               />
+
+<LoadingButton
+                IsLoading={IsLoading}
+                OnPress={() => {SetIsModalShown(true)}}
+                Title='Register'
+                BorderColor="white"
+              BakcgroundColor='transparent'
+              BtnColor="white"
+              />
+        </View>
           
           </View>
  
     </LinearGradient>
 </ImageBackground>
+
+<RegisterModal SetIsLoading={SetIsLoading} SetIsModalShown ={()=>{SetIsModalShown}} IsModalShown={IsModalShown}/>
    </View>
   )
 }

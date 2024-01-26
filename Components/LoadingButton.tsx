@@ -3,26 +3,29 @@ import React from 'react'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { StyleProp,ButtonProps } from 'react-native';
+import LoadingContainer from './LoadingContainer';
 
-export default function LoadingButton({Title, IsLoading, OnPress}:{Title:string, IsLoading:boolean,OnPress: () => void}) {
+export default function LoadingButton({IndicatorColor,BtnColor,BakcgroundColor,BorderColor,Title, IsLoading, OnPress}:{IndicatorColor?:string,BtnColor?:string,Title:string, IsLoading:boolean,BorderColor?:string,BakcgroundColor?:string,OnPress: () => void}) {
   return (
     <TouchableOpacity onPress={()=>{OnPress()}}  >
-      
+        
       <View style={{ 
-        backgroundColor:'#128C7E' ,
+        backgroundColor: BakcgroundColor?BakcgroundColor:'blue' ,
         height:35, width:90, 
         borderRadius:5, 
         justifyContent:'center', 
+        borderColor:BorderColor?BorderColor:'rgba(0,0,0,0)',
+        borderWidth:BorderColor?1:0,
         alignItems:'center'}}>
       
         
-        {IsLoading?
-        <ActivityIndicator color='white'/>:
-        <Text style={{color:'white'}}>
+     <LoadingContainer IndicatorColor={IndicatorColor} IsLoading={IsLoading} OnPress={()=>{OnPress()}}>
 
-            {Title}
-        </Text>
-        }
+     <Text style={{color:BtnColor?BtnColor:'white'}}>
+
+{Title}
+</Text>
+     </LoadingContainer>
         
       </View>
       
