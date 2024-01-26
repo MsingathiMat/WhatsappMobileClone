@@ -226,7 +226,7 @@ padding:40,
     </LinearGradient>
 </ImageBackground>
 
-<RegisterModal IsRegisterLoading={IsRegisterLoading} SetIsRegisterLoading={SetIsRegisterLoading} SetIsLoading={SetIsLoginLoading} SetIsModalShown ={()=>{SetIsModalShown}} IsModalShown={IsModalShown}/>
+<RegisterModal  SetIsLoading={SetIsLoginLoading} SetIsModalShown ={SetIsModalShown} IsModalShown={IsModalShown}/>
    </View>
   )
 }

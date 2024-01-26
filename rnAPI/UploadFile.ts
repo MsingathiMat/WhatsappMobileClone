@@ -1,16 +1,16 @@
 
 
 
-const UploadFile =({Base64File,FileUri, FileType,EndPoint}:{FileUri:string, FileType:string,Base64File:string,EndPoint:string})=>{
+const UploadFile =async({Base64File,FileUri, FileType,EndPoint}:{FileUri:string, FileType:string,Base64File:string,EndPoint:string})=>{
 
   FileType =  FileUri.split('.').pop();
   const cloudName ='dzrqwm7xi';
-  EndPoint=`https://api.cloudinary.com/v1_1/${cloudName}/upload/msingathi.${FileType}`;
+  EndPoint=`https://api.cloudinary.com/v1_1/${cloudName}/upload/`;
   
 
 
 
-      const PostData = async()=>{
+   
 
         const file = new FormData();
     
@@ -20,24 +20,19 @@ const UploadFile =({Base64File,FileUri, FileType,EndPoint}:{FileUri:string, File
         file.append('upload_preset', 'wclone');
     
       
-      
-      await fetch(EndPoint, {
+
+        
+        
+    return  await fetch(EndPoint, {
         method: "post",
         headers:{   'Content-Type': 'multipart/form-data'},
         body: file,
-        }).then((result)=>{
-    
-          console.log(result.ok)
-        }).catch(error=>{
-    
-          console.log("Cloudinary Error")
-    
         })
     
  
-      }
+     
 
-      PostData();
+  
        
 }
 

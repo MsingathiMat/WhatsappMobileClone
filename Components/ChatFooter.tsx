@@ -150,7 +150,22 @@ console.error('Audio to Base64 error',error);
 SetIsSending(false)
     }
    
-   UploadFile({ Base64File:audioData, FileUri:'', FileType:'', EndPoint:''});
+   UploadFile({ Base64File:audioData, FileUri:'', FileType:'', EndPoint:''}).then((result)=>{
+
+    
+    if(result && result.status==200){
+
+
+      ToastAndroid.show("Save Successfully", ToastAndroid.LONG);
+    }else{
+      console.log(result)
+    }
+   
+   }).catch((error)=>{
+
+    console.log(error)
+    ToastAndroid.show("Failed, Please try again", ToastAndroid.LONG);
+   });
   
    SetShowSendRecIcon(false)
    SetIsSending(false)

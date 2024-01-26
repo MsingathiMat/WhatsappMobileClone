@@ -6,6 +6,7 @@ import {
     TouchableOpacity,
     Modal,
     Text,
+    Image,
    
   } from "react-native";
   import React, { useEffect, useState } from "react";
@@ -19,6 +20,9 @@ import {
   import LoadingButton from "../Components/LoadingButton";
 import { gql } from "graphql-request";
 import { TextInput } from "react-native-gesture-handler";
+import { MaterialIcons } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
+
 
   const MASTER_URL =
     "https://api-ap-southeast-2.hygraph.com/v2/clrl7cnr105jh01up5wcgj77o/master";
@@ -55,7 +59,7 @@ import { TextInput } from "react-native-gesture-handler";
    
 
 
-    const RegisterModal = ({SetIsRegisterLoading,IsRegisterLoading,SetIsLoading,IsModalShown,SetIsModalShown}:{SetIsRegisterLoading:React.Dispatch<React.SetStateAction<boolean>>,IsRegisterLoading:boolean,IsModalShown:boolean,SetIsModalShown:React.Dispatch<React.SetStateAction<boolean>>,SetIsLoading:React.Dispatch<React.SetStateAction<boolean>>}) => {
+    const RegisterModal = ({SetIsLoading,IsModalShown,SetIsModalShown}:{IsModalShown:boolean,SetIsModalShown:React.Dispatch<React.SetStateAction<boolean>>,SetIsLoading:React.Dispatch<React.SetStateAction<boolean>>}) => {
      
 
         const { GqlQuery, CreateARecord } = UseHygraph();
@@ -123,13 +127,14 @@ import { TextInput } from "react-native-gesture-handler";
         return (
           <Modal visible={IsModalShown} animationType="slide">
           <BlurView
-            intensity={95}
+            intensity={10}
             
             style={{
               flex: 1,
               padding: 20,
               justifyContent: "center",
               alignItems: "center",
+            
             
             }}
           >
@@ -143,9 +148,34 @@ import { TextInput } from "react-native-gesture-handler";
                 right: 30,
               }}
             >
-              <Feather name="x" size={24} color="green" />
+              <Feather name="x" size={24} color="black" />
             </TouchableOpacity>
-      
+            <View>
+                <View style ={{
+     height:70,
+     width:70, 
+     borderRadius:35,
+     justifyContent:'center',
+     alignItems:'center',
+    elevation:25,
+    position:'absolute',
+    top:-30,
+    left:85,
+    zIndex:40
+    }}>
+
+<Image resizeMode="cover"  source={({uri:"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"})} style={{
+   
+    height:70,
+    width:70, 
+    borderRadius:35,
+    borderColor:'#57F573',
+    borderWidth:2.5,
+    
+    }}/> 
+  
+</View>
+
             <View
               style={{
                 flexDirection: "column",
@@ -153,24 +183,32 @@ import { TextInput } from "react-native-gesture-handler";
                 justifyContent: "center",
                 alignItems: "center",
                 backgroundColor:'white',
-                padding:20,
-                borderRadius:10
+                padding:30,
+                borderRadius:10,
+                paddingTop:60,
+                height:350,
+                overflow:'hidden',
+                width:250
               }}
             >
 
-                <Text style={{
+
+  
+                 <Text style={{
 fontWeight:'bold',
 color:"#128C7E"
 
 
                 }}>Register</Text>
+
+<FontAwesome name="camera" size={24} color="black" />
               <View>
                 <TextInput
                   value={cName}
                   onChangeText={(value) => {
                     setcName(value);
                   }}
-                  placeholder="Contact Name"
+                  placeholder="Your email"
                   style={{
                     borderBottomColor: "#128C7E",
                     borderBottomWidth: 1,
@@ -179,10 +217,10 @@ color:"#128C7E"
                     padding: 3,
                   }}
                 />
-      
-                <FontAwesome
+
+                <MaterialIcons
                   style={{ position: "absolute", top: 8, left: 0 }}
-                  name="user-o"
+                  name="email"
                   size={15}
                   color="black"
                 />
@@ -195,7 +233,7 @@ color:"#128C7E"
                     setContact(value);
                   }}
                   keyboardType="numeric"
-                  placeholder="Contact Number"
+                  placeholder="Password"
                   style={{
                     borderBottomColor: "#128C7E",
                     borderBottomWidth: 1,
@@ -204,9 +242,10 @@ color:"#128C7E"
                     padding: 3,
                   }}
                 />
-                <FontAwesome5
+
+                <Entypo
                   style={{ position: "absolute", top: 8, left: 0 }}
-                  name="phone"
+                  name="lock"
                   size={15}
                   color="black"
                 />
@@ -219,6 +258,18 @@ color:"#128C7E"
                   BakcgroundColor="#128C7E"
                 />
               </TouchableOpacity>
+
+              <View style={{
+                width:'150%',
+               height:7,
+               backgroundColor:'#57F573',
+               position:'absolute',
+               bottom:-1
+               
+               }}>
+
+              </View>
+            </View>
             </View>
           </BlurView>
         </Modal>
