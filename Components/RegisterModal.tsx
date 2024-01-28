@@ -25,20 +25,7 @@ import { Entypo } from '@expo/vector-icons';
 import SendEmail from "../rnAPI/SendEmail";
 
 
-  const MASTER_URL =
-    "https://api-ap-southeast-2.hygraph.com/v2/clrl7cnr105jh01up5wcgj77o/master";
-  
-  type Message = {
-    id: number;
-    WoIs: string;
-    Message: string;
-    TimeStamp: string;
-    ArivalStatus: string;
-    Date: string;
-    EmojiResponse: string;
-    MessageType: string;
-  };
-  
+
   type Contact = {
     createdAt: string;
     id: string;
@@ -50,14 +37,7 @@ import SendEmail from "../rnAPI/SendEmail";
     publishedAt: string;
   };
   
-  interface ContactProps {
-    contacts1: Contact[];
-  }
-  
-  type chatDataProp = Contact[];
-  
-  
-   
+ 
 
 
     const RegisterModal = ({SetVerificationCode,SetIsLoading,IsVerificationModal,SetIsVerificationModal,IsModalShown,SetIsModalShown}:{IsVerificationModal:boolean,IsModalShown:boolean,SetVerificationCode:React.Dispatch<React.SetStateAction<string>>,SetIsLoading:React.Dispatch<React.SetStateAction<boolean>>,SetIsModalShown:React.Dispatch<React.SetStateAction<boolean>>,SetIsVerificationModal:React.Dispatch<React.SetStateAction<boolean>>}) => {

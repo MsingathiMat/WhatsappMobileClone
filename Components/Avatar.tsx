@@ -9,9 +9,11 @@ const Avatar = ({
   children?: ReactNode;
   
 }) => {
-  let AvatarImage: React.ReactNode = null;
+  let AvatarImage1: React.ReactNode = null;
   let LabelSectionElement: React.ReactNode = null;
   const ChildrenToArray = React.Children.toArray(children);
+
+
 
   ChildrenToArray.forEach((child) => {
     let ComponentName = "";
@@ -26,7 +28,7 @@ const Avatar = ({
       }
     }
     if (ComponentName == "AvatarImage") {
-      AvatarImage = child;
+      AvatarImage1 = child;
     }
 
     if (ComponentName == "LabelSection") {
@@ -53,7 +55,7 @@ const Avatar = ({
           gap: 8,
         }}
       >
-        {AvatarImage ? AvatarImage : ""}
+        {AvatarImage1 ? AvatarImage1 : ""}
 
         {LabelSectionElement ? LabelSectionElement : <></>}
       </View>

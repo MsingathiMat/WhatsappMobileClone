@@ -18,11 +18,31 @@ import { useNavigation } from '@react-navigation/native';
 import RegisterModal from '../Components/RegisterModal';
 import SendEmail from '../rnAPI/SendEmail';
 import EmailVerification from '../Components/EmailVerification';
+import withCRUD from '../Components/HOC/withCRUD';
+import ChatDetail from './ChatDetail';
+import HOCtest, { NewComp } from '../Components/HOC/HOCtest';
 
+interface CrudOperations<T> {
+  create: (data: T) => Promise<void>;
+  update: (id: string, data: T) => Promise<void>;
+  delete: (id: string) => Promise<void>;
+}
 
+interface WithCrudProps<T> {
+  crudOperations: CrudOperations<T>;
+}
 const Register = () => {
 
   const navigation = useNavigation();
+
+  interface Item {
+    id: string;
+    name: string;
+  }
+
+
+  
+
 
 
 
@@ -144,6 +164,9 @@ padding:40,
   >
 
 <Image source={(require("../assets/appAssets/logoWhite.png"))} style={{marginTop:10}}/> 
+
+
+<NewComp />
 
 <Text style={{color:'white', fontWeight:'bold', marginTop:20,marginBottom:20}}>Login</Text>
  <View
