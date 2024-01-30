@@ -22,7 +22,7 @@ import { gql } from "graphql-request";
 import { TextInput } from "react-native-gesture-handler";
 import { MaterialIcons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
-import SendEmail from "../rnAPI/SendEmail";
+import SendEmail from "../API/SendEmail";
 
 
 
@@ -44,7 +44,7 @@ import SendEmail from "../rnAPI/SendEmail";
      
 
      
-        const { GqlQuery, CreateARecord } = UseHygraph();
+        const {  Create } = UseHygraph();
         const [songData, SetSongData] = useState<Contact[] | null>(null);
         type ContactProp = {
           contactName: string;
@@ -102,15 +102,15 @@ import SendEmail from "../rnAPI/SendEmail";
         }
       }
       `
-          CreateARecord(CreateRec)
-            .then((res) => {
-              GqlQuery({ GqlString, SetSongData });
-              SetIsModalShown(false);
-              SetIsLoading(false);
-            })
-            .catch((error) => {
-              alert("Error Occured");
-            });
+          // CreateARecord(CreateRec)
+          //   .then((res) => {
+          //     GqlQuery({ GqlString, SetSongData });
+          //     SetIsModalShown(false);
+          //     SetIsLoading(false);
+          //   })
+          //   .catch((error) => {
+          //     alert("Error Occured");
+          //   });
       
         }
         const SaveData = () => {

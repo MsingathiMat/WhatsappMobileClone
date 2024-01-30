@@ -1,69 +1,24 @@
-import { request, gql } from "graphql-request";
+import { request } from "graphql-request";
+import { HYGRAP_ENDPOINT } from "../../API/Constants";
 
-const MASTER_URL ="https://ap-southeast-2.cdn.hygraph.com/content/clrl7cnr105jh01up5wcgj77o/master";
-
-type Contact = {
-  createdAt: string;
-  id: string;
-  imageUrl: string;
-  lastSeen: string;
-  contactName: string;
-  contactNumber: string;
-  hasStatus: boolean;
-  publishedAt: string;
-};
-
-interface ContactProps {
-  contacts1: Contact[];
-}
 const UseHygraph = () => {
-  const GqlQuery = async ({
-    GqlString,
-    SetSongData,
-  }: {
-    SetSongData: React.Dispatch<React.SetStateAction<Contact[]>>;
-    GqlString: string;
-  }) => {
-    try {
-      const results: ContactProps = await request(MASTER_URL, GqlString, {});
-
-      SetSongData(results.contacts1);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+  const Create = async (GqlString: string) => {
+    return await request(HYGRAP_ENDPOINT, GqlString);
   };
 
-
-
-  const GqlQuery1 = async <P> ({
-    GqlString
-  }: {
-    
-    GqlString: string;
-  }) => {
-
-   
-    try {
-      const results: P = await request<P>(MASTER_URL, GqlString, {});
-
-    return results
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+  const Read = async ({ GqlString }: { GqlString: string }) => {
+    return await request(HYGRAP_ENDPOINT, GqlString, {});
   };
 
-  const CreateARecord = async (GqlString: string) => {
-    try {
-      const results = await request(MASTER_URL, GqlString);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+  const Update = async (GqlString: string) => {
+    return await request(HYGRAP_ENDPOINT, GqlString);
   };
 
-  return {
-    GqlQuery,
-    CreateARecord,GqlQuery1
+  const Delete = async (GqlString: string) => {
+    return await request(HYGRAP_ENDPOINT, GqlString);
   };
+
+  return { Read, Create ,Update,Delete};
 };
 
 export default UseHygraph;

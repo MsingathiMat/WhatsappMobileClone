@@ -15,7 +15,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import{useEffect}   from 'react';
 import { Audio } from 'expo-av';
 import Animated, { useSharedValue, withSpring,Easing, FadeIn, FadeOut, withTiming } from 'react-native-reanimated';
-import UploadFile from '../rnAPI/UploadFile';
+import UploadFile from '../API/UploadFile';
 import LoadingContainer from './LoadingContainer';
 
 const AnimatedView = Animated.createAnimatedComponent(View);

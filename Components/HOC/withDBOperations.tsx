@@ -1,71 +1,57 @@
 import React, { useState } from "react";
 import { Text, View } from "react-native";
 import { useCallback } from "react";
-import axios from "axios";
+
 import { TouchableOpacity } from "react-native-gesture-handler";
 import UseHygraph from "../Hooks/UseHygraph";
 import { gql } from "graphql-request";
+import { HygraphDBoperationsProp } from "../../Types/Types";
 
-interface CrudOperations<T> {
-  create: (data: string) => Promise<void>;
-  update: (id: string, data: T) => Promise<void>;
-  delete: (id: string) => Promise<void>;
+
+
+  
+
+interface WithCrudProps {
+  crudOperations: HygraphDBoperationsProp;
 }
 
-interface WithCrudProps<T> {
-  crudOperations: CrudOperations<T>;
-}
-
-function crudHOC<P>(OriginalComponent: React.ComponentType<WithCrudProps<P>>) {
-  const { GqlQuery, CreateARecord } = UseHygraph();
+function WithHygraphDBoperations<P>(OriginalComponent: React.ComponentType<WithCrudProps>) {
+  const { Create,Read, Update,Delete } = UseHygraph();
   const ComponentWithExtraInfo = (props: P) => {
-    const [crudOperations] = useState<CrudOperations<P>>({
-      create: useCallback(async (data: string) => {
-        return CreateARecord(data);
+    const crudOperations ={
+      Create: useCallback(async (GqlString: string) => {
+        return Create(GqlString);
+ 
       }, []),
 
-      update: useCallback(async (id: string, data: P) => {
-        // Your API call to get the original data
-        let originalData: P;
-        try {
-          const response = await axios.get(`http://your-api-url/get/${id}`); // Update the URL as needed
-          originalData = response.data;
-        } catch (error) {
-          console.error(`Error fetching original data with ID ${id}:`, error);
-          throw error;
-        }
-
-        // Your API call to update data
-        try {
-          await axios.put(`http://your-api-url/update/${id}`, data); // Update the URL as needed
-        } catch (error) {
-          console.error(`Error updating data with ID ${id}:`, error);
-          throw error;
-        }
+      Update: useCallback(async (GqlString: string) => {
+    
+        return Create(GqlString);
       }, []),
 
-      delete: useCallback(async (id: string) => {
-        // Your API call to delete data
-        try {
-          await axios.delete(`http://your-api-url/delete/${id}`); // Update the URL as needed
-        } catch (error) {
-          console.error(`Error deleting data with ID ${id}:`, error);
-          throw error;
-        }
+      Read: useCallback(async (GqlString: string) => {
+        return Create(GqlString);
+      
       }, []),
-    });
+
+      Delete: useCallback(async (GqlString: string) => {
+   
+        return Create(GqlString);
+    
+      }, []),
+    }
 
     return <OriginalComponent {...props} crudOperations={crudOperations} />;
   };
   return ComponentWithExtraInfo;
 }
 
-export default crudHOC;
+export default WithHygraphDBoperations;
 
 type datatType = {
   me: string;
 };
-const UsedComp = ({ crudOperations }) => {
+const UsedComp = ({ crudOperations }:{crudOperations:HygraphDBoperationsProp}) => {
   const saveData = () => {
     const cName = "Msingathi Hlazo01";
     const contact = "247";
@@ -91,7 +77,7 @@ publishManyContacts1(to: PUBLISHED) {
 `;
 
     crudOperations
-      .create(GqlCreateString)
+      .Create(GqlCreateString)
       .then((result) => {
         console.log(result);
       })
@@ -106,12 +92,12 @@ publishManyContacts1(to: PUBLISHED) {
           saveData();
         }}
       >
-        <Text>Save data</Text>
+        <Text>DB Operations</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
-const NewComp = crudHOC(UsedComp);
+const WithDBOperations = WithHygraphDBoperations(UsedComp);
 
-export { NewComp };
+export { WithDBOperations };

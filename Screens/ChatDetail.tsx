@@ -10,6 +10,7 @@ import GreenImageCard from "../Components/GreenImageCard";
 import ChatImage from "../Components/ChatImage";
 import { ContactProps } from "../Types/Types";
 import ChatDetailHeader from "../Components/ChatDetailHeader";
+import HOCscreen from "../Components/HOC/HOCscreen";
 
 
 
@@ -40,7 +41,7 @@ type RouteProps = {
 };
 
 
-const ChatDetail = ({ChatData}:{ChatData:ContactProps[]})=> {
+const ChatDetailPure = ({ChatData}:{ChatData:ContactProps[]})=> {
   const [ImageUri, setImageUri] = useState(null);
   const flatListRef = useRef<FlatList<Message>>();
 
@@ -125,5 +126,9 @@ const ChatDetail = ({ChatData}:{ChatData:ContactProps[]})=> {
     </ImageBackground>
   );
 };
+
+
+const ChatDetail= HOCscreen(ChatDetailPure)
+
 
 export default ChatDetail;

@@ -39,8 +39,7 @@ const StackNavigator = () => {
   
 
 
-    const NewChildDetail= HOCscreen(ChatDetail)
-
+   
 
 
   return (
@@ -107,7 +106,7 @@ const StackNavigator = () => {
 
 {/* ContactData:{ImageUrl:string, ContactName:string, LastScene:string}; */}
 
-<Stack.Screen name="ChatDetail" component={NewChildDetail}
+<Stack.Screen name="ChatDetail" component={ChatDetail}
         
        options={{headerShown:false}}
       

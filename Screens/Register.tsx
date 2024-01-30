@@ -16,11 +16,12 @@ import {useAppProvider} from '../Store/AppContext';
 import { gql } from 'graphql-request';
 import { useNavigation } from '@react-navigation/native';
 import RegisterModal from '../Components/RegisterModal';
-import SendEmail from '../rnAPI/SendEmail';
+import SendEmail from '../API/SendEmail';
 import EmailVerification from '../Components/EmailVerification';
-import withCRUD from '../Components/HOC/withCRUD';
+
 import ChatDetail from './ChatDetail';
-import HOCtest, { NewComp } from '../Components/HOC/HOCtest';
+
+import { WithDBOperations } from '../Components/HOC/withDBOperations';
 
 interface CrudOperations<T> {
   create: (data: T) => Promise<void>;
@@ -46,7 +47,7 @@ const Register = () => {
 
 
 
-  const { GqlQuery, GqlQuery1 } = UseHygraph();
+  const { Create,Delete } = UseHygraph();
 
  
   const [UserName, SetUserName] = useState<string | null>(null)
@@ -81,36 +82,36 @@ query getContact {
 }
 `;
 
- GqlQuery1<Contact>({ GqlString,  }).then(results=>{
+// GqlDelete<Contact>({ GqlString,  }).then(results=>{
 
-  SetIsLoginLoading(false)
+//   SetIsLoginLoading(false)
 
-  // console.log(results.contacts1[0]);
- if(results.contacts1[0]){
+//   // console.log(results.contacts1[0]);
+//  if(results.contacts1[0]){
 
-  const ContactNumber=results.contacts1[0].contactNumber
+//   const ContactNumber=results.contacts1[0].contactNumber
 
-  if (ContactNumber===Contact){
+//   if (ContactNumber===Contact){
 
-    // @ts-expect-error
-    navigation.replace("Welcome");
+//     // @ts-expect-error
+//     navigation.replace("Welcome");
    
    
-     }else{
-       alert('wrong number');
-     }
- }else{
+//      }else{
+//        alert('wrong number');
+//      }
+//  }else{
 
-  alert("User does not exist");
- }
+//   alert("User does not exist");
+//  }
 
  
 
- }).catch(error=>{
+//  }).catch(error=>{
 
-  console.log(error)
+//   console.log(error)
 
- });
+//  });
 
 
 }
@@ -166,7 +167,9 @@ padding:40,
 <Image source={(require("../assets/appAssets/logoWhite.png"))} style={{marginTop:10}}/> 
 
 
-<NewComp />
+<WithDBOperations />
+
+
 
 <Text style={{color:'white', fontWeight:'bold', marginTop:20,marginBottom:20}}>Login</Text>
  <View
@@ -276,3 +279,27 @@ padding:40,
 export default Register
 
 const styles = StyleSheet.create({})
+
+
+
+
+
+
+function fetch (){
+
+  return ""
+}
+
+
+const  ReceiveAnyTYPEFromTest = (testData:ReturnType<typeof fetch>)=>{
+//RECEIVES ANY DATA from test
+
+}
+
+ReceiveAnyTYPEFromTest (fetch());
+
+
+//HOW THIS CAN SAVE YOUR JOB
+
+
+// fetching data from the server   {sting name}      reusable fetch function ---> {2} {10} {13}

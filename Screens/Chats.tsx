@@ -23,6 +23,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import LoadingButton from "../Components/LoadingButton";
 import Avatar from "../Components/Avatar";
 
+
 const MASTER_URL =
   "https://api-ap-southeast-2.hygraph.com/v2/clrl7cnr105jh01up5wcgj77o/master";
 
@@ -48,22 +49,54 @@ type Contact = {
   publishedAt: string;
 };
 
-interface ContactProps {
-  contacts1: Contact[];
+interface CrudOperations<T> {
+  create: (data: string) => Promise<void>;
+  update: (id: string, data: T) => Promise<void>;
+  delete: (id: string) => Promise<void>;
 }
 
-type chatDataProp = Contact[];
+interface WithCrudProps<T> {
+  crudOperations: CrudOperations<T>;
+}
 
-const Chats = ({ navigation }) => {
+const ChatsA = ({ crudOperations })  => {
   const [IsModalShown, setIsModalShown] = useState(false);
   const [IsLoading, SetIsLoading] = useState(false);
-  const { GqlQuery, CreateARecord } = UseHygraph();
+  const { Create } = UseHygraph();
   const [songData, SetSongData] = useState<Contact[] | null>(null);
   type ContactProp = {
     contactName: string;
     contactNumber: string;
     imageUrl: string;
     lastSeen: string;
+  };
+
+
+  const Delete = () => {
+   
+    const GqlCreateString =
+      gql`
+mutation delete {
+  deleteContacts(where: {id: "cclrx3qb2gqptl0c2x17ehbmt7"}) {
+    contactName
+    contactNumber
+    imageUrl
+    lastSeen
+    publishedAt
+  }
+}
+`
+
+    crudOperations
+      .delete(GqlCreateString)
+      .then((result) => {
+        console.log(result);
+        alert("Sent")
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("Error")
+      });
   };
 
   const [cName, setcName] = useState<string | null>(null);
@@ -82,7 +115,7 @@ const Chats = ({ navigation }) => {
   `;
 
   useEffect(() => {
-    GqlQuery({ GqlString, SetSongData });
+    // GqlQuery({ GqlString, SetSongData });
 
     // console.warn(songData)
   }, []);
@@ -107,15 +140,15 @@ mutation CreateContact {
   }
 }
 `;
-    CreateARecord(CreateRec)
-      .then((res) => {
-        GqlQuery({ GqlString, SetSongData });
-        setIsModalShown(false);
-        SetIsLoading(false);
-      })
-      .catch((error) => {
-        alert("Error Occured");
-      });
+    // CreateARecord(CreateRec)
+    //   .then((res) => {
+    //     GqlQuery({ GqlString, SetSongData });
+    //     setIsModalShown(false);
+    //     SetIsLoading(false);
+    //   })
+    //   .catch((error) => {
+    //     alert("Error Occured");
+    //   });
   };
 
   const SaveData = () => {
@@ -142,7 +175,7 @@ mutation CreateContact {
         data={songData}
         renderItem={({ item }) => (
           <>
-            <Avatar>
+            <Avatar DeleteContact={Delete}>
               <Avatar.AvatarImage
                 RingScale={1}
                 AvatarRing={true}
@@ -284,4 +317,8 @@ mutation CreateContact {
   );
 };
 
-export default Chats;
+
+
+
+// const Chats = crudHOC(ChatsA)
+export default ChatsA;

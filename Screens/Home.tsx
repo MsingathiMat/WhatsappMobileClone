@@ -7,6 +7,7 @@ import Group from './Group';
 import Updates from './Updates';
 import { FontAwesome } from '@expo/vector-icons';
 import { Text, View,TouchableOpacity,Animated } from 'react-native';
+import Posts from './Posts';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -75,7 +76,7 @@ tabBarLabel:({color,focused})=>
 
        
     }}/>
-    <Tab.Screen name="Updates" component={Updates}
+    <Tab.Screen name="Posts" component={Posts}
     
   />
       <Tab.Screen name="Calls" component={Calls} />

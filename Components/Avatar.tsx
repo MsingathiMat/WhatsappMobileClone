@@ -4,9 +4,9 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 
 const Avatar = ({
-  children,
+  children,DeleteContact
 }: {
-  children?: ReactNode;
+  children?: ReactNode,DeleteContact:()=>void
   
 }) => {
   let AvatarImage1: React.ReactNode = null;
@@ -43,6 +43,14 @@ const Avatar = ({
      
         // @ts-expect-error
         navigation.navigate("ChatDetail", { SelectedContactIndex: 0 });
+      }}
+
+      onLongPress={() => {
+     
+      
+        DeleteContact()
+      
+      
       }}
     >
       <View
