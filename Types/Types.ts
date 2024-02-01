@@ -49,8 +49,15 @@ type DatabaseOperations<T> = {
 
     
 interface HygraphDBoperationsProp {
+
   Create: (GqlString: string) => Promise<unknown>;
   Read: (GqlString: string) => Promise<unknown>;
   Update: (GqlString: string) => Promise<unknown>;
   Delete: (GqlString: string) => Promise<unknown>;
+
 }
+
+import { NavigationProp, useNavigation } from "@react-navigation/native";
+export type Navigatable =NavigationProp<ReactNavigation.RootParamList >&{replace:(screen:string)=>{},navigate:(screen:string)=>{}}
+
+

@@ -26,7 +26,9 @@ import MoreOptions from '../Components/MoreOptions';
 import ChatDetailHeader from '../Components/ChatDetailHeader';
 import HOCscreen from '../Components/HOC/HOCscreen';
 import { ContactProps } from '../Types/Types';
-import Register from './Register';
+
+import Login from './Login';
+import Register from '../Components/Register';
 
 interface newProps {
   ChatData: ContactProps[];
@@ -46,10 +48,10 @@ const StackNavigator = () => {
    
     <Stack.Navigator 
       
-    initialRouteName='Register'
+    initialRouteName='Login'
       >
 
-<Stack.Screen name="Register" component={Register} 
+<Stack.Screen name="Login" component={Login} 
         
         options={{
 
@@ -111,6 +113,12 @@ const StackNavigator = () => {
        options={{headerShown:false}}
       
       />
+
+<Stack.Screen name="Register" component={Register}
+        
+        options={{headerShown:false}}
+       
+       />
       </Stack.Navigator>
 
       

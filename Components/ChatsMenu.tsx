@@ -2,17 +2,18 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native'
+import { Navigatable } from '../Types/Types'
 
 
 const ChatsMenu = ({setisMenuShown}:{setisMenuShown:React.Dispatch<React.SetStateAction<boolean>>}) => {
 
-  const navigation = useNavigation();
+  const navigation:Navigatable = useNavigation();
 
   const LogOut = ()=>{
 
     setisMenuShown(false);
-    // @ts-expect-error
-    navigation.navigate('Register')
+
+    navigation.navigate('Login')
   }
   return (
     <View style={{
