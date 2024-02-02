@@ -26,34 +26,46 @@ const PureLogin = ({
   const [IsLoginLoading, SetIsLoginLoading] = useState(false);
   const [IsRegisterLoading, SetIsRegisterLoading] = useState(false);
  
-  type Contact = {
-    contacts1: [{ contactNumber: string }];
-  };
+  type AppUserProp = {
 
+    appUsers:{
+      "email": string,
+      "imageUrl": string,
+      "lastSeen": string,
+      "password": string,
+      "userName": string
+    }[]
+  } ;
   const AuthenticateUser = () => {
     SetIsLoginLoading(true);
     const GqlString =
-      gql`
-query getContact {
-  contacts1(where: { contactName:"` +
-      UserName +
-      `"}) {
-    contactNumber
-  }
-}
-`;
+gql`
+    query getUserByEmail {
+      appUsers(where: {email: "` +UserName +`"}) {
+        email
+        imageUrl
+        lastSeen
+        password
+        userName
+      }
+    }
+    `;
 
     crudOperations
       .Read(GqlString)
       .then((results) => {
-        const ReceivedData = results as Contact;
+        const ReceivedData = results as AppUserProp;
         SetIsLoginLoading(false);
 
         // console.log(results.contacts1[0]);
-        if (ReceivedData.contacts1[0]) {
-          const ContactNumber = ReceivedData.contacts1[0].contactNumber;
+        if (ReceivedData.appUsers[0]) {
+
+          console.log(ReceivedData);
+          const ContactNumber = ReceivedData.appUsers[0].password;
 
           if (ContactNumber === Contact) {
+
+            SetUserData
             navigation.replace("Welcome");
           } else {
             alert("wrong number");
