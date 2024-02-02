@@ -58,6 +58,17 @@ interface HygraphDBoperationsProp {
 }
 
 import { NavigationProp, useNavigation } from "@react-navigation/native";
-export type Navigatable =NavigationProp<ReactNavigation.RootParamList >&{replace:(screen:string)=>{},navigate:(screen:string)=>{}}
+export type Navigatable =NavigationProp<ReactNavigation.RootParamList >&{replace:(screen:string)=>{},navigate:(screen:string,NextScreenData?:{
+  DataToReceive?:any
+})=>{}}
+
+
+
+export type Routable<T> ={
+  key:string,
+  name:string,
+  path:string
+  params:{DataToReceive:T}
+}
 
 

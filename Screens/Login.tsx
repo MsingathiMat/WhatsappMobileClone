@@ -8,7 +8,7 @@ import { Entypo } from "@expo/vector-icons";
 import { useAppProvider } from "../Store/AppContext";
 import { gql } from "graphql-request";
 import { useNavigation } from "@react-navigation/native";
-import EmailVerification from "../Components/EmailVerification";
+
 import { HygraphDBoperationsProp, Navigatable } from "../Types/Types";
 import WithHygraphDBoperations from "../Components/HOC/WithHygraphDBoperations";
 
@@ -19,18 +19,13 @@ const PureLogin = ({
 }) => {
   const navigation: Navigatable = useNavigation();
 
-  interface Item {
-    id: string;
-    name: string;
-  }
+ 
 
   const [UserName, SetUserName] = useState<string | null>(null);
   const [Contact, SetContact] = useState<string | null>(null);
   const [IsLoginLoading, SetIsLoginLoading] = useState(false);
   const [IsRegisterLoading, SetIsRegisterLoading] = useState(false);
-  const [IsVerificationModal, SetIsVerificationModal] = useState(false);
-  const [VerificationCode, SetVerificationCode] = useState("");
-
+ 
   type Contact = {
     contacts1: [{ contactNumber: string }];
   };
@@ -212,11 +207,7 @@ query getContact {
         </LinearGradient>
       </ImageBackground>
 
-      <EmailVerification
-        VerificationCode={VerificationCode}
-        SetIsVerificationModal={SetIsVerificationModal}
-        IsVerificationModal={IsVerificationModal}
-      />
+  
     </View>
   );
 };

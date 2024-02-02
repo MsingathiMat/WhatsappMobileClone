@@ -26,24 +26,18 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { NavigationProp, useRoute } from "@react-navigation/native";
 
 import { useNavigation } from "@react-navigation/native";
+import { Navigatable, Routable } from "../Types/Types";
 
  
-type RouteParams ={
-    key:string,
-    name:string,
-    path:string
-    params:{Code:string}
-}
 
-type extended = NavigationProp<ReactNavigation.RootParamList>&{
-    navigate:(screen:string)=>void
-    }
+
+
 const EmailVerification = ({VerificationCode,IsVerificationModal,SetIsVerificationModal}:{VerificationCode:string,IsVerificationModal:boolean,SetIsVerificationModal:React.Dispatch<React.SetStateAction<boolean>>}) => {
         const [InputCode, SetInputCode]=useState("")
 
-const route:RouteParams = useRoute()
-const navigation:extended = useNavigation();
-// const Code = route.params.Code
+const route:Routable<string> = useRoute()
+const navigation:Navigatable = useNavigation();
+const Code = route.params.DataToReceive
 
 const VerifyCode=()=>{
 
@@ -131,7 +125,7 @@ fontWeight:'bold',
 color:"#128C7E"
 
 
-                }}>Verify</Text>
+                }}>Verify -- {Code}</Text>
 
 
               <View>

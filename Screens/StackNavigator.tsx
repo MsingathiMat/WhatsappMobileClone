@@ -29,6 +29,7 @@ import { ContactProps } from '../Types/Types';
 
 import Login from './Login';
 import Register from '../Components/Register';
+import EmailVerification from '../Components/EmailVerification';
 
 interface newProps {
   ChatData: ContactProps[];
@@ -87,6 +88,13 @@ const StackNavigator = () => {
        }} 
      />
 
+<Stack.Screen name="EmailVerification" component={EmailVerification}
+        
+       options={{
+
+        headerShown:false,
+       }} 
+     />
 
 
 <Stack.Screen name="BarcodeScanner" component={BarcodeScanner}

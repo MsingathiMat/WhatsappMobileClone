@@ -15,6 +15,7 @@ import { HygraphDBoperationsProp, Navigatable } from "../Types/Types";
 import WithHygraphDBoperations from "./HOC/WithHygraphDBoperations";
 import { useNavigation } from "@react-navigation/native";
 import ProfileImage from "./ProfileImage";
+import { GenerateRandomDigits } from "../HelperFunctions/GenerateRandomDigits";
 
 type Contact = {
   createdAt: string;
@@ -40,6 +41,14 @@ const PureRegister = ({
   const navigation:Navigatable = useNavigation()
 
   const [VerificationCode, SetVerificationCode] = useState("");
+
+
+useEffect(()=>{
+
+  const VeriCode = (GenerateRandomDigits(4)).toString()
+
+  SetVerificationCode(VeriCode)
+},[])
 
   const GqlString = gql`
     query Contacts1 {
@@ -132,7 +141,7 @@ const PureRegister = ({
       gql`
       mutation MyMutation {
         createAppUser(
-          data: {userName: "Publish Many", password: "MAny", imageUrl: "", email: "gmail"}
+          data: {userName: "Publish Many", password: "Boss", imageUrl: "", email: "gmail"}
         ) {
           id
         }
@@ -151,6 +160,7 @@ const PureRegister = ({
         if (result) {
           alert("Added");
           console.log(result);
+          navigation.navigate('EmailVerification',{DataToReceive:VerificationCode})
         } else {
           alert("Failed");
         }
