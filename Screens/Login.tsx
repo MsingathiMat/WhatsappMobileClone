@@ -9,7 +9,7 @@ import { useAppProvider } from "../Store/AppContext";
 import { gql } from "graphql-request";
 import { useNavigation } from "@react-navigation/native";
 
-import { HygraphDBoperationsProp, Navigatable } from "../Types/Types";
+import { AppUserProp, HygraphDBoperationsProp, Navigatable } from "../Types/Types";
 import WithHygraphDBoperations from "../Components/HOC/WithHygraphDBoperations";
 
 const PureLogin = ({
@@ -26,16 +26,7 @@ const PureLogin = ({
   const [IsLoginLoading, SetIsLoginLoading] = useState(false);
   const [IsRegisterLoading, SetIsRegisterLoading] = useState(false);
  
-  type AppUserProp = {
 
-    appUsers:{
-      "email": string,
-      "imageUrl": string,
-      "lastSeen": string,
-      "password": string,
-      "userName": string
-    }[]
-  } ;
   const AuthenticateUser = () => {
     SetIsLoginLoading(true);
     const GqlString =
@@ -65,7 +56,7 @@ gql`
 
           if (ContactNumber === Contact) {
 
-            SetUserData
+            SetUserData(ReceivedData.appUsers[0]);
             navigation.replace("Welcome");
           } else {
             alert("wrong number");

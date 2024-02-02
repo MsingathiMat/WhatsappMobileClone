@@ -5,9 +5,11 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import { Feather, Entypo } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import ChatsMenu from './ChatsMenu';
-
+import { useAppProvider } from "../Store/AppContext";
 
 const MainHeader=({navigation}) => {
+
+  const { UserData } = useAppProvider();
     const [isMenuShown, setisMenuShown] = useState(false);
     return(
     <View style={{}}>
@@ -30,7 +32,7 @@ const MainHeader=({navigation}) => {
             flexDirection: 'row',
           }}
         >
-          <Text style={{ color: 'white', fontSize: 20 }}>Whatsapp</Text>
+          <Text style={{ color: 'white', fontSize: 20 }}>{UserData.userName}</Text>
           <View style={{ flexDirection: 'row', gap: 20 }}>
           
           <TouchableOpacity onPress={() => navigation.navigate('BarcodeScanner')}>

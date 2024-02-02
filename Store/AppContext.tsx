@@ -1,11 +1,12 @@
 import { ReactNode, createContext,useContext, useState } from "react";
+import { UserObjectProp } from "../Types/Types";
 
 
 const AppContext = createContext(null);
 
 const AppProvider =({children}:{children:ReactNode})=>{
 
-const [UserData,SetUserData]= useState("Matthew");
+const [UserData,SetUserData]= useState<UserObjectProp>(null);
 
 return (
 
