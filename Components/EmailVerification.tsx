@@ -4,26 +4,25 @@ import {
     View,
    
     TouchableOpacity,
-    Modal,
+ 
     Text,
     Image,
-    ToastAndroid,
+  
    
   } from "react-native";
-  import React, { useEffect, useState } from "react";
+  import React, {  useState } from "react";
  
-  import UseHygraph from "../Components/Hooks/UseHygraph";
+  import { MaterialCommunityIcons } from '@expo/vector-icons';
+  import { AntDesign } from '@expo/vector-icons';
 
-  import { Feather } from "@expo/vector-icons";
-  import { FontAwesome } from "@expo/vector-icons";
   import { BlurView } from "expo-blur";
-  import { FontAwesome5 } from "@expo/vector-icons";
+
   import LoadingButton from "../Components/LoadingButton";
 
 import { TextInput } from "react-native-gesture-handler";
 import { MaterialIcons } from '@expo/vector-icons';
 
-import { NavigationProp, useRoute } from "@react-navigation/native";
+import {  useRoute } from "@react-navigation/native";
 
 import { useNavigation } from "@react-navigation/native";
 import { Navigatable, Routable } from "../Types/Types";
@@ -32,16 +31,16 @@ import { Navigatable, Routable } from "../Types/Types";
 
 
 
-const EmailVerification = ({VerificationCode,IsVerificationModal,SetIsVerificationModal}:{VerificationCode:string,IsVerificationModal:boolean,SetIsVerificationModal:React.Dispatch<React.SetStateAction<boolean>>}) => {
+const EmailVerification = () => {
         const [InputCode, SetInputCode]=useState("")
 
 const route:Routable<string> = useRoute()
 const navigation:Navigatable = useNavigation();
-const Code = route.params.DataToReceive
+const generatedVerificationCode = route.params.DataToReceive
 
 const VerifyCode=()=>{
 
-if(InputCode===VerificationCode.trim()){
+if(InputCode===generatedVerificationCode.trim()){
 
     navigation.navigate('Welcome')
 }else{
@@ -51,9 +50,9 @@ if(InputCode===VerificationCode.trim()){
 
 }
         return (
-          <Modal visible={IsVerificationModal} animationType="slide">
-          <BlurView
-            intensity={10}
+        
+          <View
+         
             
             style={{
               flex: 1,
@@ -64,43 +63,18 @@ if(InputCode===VerificationCode.trim()){
             
             }}
           >
-            <TouchableOpacity
-              onPress={() => {
-                SetIsVerificationModal(false);
-              }}
-              style={{
-                position: "absolute",
-                top: 30,
-                right: 30,
-              }}
-            >
-              <Feather name="x" size={24} color="black" />
-            </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => { navigation.goBack()}}
+        style={{
+          position: "absolute",
+          top: 30,
+          left: 30,
+        }}
+      >
+        <AntDesign name="arrowleft" size={24} color="black" />
+      </TouchableOpacity>
             <View>
-                <View style ={{
-     height:70,
-     width:70, 
-     borderRadius:35,
-     justifyContent:'center',
-     alignItems:'center',
-    elevation:25,
-    position:'absolute',
-    top:-30,
-    left:85,
-    zIndex:40
-    }}>
-
-<Image resizeMode="cover"  source={({uri:"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"})} style={{
-   
-    height:70,
-    width:70, 
-    borderRadius:35,
-    borderColor:'#57F573',
-    borderWidth:2.5,
-    
-    }}/> 
   
-</View>
 
             <View
               style={{
@@ -118,21 +92,21 @@ if(InputCode===VerificationCode.trim()){
               }}
             >
 
-
+<MaterialCommunityIcons name="email-lock" size={24} color="black" />
   
                  <Text style={{
 fontWeight:'bold',
 color:"#128C7E"
 
 
-                }}>Verify -- {Code}</Text>
+                }}>Verify -- {generatedVerificationCode}</Text>
 
 
               <View>
                 <TextInput
                   value={InputCode}
                   onChangeText={(value) => {
-                    SetInputCode(value);
+                    SetInputCode(value.trim);
                   }}
                   placeholder="Verification Code"
                   style={{
@@ -174,8 +148,8 @@ color:"#128C7E"
               </View>
             </View>
             </View>
-          </BlurView>
-        </Modal>
+          </View>
+     
         )
             }
         

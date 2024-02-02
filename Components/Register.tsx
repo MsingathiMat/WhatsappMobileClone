@@ -1,9 +1,7 @@
-import { View, TouchableOpacity, Modal, Text, Image } from "react-native";
+import { View, TouchableOpacity, Text } from "react-native";
 import React, { useEffect, useState } from "react";
 
-import UseHygraph from "./Hooks/UseHygraph";
 
-import { Feather } from "@expo/vector-icons";
 import { AntDesign } from '@expo/vector-icons';
 import LoadingButton from "./LoadingButton";
 import { gql } from "graphql-request";
@@ -182,7 +180,7 @@ useEffect(()=>{
       }}
     >
       <TouchableOpacity
-        onPress={() => { navigation.navigate('Login')}}
+        onPress={() => { navigation.goBack()}}
         style={{
           position: "absolute",
           top: 30,
