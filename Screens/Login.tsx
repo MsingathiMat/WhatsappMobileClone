@@ -13,7 +13,7 @@ import { HygraphDBoperationsProp, Navigatable } from "../Types/Types";
 import WithHygraphDBoperations from "../Components/HOC/WithHygraphDBoperations";
 
 const PureLogin = ({
-crudOperations
+  crudOperations,
 }: {
   crudOperations: HygraphDBoperationsProp;
 }) => {
@@ -30,9 +30,7 @@ crudOperations
   const [IsRegisterLoading, SetIsRegisterLoading] = useState(false);
   const [IsVerificationModal, SetIsVerificationModal] = useState(false);
   const [VerificationCode, SetVerificationCode] = useState("");
- 
 
- 
   type Contact = {
     contacts1: [{ contactNumber: string }];
   };
