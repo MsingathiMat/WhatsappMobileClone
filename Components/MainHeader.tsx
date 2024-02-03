@@ -6,6 +6,7 @@ import { Feather, Entypo } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import ChatsMenu from './ChatsMenu';
 import { useAppProvider } from "../Store/AppContext";
+import moment from 'moment';
 
 const MainHeader=({navigation}) => {
 
@@ -32,7 +33,12 @@ const MainHeader=({navigation}) => {
             flexDirection: 'row',
           }}
         >
-          <Text style={{ color: 'white', fontSize: 20 }}>{UserData.userName}</Text>
+        <View>
+
+
+        <Text style={{ color: 'white', fontSize: 20 }}>{UserData.userName}</Text>
+          <Text style={{ color: 'white', fontSize: 10 }}>{moment(parseInt(UserData.lastSeen)).format('hh:mm DD MMMM YYYY')}</Text>
+        </View>
           <View style={{ flexDirection: 'row', gap: 20 }}>
           
           <TouchableOpacity onPress={() => navigation.navigate('BarcodeScanner')}>

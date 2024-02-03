@@ -82,7 +82,8 @@ export type UserObjectProp={
   imageUrl: string,
   lastSeen: string,
   password: string,
-  userName: string
+  userName: string,
+  id:string
 }
 
 

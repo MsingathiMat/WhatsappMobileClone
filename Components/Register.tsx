@@ -14,25 +14,23 @@ import WithHygraphDBoperations from "./HOC/WithHygraphDBoperations";
 import { useNavigation } from "@react-navigation/native";
 import ProfileImage from "./ProfileImage";
 import { GenerateRandomDigits } from "../HelperFunctions/GenerateRandomDigits";
+import { FontAwesome } from '@expo/vector-icons';
+import moment from 'moment';
 
-type Contact = {
-  createdAt: string;
-  id: string;
-  imageUrl: string;
-  lastSeen: string;
-  contactName: string;
-  contactNumber: string;
-  hasStatus: boolean;
-  publishedAt: string;
-};
+type SavedUserProp={
+  "createAppUser": 
+  {"id": string}, 
+  "publishManyAppUsers": 
+  {"count": number}}
 
 const PureRegister = ({
   crudOperations,
 }: {
   crudOperations: HygraphDBoperationsProp;
 }) => {
-  const [cName, setcName] = useState<string | null>(null);
-  const [contact, setContact] = useState<string | null>(null);
+  const [UserName, setUserName] = useState<string | null>(null);
+  const [Email, setEmail] = useState<string | null>(null);
+  const [Password, setPassword] = useState<string | null>(null);
   const [IsLoading, SetIsLoading] = useState(false);
   const [ProfilePic, SetProfilePic] = useState("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png");
 
@@ -66,8 +64,8 @@ useEffect(()=>{
     ).toString();
 
     SendEmail({
-      Email: cName,
-      Name: contact,
+      Email: Email,
+      Name: Password,
       VerificationCode: VerificationCode,
     })
       .then((result) => {
@@ -86,9 +84,9 @@ useEffect(()=>{
       gql`
       mutation CreateContact {
         createContacts(
-          data: {contactName: "` +cName +`", contactNumber:  "` +
-      contact +
-      `", imageUrl: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png", lastSeen: "` +
+          data: {contactName: "` +UserName +`", contactNumber:  "` +
+      Password +
+      `", imageUrl:  "` +ProfilePic +`", lastSeen: "` +
       Date.now() +
       `"}
         ) {
@@ -100,7 +98,7 @@ useEffect(()=>{
       }
       `;
 
-
+      
   
 
 
@@ -114,33 +112,22 @@ useEffect(()=>{
     //     alert("Error Occured");
     //   });
   };
-  const SaveUser = () => {
-    SetIsLoading(true);
-
-    CreateRecord();
-  };
+ 
 
   const saveData = () => {
     SetIsLoading(true);
-    const UserName = "Msingathi Hlazo01";
-    const Password = "247";
-    const Email = "247";
-    const ImageUrl = "247";
+
     
 
-    // const GqlCreateString =
-    //   gql`
-    //   mutation AddUser {
-    //     createAppUser(data: {userName: "`+UserName +`", password: "`+Password +`", email: "`+Email +`", imageUrl: "` +ImageUrl +`"})
-    //   }
-    //   `;
 
       const GqlCreateString =
       gql`
       mutation MyMutation {
         createAppUser(
-          data: {userName: "Publish Many", password: "Boss", imageUrl: "", email: "gmail"}
-        ) {
+          data: {userName: "` +UserName.trim() +`", password: "` +Password.trim() +`", imageUrl: "` +ProfilePic +`", email: "` +Email.trim() +`", lastSeen: "` +
+          moment() +
+          `" isVerified:false}
+            )  {
           id
         }
         publishManyAppUsers {
@@ -155,8 +142,11 @@ useEffect(()=>{
     crudOperations
       .Create(GqlCreateString)
       .then((result) => {
-        if (result) {
-          alert("Added");
+
+        const returnedData =result as SavedUserProp;
+     
+        if (result && returnedData.createAppUser) {
+      
           console.log(result);
           navigation.navigate('EmailVerification',{DataToReceive:VerificationCode})
         } else {
@@ -224,13 +214,13 @@ useEffect(()=>{
         <View
           style={{
             flexDirection: "column",
-            gap: 30,
+            gap: 25,
             justifyContent: "center",
             alignItems: "center",
             backgroundColor: "white",
             padding: 30,
             borderRadius: 10,
-            paddingTop: 10,
+            paddingTop: 60,
             height: 350,
             overflow: "hidden",
             width: 250,
@@ -245,11 +235,35 @@ useEffect(()=>{
             Register
           </Text>
 
+         
           <View>
             <TextInput
-              value={cName}
+              value={UserName}
               onChangeText={(value) => {
-                setcName(value);
+                setUserName(value);
+              }}
+              placeholder="User Name"
+              style={{
+                borderBottomColor: "#128C7E",
+                borderBottomWidth: 1,
+                width: 200,
+                paddingLeft: 30,
+                padding: 3,
+              }}
+            />
+
+<FontAwesome
+              style={{ position: "absolute", top: 8, left: 0 }}
+              name="user"
+              size={15}
+              color="black"
+            />
+          </View>
+          <View>
+            <TextInput
+              value={Email}
+              onChangeText={(value) => {
+                setEmail(value);
               }}
               placeholder="Your email"
               style={{
@@ -261,6 +275,7 @@ useEffect(()=>{
               }}
             />
 
+
             <MaterialIcons
               style={{ position: "absolute", top: 8, left: 0 }}
               name="email"
@@ -269,11 +284,12 @@ useEffect(()=>{
             />
           </View>
 
+
           <View>
             <TextInput
-              value={contact}
+              value={Password}
               onChangeText={(value) => {
-                setContact(value);
+                setPassword(value);
               }}
               placeholder="Password"
               style={{

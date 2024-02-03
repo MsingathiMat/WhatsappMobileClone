@@ -1,8 +1,11 @@
 import { ReactNode, createContext,useContext, useState } from "react";
 import { UserObjectProp } from "../Types/Types";
+type ProviderProps={
+    UserData:UserObjectProp,
+    SetUserData:React.Dispatch<React.SetStateAction<UserObjectProp>>
+}
 
-
-const AppContext = createContext(null);
+const AppContext = createContext<ProviderProps | null>(null );
 
 const AppProvider =({children}:{children:ReactNode})=>{
 

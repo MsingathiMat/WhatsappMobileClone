@@ -32,12 +32,13 @@ const PureLogin = ({
     const GqlString =
 gql`
     query getUserByEmail {
-      appUsers(where: {email: "` +UserName +`"}) {
+      appUsers(where: {email: "` +UserName.trim() +`"}) {
         email
         imageUrl
         lastSeen
         password
         userName
+        id
       }
     }
     `;
@@ -48,10 +49,10 @@ gql`
         const ReceivedData = results as AppUserProp;
         SetIsLoginLoading(false);
 
-        // console.log(results.contacts1[0]);
+      
         if (ReceivedData.appUsers[0]) {
 
-          console.log(ReceivedData);
+     
           const ContactNumber = ReceivedData.appUsers[0].password;
 
           if (ContactNumber === Contact) {
