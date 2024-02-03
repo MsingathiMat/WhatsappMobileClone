@@ -2,6 +2,7 @@ import { View, Text, Dimensions, Image } from "react-native";
 import React, { ReactNode } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
+import moment from "moment";
 
 const Avatar = ({
   children,DeleteContact
@@ -148,6 +149,7 @@ function LabelSection({
 }) {
   let TitleElement: React.ReactNode = null;
 
+  
   const ChildrenToArray = React.Children.toArray(children);
 
   ChildrenToArray.forEach((child) => {
@@ -194,7 +196,10 @@ function LabelSection({
               right: 5,
             }}
           >
-            {LastSeen}
+         
+         {moment(parseInt(LastSeen)).format('hh:mm DD MMMM YYYY')}
+
+
           </Text>
         ) : (
           ""
@@ -204,7 +209,7 @@ function LabelSection({
       <View style={{ flexDirection: "row", gap: 5, alignItems: "center" }}>
         {Icon ? Icon : ""}
 
-        <Text>Last Messsage</Text>
+        <Text>{}</Text>
       </View>
     </View>
   );
