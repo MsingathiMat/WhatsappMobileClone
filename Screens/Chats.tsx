@@ -87,7 +87,7 @@ const PureChats = ({
     crudOperations
       .Read(getUsers)
       .then((result) => {
-        console.log(result);
+     
        const data = result as AppUserProps;
 
     //    console.log(data.appUsers)
@@ -133,36 +133,6 @@ mutation delete {
   };
 
  
-
-  
-
-
-const CreateContact = () => {
-  const CreateRec =
-    gql`
-    mutation AddContact {
-      createContacts(
-        data: {appUser: {connect: {AppUser: {id: "` +
-        UserData.id+
-        `"}}}, contactName: "` +
-        cName +
-        `", contactNumber: "` +
-        contact +
-        `"}
-      )
-      publishManyContacts1 {
-        count
-      }
-    }   
-`;
-
-  }
-
-
-
-
-  
-
 
 
   return (

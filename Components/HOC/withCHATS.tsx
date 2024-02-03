@@ -14,17 +14,13 @@ function WithPOSTS<P>(OriginalComponent: React.ComponentType<P & {posts:PosItemP
 
 const [PostData,SetPostData] = useState<PosItemProp[]>(null)
 
-const {GetData} = UseHygraph();
+
 
 
 useEffect(()=>{
 
 
-    GetData({ GqlString }).then(results=>{
 
-        SetPostData(results.data)
-        console.log(results);
-    });
 },[])
 
 const GqlString = gql`
