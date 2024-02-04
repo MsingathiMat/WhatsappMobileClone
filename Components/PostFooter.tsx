@@ -1,29 +1,19 @@
-import { View,Text, ImageBackground, KeyboardAvoidingView, Button, TouchableOpacity, Image, StyleSheet, ToastAndroid } from 'react-native'
-import React, { useRef, useState } from 'react'
+import { View,Text, ImageBackground,  TouchableOpacity, Image, StyleSheet } from 'react-native'
+import React, {  useState } from 'react'
 import { TextInput } from 'react-native-gesture-handler'
 
 
 import { SimpleLineIcons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+
 import { FontAwesome } from '@expo/vector-icons';
 
-import * as FileSystem from 'expo-file-system';
 
-import { Ionicons } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import{useEffect}   from 'react';
-import { Audio } from 'expo-av';
-import Animated, { useSharedValue, withSpring,Easing, FadeIn, FadeOut, withTiming } from 'react-native-reanimated';
-import UploadFile from '../API/UploadFile';
 import LoadingContainer from './LoadingContainer';
 import { HygraphDBoperationsProp } from '../Types/Types';
 
 import { gql } from 'graphql-request';
 import { useAppProvider } from '../Store/AppContext';
-
-const AnimatedView = Animated.createAnimatedComponent(View);
-
 
 
 
@@ -37,23 +27,16 @@ const PostFooter = ({
 
   const [isFirstCharacter,SetIsFirstCharacter] = useState(false);
 
-  const [IsPlaying,SetIsPlaying] = useState(false);
+
 
 
   const { UserData } = useAppProvider();
 
   const [ShowRecordingIcon,SetShowRecordingIcon] = useState(false);
   const [ShowSendRecIcon,SetShowSendRecIcon] = useState(false);
-  const [audioDuration, setAudioDuration] = useState(0);
+
 const [message, setMessage] = useState("");
 const [IsSending,SetIsSending] = useState(false);
-
-  const sound = useRef<Audio.Sound | null>(null);
-
-
-
-
-  const progress = useSharedValue(0);
 
 
 
@@ -90,7 +73,7 @@ publishManyPosts {
         if (result ) {
       
             readPosts()
-       
+            setMessage("");
     
     SetIsSending(false)
         } else {
@@ -107,20 +90,6 @@ publishManyPosts {
   };
 
 
-
-
-
-
-  const formatTime = (milliseconds) => {
-    const minutes = Math.floor(milliseconds / 60000);
-    const seconds = ((milliseconds % 60000) / 1000).toFixed(0);
-    return `${minutes}:${parseInt(seconds) < 10 ? '0' : ''}${seconds}`;
-  };
-
-
-
-
- 
 
 
 
@@ -257,7 +226,7 @@ gap:5
 {isFirstCharacter?
 
 
-<LoadingContainer IndicatorColor='red' OnPress={()=>{}} IsLoading={IsSending}>
+<LoadingContainer IndicatorColor='white' OnPress={()=>{}} IsLoading={IsSending}>
 <FontAwesome name="paper-plane" size={18} color="white" />
 </LoadingContainer>
 :
