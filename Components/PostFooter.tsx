@@ -52,10 +52,10 @@ let progressRatio=0;
 
 
 
-const PurePostFooter = ({reloadPosts,
-    crudOperations,
+const PostFooter = ({
+    crudOperations,readPosts
   }: {
-    crudOperations: HygraphDBoperationsProp,reloadPosts:any
+    crudOperations: HygraphDBoperationsProp,readPosts:()=>void
   }) => {
 
   const navigation = useNavigation();
@@ -95,7 +95,7 @@ const [IsSending,SetIsSending] = useState(false);
       gql`
       mutation addPost {
         createPost(
-          data: {category: "", message: "SOL NOW", appUser: {connect: {id: "` +UserData.id +`"}}}
+          data: {category: "", message: "` +message +`", appUser: {connect: {id: "` +UserData.id +`"}}}
         ) {
           id
         }
@@ -116,8 +116,9 @@ publishManyPosts {
      
         if (result ) {
       
+            readPosts()
           console.log(result);
-          reloadPosts()
+    
         //   navigation.navigate('EmailVerification',{DataToReceive:VerificationCode})
         } else {
           alert("Failed");
@@ -516,5 +517,5 @@ const styles = StyleSheet.create({
   },
 });
 
-const PostFooter= WithHygraphDBoperations(PurePostFooter );
+
 export default PostFooter

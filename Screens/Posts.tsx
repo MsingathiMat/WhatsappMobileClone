@@ -115,7 +115,7 @@ const readPosts=()=>{
         />
 
 
-      <PostFooter />
+      <PostFooter crudOperations={crudOperations} readPosts={()=>{readPosts()}} />
       </View>
 
       {/* <ChatFooter CallBack={setImageUri} SetCaptured={()=>{}} /> */}
@@ -129,17 +129,3 @@ const Posts= WithHygraphDBoperations(PostsPure)
 
 export default Posts;
 
-// import { View, Text } from 'react-native'
-// import React from 'react'
-
-// import { WithC } from '../Components/HOC/withCHATS'
-
-// const Posts = () => {
-//   return (
-//     <View>
-//     {/* <WithC/> */}
-//     </View>
-//   )
-// }
-
-// export default Posts
