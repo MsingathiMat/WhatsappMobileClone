@@ -115,7 +115,7 @@ const readPosts=()=>{
         />
 
 
-      <PostFooter/>
+      <PostFooter />
       </View>
 
       {/* <ChatFooter CallBack={setImageUri} SetCaptured={()=>{}} /> */}

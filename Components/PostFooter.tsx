@@ -17,6 +17,10 @@ import { Audio } from 'expo-av';
 import Animated, { useSharedValue, withSpring,Easing, FadeIn, FadeOut, withTiming } from 'react-native-reanimated';
 import UploadFile from '../API/UploadFile';
 import LoadingContainer from './LoadingContainer';
+import { HygraphDBoperationsProp } from '../Types/Types';
+import WithHygraphDBoperations from './HOC/WithHygraphDBoperations';
+import { gql } from 'graphql-request';
+import { useAppProvider } from '../Store/AppContext';
 
 const AnimatedView = Animated.createAnimatedComponent(View);
 
@@ -47,7 +51,12 @@ let progressRatio=0;
 };
 
 
-const PostFooter = () => {
+
+const PurePostFooter = ({reloadPosts,
+    crudOperations,
+  }: {
+    crudOperations: HygraphDBoperationsProp,reloadPosts:any
+  }) => {
 
   const navigation = useNavigation();
   const [isFirstCharacter,SetIsFirstCharacter] = useState(false);
@@ -56,17 +65,14 @@ const PostFooter = () => {
   const [isCameraShown,SetIsCameraShown] = useState(true);
   const [IsPlaying,SetIsPlaying] = useState(false);
 
- 
-
-
   const [recording, setRecording] = useState<Audio.Recording | undefined>(undefined);
   const [permissionResponse, requestPermission] = Audio.usePermissions();
-
+  const { UserData } = useAppProvider();
 
   const [ShowRecordingIcon,SetShowRecordingIcon] = useState(false);
   const [ShowSendRecIcon,SetShowSendRecIcon] = useState(false);
   const [audioDuration, setAudioDuration] = useState(0);
-const [audioPosition, setAudioPosition] = useState(0);
+const [message, setMessage] = useState("");
 const [IsSending,SetIsSending] = useState(false);
 
   const sound = useRef<Audio.Sound | null>(null);
@@ -77,14 +83,54 @@ const [IsSending,SetIsSending] = useState(false);
   const progress = useSharedValue(0);
 
 
-  useEffect(() => {
-    // Simulate progress changes for demonstration purposes
-    const interval = setInterval(() => {
-      progress.value = withTiming((progress.value + 0.1) % 1, { duration: 1000 });
-    }, 1000);
 
-    return () => clearInterval(interval);
-  }, []);
+
+  const saveData = () => {
+    // SetIsLoading(true);
+
+    
+  
+
+      const addPost =
+      gql`
+      mutation addPost {
+        createPost(
+          data: {category: "", message: "SOL NOW", appUser: {connect: {id: "` +UserData.id +`"}}}
+        ) {
+          id
+        }
+publishManyPosts {
+          count
+        }
+      }
+      `;
+
+     
+     
+
+    crudOperations
+      .Create(addPost)
+      .then((result) => {
+
+        const returnedData =result;
+     
+        if (result ) {
+      
+          console.log(result);
+          reloadPosts()
+        //   navigation.navigate('EmailVerification',{DataToReceive:VerificationCode})
+        } else {
+          alert("Failed");
+        }
+        // SetIsLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        // SetIsLoading(false);
+      });
+  };
+
+
 
 
 
@@ -220,55 +266,8 @@ SetIsSending(false)
 
  
 
-  useEffect(() => {
-    (async () => {
-      const { status } = await ImagePicker.requestCameraPermissionsAsync();
-      if (status !== 'granted') {
-        alert('Sorry, we need camera permissions to make this work!');
-      }
-    })();
-  }, []);
-
-  const pickImage = async () => {
-    let result = await ImagePicker.launchCameraAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      base64:true,
-      allowsEditing: false,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    
-   if(result.assets[0].uri){
-
-    const file = new FormData();
 
 
-    const Base64 = `data:${result.assets[0].type};base64,${result.assets[0].base64}`
-
-file.append('file',Base64)
-    file.append('upload_preset', 'wclone');
-
-    const cloudName ='dzrqwm7xi';
-    const url = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
-  await fetch(url, {
-    method: "post",
-    headers:{   'Content-Type': 'multipart/form-data'},
-    body: file,
-    }).then((result)=>{
-
-      console.log(result.ok)
-    }).catch(error=>{
-
-      console.log("Cloudinary Error")
-
-    })
-
-
-// CallBack(result.assets[0].uri);
-// SetCaptured(true);
-   }
-  };
 
 
 
@@ -325,7 +324,9 @@ file.append('file',Base64)
  }}>
 
 
-<TextInput value={InputValue} onChangeText={(value)=>{handlePress(value)}} style={{
+<TextInput value={message} onChangeText={(value)=>{
+    setMessage(value) 
+    SetIsFirstCharacter(true)}} style={{
 padding:10,
   backgroundColor:'white',
   borderRadius:30,
@@ -359,13 +360,13 @@ padding:10,
 {isCameraShown&&
 
  
-<TouchableOpacity onPress={() => {pickImage()}}>
+<TouchableOpacity onPress={() => {}}>
 <FontAwesome5 name="camera" size={23} color="gray" />
 </TouchableOpacity>}
 </Animated.View>
 </View>
 
-
+<TouchableOpacity onPress={ ()=>{saveData()}}>
 <View style={[{
 
   justifyContent:'center',
@@ -441,17 +442,16 @@ gap:5
 
 }
 
-{formatTime(audioPosition)&&<Text style={{fontSize:6}}>{formatTime(audioPosition)} / {formatTime(audioDuration)}</Text>
-}
+
 
 <View style={{
   width:40,
   bottom:-2
   }}>
-<AudioProgressBar audioPosition={audioPosition} audioDuration={audioDuration} />
+
 </View>
 </TouchableOpacity>
-<TouchableOpacity onPress={()=>{  SenddFile()}} style={{
+<TouchableOpacity onPress={()=>{ }} style={{
   backgroundColor:'white',
   borderRadius:5,
 
@@ -479,15 +479,8 @@ gap:5
 
 {isFirstCharacter?<FontAwesome name="paper-plane" size={18} color="white" />:
 
-<TouchableOpacity  onLongPress={()=>{
-  
-  startRecording()
-  SetShowRecordingIcon(true)
+<TouchableOpacity onPress={()=>{
 
-}} onPressOut={()=>{
-  stopRecording();
-  SetShowRecordingIcon(false)
-  SetShowSendRecIcon(true)
   
   }}  >
 <FontAwesome name="microphone" size={20} color="white" />
@@ -497,6 +490,8 @@ gap:5
 
 
 </View>
+</TouchableOpacity>
+
 </View>
     </ImageBackground>
   )
@@ -521,4 +516,5 @@ const styles = StyleSheet.create({
   },
 });
 
+const PostFooter= WithHygraphDBoperations(PurePostFooter );
 export default PostFooter
