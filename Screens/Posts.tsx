@@ -29,7 +29,8 @@ type postProp=
     "message": string,
     "appUser": {
       "imageUrl": string,
-      "userName": string
+      "userName": string,
+      "lastSeen":string
     }
   }
 
@@ -61,6 +62,7 @@ const readPosts=()=>{
       appUser {
         imageUrl
         userName
+        lastSeen
       }
     }
   }
@@ -110,7 +112,7 @@ const readPosts=()=>{
           // ref={flatListRef}
           showsVerticalScrollIndicator={false}
         
-         renderItem={({item})=>(<PostCard Message={item.message} userName={item.appUser.userName}/>)}
+         renderItem={({item})=>(<PostCard Message={item.message} userName={item.appUser.userName} LastSeen={item.appUser.lastSeen}/>)}
           
         />
 

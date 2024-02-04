@@ -197,7 +197,7 @@ function LabelSection({
             }}
           >
          
-         {moment(parseInt(LastSeen)).format('hh:mm DD MMMM YYYY')}
+         {moment(parseInt(LastSeen)).format('hh:mm')}
 
 
           </Text>

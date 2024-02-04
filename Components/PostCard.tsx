@@ -3,7 +3,7 @@ import React from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import Avatar from './Avatar';
 import { Dimensions } from 'react-native';
-const PostCard = ({Message, userName}:{Message:string,userName:string}) => {
+const PostCard = ({Message,LastSeen, userName}:{Message:string,userName:string,LastSeen:string}) => {
   return (
     <View style ={{
 
@@ -34,7 +34,7 @@ const PostCard = ({Message, userName}:{Message:string,userName:string}) => {
                 width={Dimensions.get("screen").width-90}
                 RightComponent={true}
                 colorWhite={false}
-                LastSeen="WORK"
+                LastSeen={LastSeen}
               >
                 <Avatar.LabelSection.Title
                   Title={userName}
