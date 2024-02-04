@@ -117,7 +117,7 @@ publishManyPosts {
         if (result ) {
       
             readPosts()
-          console.log(result);
+       
     
         //   navigation.navigate('EmailVerification',{DataToReceive:VerificationCode})
         } else {
@@ -311,6 +311,7 @@ SetIsSending(false)
 <View style={{
 
   padding:10,
+  paddingTop:15,
   flexDirection:'row',
   gap:10
 }}>

@@ -149,7 +149,7 @@ mutation delete {
         paddingVertical: 20,
       }}
     >
-      <FlatList
+     { appUsers&&<FlatList
         data={appUsers}
         renderItem={({ item }) => (
           <>
@@ -175,7 +175,7 @@ mutation delete {
             </Avatar>
           </>
         )}
-      />
+      />}
 
       <TouchableOpacity
         onPress={() => {

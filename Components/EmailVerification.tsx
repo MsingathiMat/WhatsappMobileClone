@@ -10,7 +10,7 @@ import {
   
    
   } from "react-native";
-  import React, {  useState } from "react";
+  import React, {  useEffect, useState } from "react";
  
   import { MaterialCommunityIcons } from '@expo/vector-icons';
   import { AntDesign } from '@expo/vector-icons';
@@ -34,13 +34,24 @@ import { Navigatable, Routable } from "../Types/Types";
 const EmailVerification = () => {
         const [InputCode, SetInputCode]=useState("")
 
+        const [VerificationCode, setVerificationCode]=useState("")
+
+
 const route:Routable<string> = useRoute()
 const navigation:Navigatable = useNavigation();
-const generatedVerificationCode = route.params.DataToReceive
+
+
+
+useEffect(()=>{
+
+  const generatedVerificationCode = route.params.DataToReceive
+  setVerificationCode(generatedVerificationCode);
+})
+
 
 const VerifyCode=()=>{
 
-if(InputCode===generatedVerificationCode.trim()){
+if(InputCode.trim()===VerificationCode){
 
     navigation.navigate('Welcome')
 }else{
@@ -99,7 +110,7 @@ fontWeight:'bold',
 color:"#128C7E"
 
 
-                }}>Verify -- {generatedVerificationCode}</Text>
+                }}>Verify -- {VerificationCode}</Text>
 
 
               <View>

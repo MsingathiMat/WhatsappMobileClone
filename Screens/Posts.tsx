@@ -71,7 +71,7 @@ const readPosts=()=>{
      
        const data = result as PostProp;
 
-      console.log(data.posts)
+  
       setPosts(data.posts)
    
       })
@@ -110,7 +110,7 @@ const readPosts=()=>{
           // ref={flatListRef}
           showsVerticalScrollIndicator={false}
         
-         renderItem={({item})=>(<PostCard Message={item.message} />)}
+         renderItem={({item})=>(<PostCard Message={item.message} userName={item.appUser.userName}/>)}
           
         />
 
