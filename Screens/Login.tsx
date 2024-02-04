@@ -21,8 +21,8 @@ const PureLogin = ({
 
  
 
-  const [UserName, SetUserName] = useState<string | null>(null);
-  const [Contact, SetContact] = useState<string | null>(null);
+  const [Email, SetEmail] = useState<string | null>(null);
+  const [InputPassword, SetInputPassword] = useState<string | null>(null);
   const [IsLoginLoading, SetIsLoginLoading] = useState(false);
   const [IsRegisterLoading, SetIsRegisterLoading] = useState(false);
  
@@ -32,7 +32,7 @@ const PureLogin = ({
     const GqlString =
 gql`
     query getUserByEmail {
-      appUsers(where: {email: "` +UserName.trim() +`"}) {
+      appUsers(where: {email: "` +Email.trim() +`"}) {
         email
         imageUrl
         lastSeen
@@ -49,18 +49,25 @@ gql`
         const ReceivedData = results as AppUserProp;
         SetIsLoginLoading(false);
 
-      
+
         if (ReceivedData.appUsers[0]) {
 
      
-          const ContactNumber = ReceivedData.appUsers[0].password;
+          const Password = ReceivedData.appUsers[0].password;
 
-          if (ContactNumber === Contact) {
+          if (Password === InputPassword) {
 
+        
             SetUserData(ReceivedData.appUsers[0]);
+
+      
+
+          
+
+         
             navigation.replace("Welcome");
           } else {
-            alert("wrong number");
+            alert("Password Incorrect");
           }
         } else {
           alert("User does not exist");
@@ -136,9 +143,9 @@ gql`
           >
             <View>
               <TextInput
-                value={UserName}
+                value={Email}
                 onChangeText={(value) => {
-                  SetUserName(value);
+                  SetEmail(value);
                 }}
                 placeholder="User Name"
                 style={{
@@ -160,11 +167,11 @@ gql`
 
             <View>
               <TextInput
-                value={Contact}
+                value={InputPassword}
                 onChangeText={(value) => {
-                  SetContact(value);
+                  SetInputPassword(value);
                 }}
-                keyboardType="numeric"
+              
                 placeholder="Password"
                 style={{
                   borderBottomColor: "white",

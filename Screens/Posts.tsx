@@ -71,7 +71,7 @@ const readPosts=()=>{
      
        const data = result as PostProp;
 
-  
+  console.log(result);
       setPosts(data.posts)
    
       })

@@ -89,7 +89,7 @@ const [IsSending,SetIsSending] = useState(false);
     // SetIsLoading(true);
 
     
-  
+  SetIsSending(true);
 
       const addPost =
       gql`
@@ -119,15 +119,17 @@ publishManyPosts {
             readPosts()
        
     
-        //   navigation.navigate('EmailVerification',{DataToReceive:VerificationCode})
+    SetIsSending(false)
         } else {
+          SetIsSending(false)
           alert("Failed");
         }
-        // SetIsLoading(false);
+     
       })
       .catch((error) => {
         console.log(error);
-        // SetIsLoading(false);
+      
+        SetIsSending(false)
       });
   };
 
@@ -346,26 +348,7 @@ padding:10,
 }} name="emotsmile" size={25} color="gray" />
 
 
-   
-<Animated.View style={[{
-  flexDirection:'row',
-  gap:10,
-  position:'absolute',
-  top:13,
-  right:20
-},{ transform: [{ translateX }] }]}>
 
-
-     <MaterialIcons name="attach-file" size={23} color="gray" />
-
-
-{isCameraShown&&
-
- 
-<TouchableOpacity onPress={() => {}}>
-<FontAwesome5 name="camera" size={23} color="gray" />
-</TouchableOpacity>}
-</Animated.View>
 </View>
 
 <TouchableOpacity onPress={ ()=>{saveData()}}>
@@ -469,9 +452,7 @@ gap:5
 
 
 
-<LoadingContainer IndicatorColor='red' OnPress={()=>{}} IsLoading={IsSending}>
-<FontAwesome name="paper-plane" size={18} color="red" />
-</LoadingContainer>
+
 </TouchableOpacity>
 
 
@@ -479,7 +460,13 @@ gap:5
 
 }
 
-{isFirstCharacter?<FontAwesome name="paper-plane" size={18} color="white" />:
+{isFirstCharacter?
+
+
+<LoadingContainer IndicatorColor='red' OnPress={()=>{}} IsLoading={IsSending}>
+<FontAwesome name="paper-plane" size={18} color="white" />
+</LoadingContainer>
+:
 
 <TouchableOpacity onPress={()=>{
 
