@@ -72,18 +72,3 @@ export type Routable<T> ={
 }
 
 
-export type AppUserProp = {
-
-  appUsers:UserObjectProp[]
-} ;
-
-export type UserObjectProp={
-  email: string,
-  imageUrl: string,
-  lastSeen: string,
-  password: string,
-  userName: string,
-  id:string
-}
-
-

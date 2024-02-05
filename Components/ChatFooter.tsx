@@ -246,18 +246,22 @@ SetIsSending(false)
 
     const Base64 = `data:${result.assets[0].type};base64,${result.assets[0].base64}`
 
+
+    hyGupload(result.assets[0].type,result.assets[0].base64);
+    return
 file.append('file',Base64)
     file.append('upload_preset', 'wclone');
 
     const cloudName ='dzrqwm7xi';
-    const url = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
+    // const url = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
+    const url = `https://api-ap-southeast-2.hygraph.com/v2/clrl7cnr105jh01up5wcgj77o/master/upload`;
   await fetch(url, {
     method: "post",
     headers:{   'Content-Type': 'multipart/form-data'},
     body: file,
     }).then((result)=>{
 
-      console.log(result.ok)
+      console.log(result)
     }).catch(error=>{
 
       console.log("Cloudinary Error")
@@ -269,6 +273,49 @@ CallBack(result.assets[0].uri);
 SetCaptured(true);
    }
   };
+
+
+
+
+
+
+  const HYGRAPH_URL = 'https://api-ap-southeast-2.hygraph.com/v2/clrl7cnr105jh01up5wcgj77o/master/upload';
+const HYGRAPH_ASSET_TOKEN = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImdjbXMtbWFpbi1wcm9kdWN0aW9uIn0.eyJ2ZXJzaW9uIjozLCJpYXQiOjE3MDYwMDc3OTgsImF1ZCI6WyJodHRwczovL2FwaS1hcC1zb3V0aGVhc3QtMi5oeWdyYXBoLmNvbS92Mi9jbHJsN2NucjEwNWpoMDF1cDV3Y2dqNzdvL21hc3RlciIsIm1hbmFnZW1lbnQtbmV4dC5ncmFwaGNtcy5jb20iXSwiaXNzIjoiaHR0cHM6Ly9tYW5hZ2VtZW50LWFwLXNvdXRoZWFzdC0yLmh5Z3JhcGguY29tLyIsInN1YiI6ImJlOTM1OWY5LWEyYzYtNDQ0Yy1iNzRmLWJiMTdiNDQ4MTJiYSIsImp0aSI6ImNscnE4enVieTBxc2UwMTJvZTE0ODZ0OXUifQ.agcR6Bg0cW4tirHFBhoAetBDnCsVsQgqJvP2H0hju8YsuVMqF4tC3a_EWDdbj60KwVjII_A6JdfmroSMRGQ3j_Zs-rqVf9CgrwlvtwyF-R0lK5f4Jm9aHJ8ISDhlvpOOZE8TlYPEz905gZiy_G--5DJdBYQ_wcooYGAQBdU0wMTQ_pUzz71650thysnu84o8erUfQKEtfiRJ4cFQxWbRP_PWuu3sBp8XC3RSPU4RkxeqpxBL4Jxb-fpMfsa1SHwvsnfaQ_dCl3FmzfOFX8MKUhkWtURAZ1A7kfZIwsiwhLENAPDZTON0aQvMs1WCwZ6VMw8K1D6A8Xx3MOYJXLlblIzYOFWEIqu1WD9CorjhSUk3hOFSmDxB9hy7ON-zWPkjGn9OVaWO5ymJqrNgj16azWfAXoquoGc3n1Rhv2aQl9vbI76ZNlGaQY1xWJ2ZZ1DvHfxEN6NwbZ5WrafNcmqyN_O8e5zhDk59c0WfcaXf6ETOMf4vU1hzs4p72XISs5m0On4wWdB3sbX4SUP97OSYMrFIkuCw-xATBgCM3YLYgN3kZgXM5fjWA0vP-kWBfnIb77M_Ctd9j1y9caMV1jTeFZ4Cqy722LnGuElqjGyGPK0nIOFuR-zklEy9HXoSC8lezX_0yai7ZR9GDnXAMc4mabt9z7ShC37mp6xptwbizBs';
+
+async function hyGupload(type:string, base64:string) {
+  // const input = document.getElementById('fileUpload');
+  // const file = input.files[0];
+
+
+
+  // form.append('fileUpload', file);
+
+  const file = new FormData();
+
+
+  const Base64 = `data:${type};base64,${base64}`
+
+file.append
+
+  // It is not recommended to use the HYGRAPH_ASSET_TOKEN in the Front-End.
+  // In this example we're using it, but in a real application you should
+  // use a backend to upload the file and use the HYGRAPH_ASSET_TOKEN there.
+  const response = await fetch(`${HYGRAPH_URL}`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${HYGRAPH_ASSET_TOKEN}`,
+    },
+    body: file,
+  });
+
+  console.log(response);
+  // const data = await response.json();
+  // console.log(JSON.stringify(data, null, 2));
+}
+
+
+
+
 
 
 
