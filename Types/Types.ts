@@ -72,3 +72,18 @@ export type Routable<T> ={
 }
 
 
+export type UserObjectProp ={
+  "email":string
+  "id": string,
+  "imageUrl": string,
+  "isVerified": boolean,
+  "lastSeen":string,
+  "userName":string,
+  "password":string
+
+}
+
+
+export type AppUserProp ={
+  appUsers:UserObjectProp[]
+}

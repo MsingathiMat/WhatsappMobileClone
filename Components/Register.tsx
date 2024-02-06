@@ -16,6 +16,8 @@ import ProfileImage from "./ProfileImage";
 import { GenerateRandomDigits } from "../HelperFunctions/GenerateRandomDigits";
 import { FontAwesome } from '@expo/vector-icons';
 import moment from 'moment';
+import UsePickImageFromCamera from "./Hooks/PickImageFromCamera";
+import PickImageFromCamera from "./Hooks/PickImageFromCamera";
 
 type SavedUserProp={
   "createAppUser": 
@@ -37,8 +39,9 @@ const PureRegister = ({
   const navigation:Navigatable = useNavigation()
 
   const [VerificationCode, SetVerificationCode] = useState("");
-
-
+  const [Base64ImageData, SetBase64ImageData] = useState(null);
+  const [IsPickImageLoading, SetIsPickImageLoading] = useState(false);
+   
 useEffect(()=>{
 
   const VeriCode = (GenerateRandomDigits(4)).toString()
@@ -102,15 +105,6 @@ useEffect(()=>{
   
 
 
-    // CreateARecord(CreateRec)
-    //   .then((res) => {
-    //     GqlQuery({ GqlString, SetSongData });
-    //     SetIsModalShown(false);
-    //     SetIsLoading(false);
-    //   })
-    //   .catch((error) => {
-    //     alert("Error Occured");
-    //   });
   };
  
 
@@ -180,37 +174,10 @@ useEffect(()=>{
         <AntDesign name="arrowleft" size={24} color="black" />
       </TouchableOpacity>
       <View>
-        {/* <View
-          style={{
-            height: 70,
-            width: 70,
-            borderRadius: 35,
-            justifyContent: "center",
-            alignItems: "center",
-            elevation: 25,
-            position: "absolute",
-            top: -30,
-            left: 85,
-            zIndex: 40,
-          }}
-        >
-          <Image
-            resizeMode="cover"
-            source={{
-              uri: ProfilePic,
-            }}
-            style={{
-              height: 70,
-              width: 70,
-              borderRadius: 35,
-              borderColor: "#57F573",
-              borderWidth: 2.5,
-            }}
-          />
-        </View> */}
-
-    <ProfileImage Border ProfilePic={ProfilePic}/>
-
+      
+    <TouchableOpacity onPress={()=>{PickImageFromCamera(SetIsPickImageLoading,SetBase64ImageData)}}>
+    <ProfileImage Border ProfilePic={Base64ImageData?Base64ImageData:ProfilePic}/>
+    </TouchableOpacity>
         <View
           style={{
             flexDirection: "column",

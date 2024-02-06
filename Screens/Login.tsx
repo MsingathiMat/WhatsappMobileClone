@@ -60,11 +60,6 @@ gql`
         
             SetUserData(ReceivedData.appUsers[0]);
 
-      
-
-          
-
-         
             navigation.replace("Welcome");
           } else {
             alert("Password Incorrect");
@@ -207,6 +202,7 @@ gql`
                 // OnPress={() => {SetIsModalShown(true)}}
                 OnPress={() => {
                   navigation.navigate("Register");
+                  
                 }}
                 Title="Register"
                 BorderColor="white"
