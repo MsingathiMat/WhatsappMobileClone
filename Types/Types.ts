@@ -79,8 +79,7 @@ export type UserObjectProp ={
   "isVerified": boolean,
   "lastSeen":string,
   "userName":string,
-  "password":string
-
+  "password":string,
 }
 
 

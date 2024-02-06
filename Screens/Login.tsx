@@ -39,6 +39,7 @@ gql`
         password
         userName
         id
+      
       }
     }
     `;

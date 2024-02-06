@@ -19,6 +19,7 @@ import moment from 'moment';
 import UsePickImageFromCamera from "./Hooks/PickImageFromCamera";
 import PickImageFromCamera from "./Hooks/PickImageFromCamera";
 
+
 type SavedUserProp={
   "createAppUser": 
   {"id": string}, 
@@ -49,17 +50,18 @@ useEffect(()=>{
   SetVerificationCode(VeriCode)
 },[])
 
-  const GqlString = gql`
-    query Contacts1 {
-      contacts1 {
-        id
-        contactName
-        contactNumber
-        lastSeen
-        imageUrl
-      }
-    }
-  `;
+  // const GqlString = gql`
+  //   query Contacts1 {
+  //     contacts1 {
+  //       id
+  //       contactName
+  //       contactNumber
+  //       lastSeen
+  //       imageUrl
+  //     }
+  //   }
+  // `;
+
 
   const verify = () => {
     const VerificationCode = (
@@ -82,46 +84,63 @@ useEffect(()=>{
 
 
 
-  const CreateRecord = () => {
-    const CreateRec =
-      gql`
-      mutation CreateContact {
-        createContacts(
-          data: {contactName: "` +UserName +`", contactNumber:  "` +
-      Password +
-      `", imageUrl:  "` +ProfilePic +`", lastSeen: "` +
-      Date.now() +
-      `"}
-        ) {
-          id
-        }
-        publishManyContacts1(to: PUBLISHED) {
-          count
-        }
-      }
-      `;
-
-      
-  
-
-
-  };
+  // const CreateRecord = () => {
+  //   const CreateRec =
+  //     gql`
+  //     mutation CreateContact {
+  //       createContacts(
+  //         data: {contactName: "` +UserName +`", contactNumber:  "` +
+  //     Password +
+  //     `", imageUrl:  "` +ProfilePic +`", lastSeen: "` +
+  //     Date.now() +
+  //     `"}
+  //       ) {
+  //         id
+  //       }
+  //       publishManyContacts1(to: PUBLISHED) {
+  //         count
+  //       }
+  //     }
+  //     `;
+  // };
  
 
   const saveData = () => {
+
+
+
+
+
+
+
+
     SetIsLoading(true);
+      // const GqlCreateString =
+      // gql`
+      // mutation MyMutation {
+      //   createAppUser(
+      //     data: {userName: "` +UserName.trim() +`", password: "` +Password.trim() +`", imageUrl: {"base":"` +Base64ImageData+`"}, email: "` +Email.trim() +`", lastSeen: "` +
+      //     moment() +
+      //     `" isVerified:false}
+      //       )  {
+      //     id
+      //   }
+      //   publishManyAppUsers {
+      //     count
+      //   }
+      // }
+      // `;
+
+
 
     
-
 
       const GqlCreateString =
       gql`
       mutation MyMutation {
-        createAppUser(
-          data: {userName: "` +UserName.trim() +`", password: "` +Password.trim() +`", imageUrl: "` +ProfilePic +`", email: "` +Email.trim() +`", lastSeen: "` +
-          moment() +
-          `" isVerified:false}
-            )  {
+        createAppUser(data: {userName: "` +UserName.trim() +`", password: "` +Password.trim() +`",imageUrl: "`+Base64ImageData+`", email: "` +Email.trim() +`", lastSeen: "` +
+        moment() +
+        `" isVerified:false }) {
           id
         }
         publishManyAppUsers {
@@ -131,7 +150,9 @@ useEffect(()=>{
       `;
 
 
+
      
+   
 
     crudOperations
       .Create(GqlCreateString)
@@ -175,7 +196,7 @@ useEffect(()=>{
       </TouchableOpacity>
       <View>
       
-    <TouchableOpacity onPress={()=>{PickImageFromCamera(SetIsPickImageLoading,SetBase64ImageData)}}>
+    <TouchableOpacity style={{zIndex:4}} onPress={()=>{PickImageFromCamera(SetIsPickImageLoading,SetBase64ImageData)}}>
     <ProfileImage Border ProfilePic={Base64ImageData?Base64ImageData:ProfilePic}/>
     </TouchableOpacity>
         <View

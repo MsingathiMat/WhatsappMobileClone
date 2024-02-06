@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, Image } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { TouchableOpacity } from 'react-native-gesture-handler'
@@ -7,10 +7,13 @@ import { Ionicons } from '@expo/vector-icons';
 import ChatsMenu from './ChatsMenu';
 import { useAppProvider } from "../Store/AppContext";
 import moment from 'moment';
+import ProfileImage from './ProfileImage';
 
 const MainHeader=({navigation}) => {
 
   const { UserData } = useAppProvider();
+
+ 
     const [isMenuShown, setisMenuShown] = useState(false);
     return(
     <View style={{}}>
@@ -33,11 +36,20 @@ const MainHeader=({navigation}) => {
             flexDirection: 'row',
           }}
         >
-        <View>
+        <View style={{flexDirection:'row', gap:6, justifyContent:'center', alignItems:'center'}}>
 
+{UserData.imageUrl?<Image
 
-        <Text style={{ color: 'white', fontSize: 20 }}>{UserData.userName}</Text>
+style={{width:35, height:35, borderRadius:20}}
+source={{uri:UserData.imageUrl}}/>:null}
+
+     <View style={{marginTop:-6}}>
+
+     <Text style={{ color: 'white', fontSize: 20 }}>{UserData.userName}</Text>
           <Text style={{ color: 'white', fontSize: 10 }}>{moment(parseInt(UserData.lastSeen)).format('hh:mm DD MMMM YYYY')}</Text>
+        
+     </View>
+        
         </View>
           <View style={{ flexDirection: 'row', gap: 20 }}>
           
@@ -62,3 +74,5 @@ const MainHeader=({navigation}) => {
   )}
 
 export default MainHeader
+
+

@@ -106,31 +106,6 @@ const PureChats = ({
   },[])
 
   const { UserData } = useAppProvider();
-  const Delete = () => {
-   
-    const GqlCreateString =
-      gql`
-mutation delete {
-  deleteContacts(where: {id: "cclrx3qb2gqptl0c2x17ehbmt7"}) {
-    contactName
-    contactNumber
-    imageUrl
-    lastSeen
-    publishedAt
-  }
-}
-`
-    crudOperations
-      .Delete(GqlCreateString)
-      .then((result) => {
-        console.log(result);
-        alert("Sent")
-      })
-      .catch((error) => {
-        console.log(error);
-        alert("Error")
-      });
-  };
 
  
 
@@ -153,12 +128,12 @@ mutation delete {
         data={appUsers}
         renderItem={({ item }) => (
           <>
-            <Avatar DeleteContact={Delete}>
+            <Avatar DeleteContact={()=>{}}>
               <Avatar.AvatarImage
                 RingScale={1}
                 AvatarRing={true}
                 AvatarScale={1}
-                ImageUrl={'https://images.pexels.com/photos/771742/pexels-photo-771742.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'}
+                ImageUrl={item.imageUrl}
               ></Avatar.AvatarImage>
 
               <Avatar.LabelSection
