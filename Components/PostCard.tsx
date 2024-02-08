@@ -3,7 +3,7 @@ import React from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import Avatar from './Avatar';
 import { Dimensions } from 'react-native';
-const PostCard = ({Message,LastSeen, userName}:{Message:string,userName:string,LastSeen:string}) => {
+const PostCard = ({imageUrl,Message,LastSeen, userName}:{Message:string,userName:string,LastSeen:string,imageUrl:string}) => {
   return (
     <View style ={{
 
@@ -27,7 +27,7 @@ const PostCard = ({Message,LastSeen, userName}:{Message:string,userName:string,L
                 RingScale={1}
                 AvatarRing={true}
                 AvatarScale={1}
-                ImageUrl={'https://www.google.com/url?sa=i&url=https%3A%2F%2Fencrypted-tbn1.gstatic.com%2Flicensed-image%3Fq%3Dtbn%3AANd9GcSb5YTP_Zfb9Aj9h3n79iDjofIAWbIRCn2mbRxjP04h8I7nDF1tj5DP_oCVy4xqRAyd5fxaiA9eZGJ0W4I&psig=AOvVaw2PDsFj8iEFTuCd9CFkR10A&ust=1706551979856000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCIi07tbXgIQDFQAAAAAdAAAAABAE'}
+                ImageUrl={imageUrl}
               ></Avatar.AvatarImage>
 
 <Avatar.LabelSection

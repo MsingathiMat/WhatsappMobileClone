@@ -112,7 +112,7 @@ const readPosts=()=>{
           // ref={flatListRef}
           showsVerticalScrollIndicator={false}
         
-         renderItem={({item})=>(<PostCard Message={item.message} userName={item.appUser.userName} LastSeen={item.appUser.lastSeen}/>)}
+         renderItem={({item})=>(<PostCard Message={item.message} imageUrl={item.appUser.imageUrl} userName={item.appUser.userName} LastSeen={item.appUser.lastSeen}/>)}
           
         />
 

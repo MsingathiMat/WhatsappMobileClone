@@ -138,7 +138,7 @@ useEffect(()=>{
       const GqlCreateString =
       gql`
       mutation MyMutation {
-        createAppUser(data: {userName: "` +UserName.trim() +`", password: "` +Password.trim() +`",imageUrl: "`+Base64ImageData+`", email: "` +Email.trim() +`", lastSeen: "` +
+        createAppUser(data: {userName: "`+UserName.trim() +`", password:"` +Password.trim() +`",imageUrl: "`+Base64ImageData+`", email: "` +Email.trim() +`", lastSeen: "` +
         moment() +
         `" isVerified:false }) {
           id
