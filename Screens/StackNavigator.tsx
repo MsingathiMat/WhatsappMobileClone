@@ -18,7 +18,7 @@ import BarcodeScanner from '../Components/BarcodeScanner';
 import { Ionicons } from '@expo/vector-icons';
 import WebView from 'react-native-webview';
 import WebsiteView from '../Components/WebsiteView';
-import ChatDetail from './ChatDetail';
+// import ChatDetail from './ChatDetail';
 import AvaterAndDetail from '../Components/AvatarAndDetail';
 import ChatDetailTopBar from '../Components/ChatDetailTopBar';
 import MainHeader from '../Components/MainHeader';
@@ -116,11 +116,11 @@ const StackNavigator = () => {
 
 {/* ContactData:{ImageUrl:string, ContactName:string, LastScene:string}; */}
 
-<Stack.Screen name="ChatDetail" component={ChatDetail}
+{/* <Stack.Screen name="ChatDetail" component={ChatDetail}
         
        options={{headerShown:false}}
       
-      />
+      /> */}
 
 <Stack.Screen name="Register" component={Register}
         

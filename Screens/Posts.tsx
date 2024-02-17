@@ -16,6 +16,7 @@ import withPOSTS from "../Components/HOC/withCHATS";
 import WithHygraphDBoperations from "../Components/HOC/WithHygraphDBoperations";
 import { gql } from "graphql-request";
 import PostFooter from "../Components/PostFooter";
+import WithCrudOperations from "../Components/HOC/WithCrudOperations";
 
 
 type PostProp={
@@ -45,14 +46,23 @@ type RouteProps = {
 const PostsPure = ({
   crudOperations,
 }: {
-  crudOperations: HygraphDBoperationsProp;
+  crudOperations: ReturnType<typeof WithCrudOperations.GraphQl>;
 })=> {
 
   const [posts, setPosts] = useState<postProp[] | null>(null);
 
+const FlatListRef = useRef<FlatList<postProp>>()
 
+const scrollToBottom=()=>{
+
+if(FlatListRef.current){
+
+  FlatListRef.current.scrollToEnd()
+}
+
+}
 const readPosts=()=>{
-
+  setPosts(null)
 
   const GetPosts = gql`
   query getPosts {
@@ -75,18 +85,20 @@ const readPosts=()=>{
 
 
       setPosts(data.posts)
+
+      scrollToBottom();
    
       })
       .catch((error) => {
         console.log(error);
-        alert("Error")
+        alert("Post not loaded")
       });
   };
 
   useEffect(()=>{
-
+ 
     readPosts();
-
+ 
   },[])
 
 
@@ -104,29 +116,40 @@ const readPosts=()=>{
       <View
         style={{
           flex: 1,
-          padding: 20,
+       
+    paddingVertical:15
         }}
       >
-        <FlatList
+       <View
+        style={{
+        
+        
+        }}
+       >
+       <FlatList
           data={posts}
-          // ref={flatListRef}
+        style={{ }}
+
+          // onActivated={()=>{readPosts()}}
+       ref={FlatListRef}
           showsVerticalScrollIndicator={false}
         
          renderItem={({item})=>(<PostCard Message={item.message} imageUrl={item.appUser.imageUrl} userName={item.appUser.userName} LastSeen={item.appUser.lastSeen}/>)}
           
         />
+       </View>
 
 
-      <PostFooter crudOperations={crudOperations} readPosts={()=>{readPosts()}} />
+   
       </View>
 
-      {/* <ChatFooter CallBack={setImageUri} SetCaptured={()=>{}} /> */}
+      <PostFooter crudOperations={crudOperations} readPosts={()=>{readPosts()}} />
     </ImageBackground>
   );
 };
 
 
-const Posts= WithHygraphDBoperations(PostsPure)
+const Posts= WithCrudOperations(PostsPure,WithCrudOperations.GraphQl)
 
 
 export default Posts;

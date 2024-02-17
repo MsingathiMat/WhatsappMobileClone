@@ -9,22 +9,21 @@ import { TextInput } from "react-native-gesture-handler";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import SendEmail from "../API/SendEmail";
-import { HygraphDBoperationsProp, Navigatable } from "../Types/Types";
+import { AppUserProp, HygraphDBoperationsProp, Navigatable, UserObjectProp } from "../Types/Types";
 import WithHygraphDBoperations from "./HOC/WithHygraphDBoperations";
 import { useNavigation } from "@react-navigation/native";
 import ProfileImage from "./ProfileImage";
 import { GenerateRandomDigits } from "../HelperFunctions/GenerateRandomDigits";
 import { FontAwesome } from '@expo/vector-icons';
 import moment from 'moment';
-import UsePickImageFromCamera from "./Hooks/PickImageFromCamera";
-import PickImageFromCamera from "./Hooks/PickImageFromCamera";
+import { useAppProvider } from "../Store/AppContext";
+type SavedUserProps={
+  "createAppUser": UserObjectProp
+}
 
 
-type SavedUserProp={
-  "createAppUser": 
-  {"id": string}, 
-  "publishManyAppUsers": 
-  {"count": number}}
+
+
 
 const PureRegister = ({
   crudOperations,
@@ -41,7 +40,8 @@ const PureRegister = ({
 
   const [VerificationCode, SetVerificationCode] = useState("");
   const [Base64ImageData, SetBase64ImageData] = useState(null);
-  const [IsPickImageLoading, SetIsPickImageLoading] = useState(false);
+
+  const { UserData, SetUserData } = useAppProvider();
    
 useEffect(()=>{
 
@@ -64,19 +64,18 @@ useEffect(()=>{
 
 
   const verify = () => {
-    const VerificationCode = (
-      Math.floor(Math.random() * 9000) + 1000
-    ).toString();
+ 
 
     SendEmail({
       Email: Email,
-      Name: Password,
+      Name: UserName,
       VerificationCode: VerificationCode,
     })
       .then((result) => {
-        console.log(result.status);
+        console.log("EMAIL SENT ");
       })
       .catch((error) => {
+        alert('Something went wrong')
         console.log(error);
       });
   };
@@ -84,26 +83,6 @@ useEffect(()=>{
 
 
 
-  // const CreateRecord = () => {
-  //   const CreateRec =
-  //     gql`
-  //     mutation CreateContact {
-  //       createContacts(
-  //         data: {contactName: "` +UserName +`", contactNumber:  "` +
-  //     Password +
-  //     `", imageUrl:  "` +ProfilePic +`", lastSeen: "` +
-  //     Date.now() +
-  //     `"}
-  //       ) {
-  //         id
-  //       }
-  //       publishManyContacts1(to: PUBLISHED) {
-  //         count
-  //       }
-  //     }
-  //     `;
-  // };
- 
 
   const saveData = () => {
 
@@ -115,21 +94,7 @@ useEffect(()=>{
 
 
     SetIsLoading(true);
-      // const GqlCreateString =
-      // gql`
-      // mutation MyMutation {
-      //   createAppUser(
-      //     data: {userName: "` +UserName.trim() +`", password: "` +Password.trim() +`", imageUrl: {"base":"` +Base64ImageData+`"}, email: "` +Email.trim() +`", lastSeen: "` +
-      //     moment() +
-      //     `" isVerified:false}
-      //       )  {
-      //     id
-      //   }
-      //   publishManyAppUsers {
-      //     count
-      //   }
-      // }
-      // `;
+ 
 
 
 
@@ -138,9 +103,14 @@ useEffect(()=>{
       const GqlCreateString =
       gql`
       mutation MyMutation {
-        createAppUser(data: {userName: "`+UserName.trim() +`", password:"` +Password.trim() +`",imageUrl: "`+Base64ImageData+`", email: "` +Email.trim() +`", lastSeen: "` +
+        createAppUser(data: {userName: "`+UserName.trim() +`", password:"` +Password.trim() +`",imageUrl: "`+ProfilePic+`", email: "` +Email.trim() +`", lastSeen: "` +
         moment() +
         `" isVerified:false }) {
+          email
+          imageUrl
+          lastSeen
+          password
+          userName
           id
         }
         publishManyAppUsers {
@@ -158,11 +128,17 @@ useEffect(()=>{
       .Create(GqlCreateString)
       .then((result) => {
 
-        const returnedData =result as SavedUserProp;
+        const returnedData =result as SavedUserProps;
      
         if (result && returnedData.createAppUser) {
       
-          console.log(result);
+  
+
+          const ReceivedData = result as SavedUserProps
+
+
+
+SetUserData(ReceivedData.createAppUser)
           navigation.navigate('EmailVerification',{DataToReceive:VerificationCode})
         } else {
           alert("Failed");
@@ -196,7 +172,7 @@ useEffect(()=>{
       </TouchableOpacity>
       <View>
       
-    <TouchableOpacity style={{zIndex:4}} onPress={()=>{PickImageFromCamera(SetIsPickImageLoading,SetBase64ImageData)}}>
+    <TouchableOpacity style={{zIndex:4}} onPress={()=>{}}>
     <ProfileImage Border ProfilePic={Base64ImageData?Base64ImageData:ProfilePic}/>
     </TouchableOpacity>
         <View

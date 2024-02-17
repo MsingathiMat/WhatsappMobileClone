@@ -42,8 +42,8 @@ const Avatar = ({
     <TouchableOpacity
       onPress={() => {
      
-        // @ts-expect-error
-        navigation.navigate("ChatDetail", { SelectedContactIndex: 0 });
+     
+        // navigation.navigate("ChatDetail", { SelectedContactIndex: 0 });
       }}
 
       onLongPress={() => {

@@ -110,14 +110,14 @@ fontWeight:'bold',
 color:"#128C7E"
 
 
-                }}>Verify -- {VerificationCode}</Text>
+                }}>Code sent to your email</Text>
 
 
               <View>
                 <TextInput
                   value={InputCode}
                   onChangeText={(value) => {
-                    SetInputCode(value.trim);
+                    SetInputCode(value.trim());
                   }}
                   placeholder="Verification Code"
                   style={{

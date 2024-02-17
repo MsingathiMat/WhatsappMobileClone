@@ -58,6 +58,7 @@ interface HygraphDBoperationsProp {
 }
 
 import { NavigationProp, useNavigation } from "@react-navigation/native";
+
 export type Navigatable =NavigationProp<ReactNavigation.RootParamList >&{replace:(screen:string)=>{},navigate:(screen:string,NextScreenData?:{
   DataToReceive?:any
 })=>{}}
@@ -86,3 +87,19 @@ export type UserObjectProp ={
 export type AppUserProp ={
   appUsers:UserObjectProp[]
 }
+
+
+
+
+interface CRUDprops {
+  Create: <T>(GqlString: string) => Promise<T>;
+  Read: <T>(GqlString: string) => Promise<T>;
+  Update: <T>(GqlString: string) => Promise<T>;
+  Delete: <T>(GqlString: string) => Promise<T>;
+}
+
+interface withCRUDprops {
+  crudOperations: CRUDprops;
+}
+
+export {withCRUDprops,CRUDprops}

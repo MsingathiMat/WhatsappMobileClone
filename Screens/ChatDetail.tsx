@@ -96,6 +96,7 @@ const ChatDetailPure = ({ChatData}:{ChatData:ContactProps[]})=> {
         <FlatList
           data={Conversations}
           ref={flatListRef}
+       
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) =>
             item.WoIs == "Me" && item.MessageType == "Text" ? (
@@ -128,7 +129,7 @@ const ChatDetailPure = ({ChatData}:{ChatData:ContactProps[]})=> {
 };
 
 
-const ChatDetail= HOCscreen(ChatDetailPure)
+// const ChatDetail= HOCscreen(ChatDetailPure)
 
 
-export default ChatDetail;
+// export default ChatDetail;

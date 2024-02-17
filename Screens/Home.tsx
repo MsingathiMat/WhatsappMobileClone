@@ -2,7 +2,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 
 import { NavigationContainer } from '@react-navigation/native';
 import Calls from './Calls';
-import Chats from './Chats';
+import ChatsA from './Chats';
 import Group from './Group';
 import Updates from './Updates';
 import { FontAwesome } from '@expo/vector-icons';
@@ -45,7 +45,7 @@ function Home() {
         }
     }}
     />
-    <Tab.Screen  name="Chats" component={Chats} options={{
+    <Tab.Screen  name="Chats" component={ChatsA} options={{
 
 
 tabBarLabel:({color,focused})=>

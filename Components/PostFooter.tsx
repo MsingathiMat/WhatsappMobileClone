@@ -10,10 +10,11 @@ import { FontAwesome } from '@expo/vector-icons';
 
 
 import LoadingContainer from './LoadingContainer';
-import { HygraphDBoperationsProp } from '../Types/Types';
+
 
 import { gql } from 'graphql-request';
 import { useAppProvider } from '../Store/AppContext';
+import WithCrudOperations from './HOC/WithCrudOperations';
 
 
 
@@ -21,7 +22,7 @@ import { useAppProvider } from '../Store/AppContext';
 const PostFooter = ({
     crudOperations,readPosts
   }: {
-    crudOperations: HygraphDBoperationsProp,readPosts:()=>void
+    crudOperations:ReturnType<typeof WithCrudOperations.GraphQl>,readPosts:()=>void
   }) => {
 
 
@@ -51,7 +52,7 @@ const [IsSending,SetIsSending] = useState(false);
       gql`
       mutation addPost {
         createPost(
-          data: {category: "", message: "` +message +`", appUser: {connect: {id: "` +UserData.id +`"}}}
+          data: {category: "", message: "`+message +`", appUser: {connect: {id: "`+UserData.id +`"}}}
         ) {
           id
         }
@@ -71,7 +72,7 @@ publishManyPosts {
         const returnedData =result;
      
         if (result ) {
-      
+      console.log(result)
             readPosts()
             setMessage("");
     

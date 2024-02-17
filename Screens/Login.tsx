@@ -1,6 +1,6 @@
 import { Image, ImageBackground, Text, TextInput, View } from "react-native";
 import React, { useState } from "react";
-import { FontAwesome } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import LoadingButton from "../Components/LoadingButton";
 import { StatusBar } from "expo-status-bar";
 import { LinearGradient } from "expo-linear-gradient";
@@ -11,11 +11,12 @@ import { useNavigation } from "@react-navigation/native";
 
 import { AppUserProp, HygraphDBoperationsProp, Navigatable } from "../Types/Types";
 import WithHygraphDBoperations from "../Components/HOC/WithHygraphDBoperations";
+import WithCrudOperations from "../Components/HOC/WithCrudOperations";
 
 const PureLogin = ({
   crudOperations,
 }: {
-  crudOperations: HygraphDBoperationsProp;
+  crudOperations: ReturnType<typeof WithCrudOperations.GraphQl>;
 }) => {
   const navigation: Navigatable = useNavigation();
 
@@ -153,12 +154,12 @@ gql`
                 }}
               />
 
-              <FontAwesome
-                style={{ position: "absolute", top: 8, left: 0 }}
-                name="user-o"
-                size={15}
-                color="white"
-              />
+<MaterialIcons
+              style={{ position: "absolute", top: 8, left: 0 }}
+              name="email"
+              size={15}
+              color="black"
+            />
             </View>
 
             <View>
@@ -220,5 +221,5 @@ gql`
   );
 };
 
-const Login = WithHygraphDBoperations(PureLogin);
+const Login = WithCrudOperations(PureLogin,WithCrudOperations.GraphQl);
 export default Login;

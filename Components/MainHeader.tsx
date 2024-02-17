@@ -46,7 +46,7 @@ source={{uri:UserData.imageUrl}}/>:null}
      <View style={{marginTop:-6}}>
 
      <Text style={{ color: 'white', fontSize: 20 }}>{UserData.userName}</Text>
-          <Text style={{ color: 'white', fontSize: 10 }}>{moment(parseInt(UserData.lastSeen)).format('hh:mm DD MMMM YYYY')}</Text>
+          <Text style={{ color: 'white', fontSize: 9 }}>{moment(parseInt(UserData.lastSeen)).format('hh:mm DD MMMM YYYY')}</Text>
         
      </View>
         

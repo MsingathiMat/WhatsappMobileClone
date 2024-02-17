@@ -1,20 +1,9 @@
-import {
-  View,
-  Text,
-  Image,
-  Dimensions,
-  TouchableOpacity,
-  Modal,
-  ActivityIndicator,
-} from "react-native";
+import { View, Dimensions, TouchableOpacity, Modal } from "react-native";
 import React, { useEffect, useState } from "react";
-import { FlatList, ScrollView, TextInput } from "react-native-gesture-handler";
-import { Ionicons } from "@expo/vector-icons";
-import { useRoute } from "@react-navigation/native";
-import { chatData } from "../Components/Chats";
-import AvatarAndDetail from "../Components/AvatarAndDetail";
-import request, { gql } from "graphql-request";
-import UseHygraph from "../Components/Hooks/UseHygraph";
+import { FlatList, TextInput } from "react-native-gesture-handler";
+
+import { gql } from "graphql-request";
+
 import { Entypo } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
@@ -22,57 +11,33 @@ import { BlurView } from "expo-blur";
 import { FontAwesome5 } from "@expo/vector-icons";
 import LoadingButton from "../Components/LoadingButton";
 import Avatar from "../Components/Avatar";
-import { HygraphDBoperationsProp } from "../Types/Types";
-import WithHygraphDBoperations from "../Components/HOC/WithHygraphDBoperations";
-import { useAppProvider } from "../Store/AppContext";
+import { CRUDprops, HygraphDBoperationsProp } from "../Types/Types";
 
+import WithCrudOperations from "../Components/HOC/WithCrudOperations";
 
-const MASTER_URL =
-  "https://api-ap-southeast-2.hygraph.com/v2/clrl7cnr105jh01up5wcgj77o/master";
+type AppUserProps = {
+  appUsers: AppUSerProp[];
+};
 
+type AppUSerProp = {
+  email: string;
+  id: string;
+  imageUrl: string;
+  isVerified: boolean;
+  lastSeen: string;
+  userName: string;
+};
 
-
-interface CrudOperations<T> {
-  create: (data: string) => Promise<void>;
-  update: (id: string, data: T) => Promise<void>;
-  delete: (id: string) => Promise<void>;
-}
-
-interface WithCrudProps<T> {
-  crudOperations: CrudOperations<T>;
-}
-
-type AppUserProps={
-    "appUsers": AppUSerProp[]}
-
-      type AppUSerProp={
-        "email":string,
-        "id": string,
-        "imageUrl": string,
-        "isVerified": boolean,
-        "lastSeen": string,
-        "userName": string
-      }
-
-const PureChats = ({
-  crudOperations,
-}: {
-  crudOperations: HygraphDBoperationsProp;
-}) => {
+const PureChats = ({ crudOperations }: { crudOperations: ReturnType<typeof WithCrudOperations.GraphQl>}) => {
   const [IsModalShown, setIsModalShown] = useState(false);
-  const [IsLoading, SetIsLoading] = useState(false);
- 
+  const [IsLoading] = useState(false);
 
   const [cName, setcName] = useState<string | null>(null);
   const [contact, setContact] = useState<string | null>(null);
   const [appUsers, setAppUsers] = useState<AppUSerProp[] | null>(null);
 
- 
-
   const ReadUsers = () => {
-   
-    const getUsers =
-      gql`
+    const getUsers = gql`
       query getUsers {
         appUsers {
           email
@@ -83,32 +48,22 @@ const PureChats = ({
           userName
         }
       }
-`
+    `;
+
+   
     crudOperations
-      .Read(getUsers)
+      .Read<AppUserProps>(getUsers)
       .then((result) => {
-     
-       const data = result as AppUserProps;
-
-    //    console.log(data.appUsers)
-
-       setAppUsers(data.appUsers)
+        setAppUsers(result.appUsers);
       })
       .catch((error) => {
         console.log(error);
-        alert("Error")
+        alert("Error");
       });
   };
-  useEffect(()=>{
-
+  useEffect(() => {
     ReadUsers();
-
-  },[])
-
-  const { UserData } = useAppProvider();
-
- 
-
+  }, []);
 
   return (
     <View
@@ -124,33 +79,35 @@ const PureChats = ({
         paddingVertical: 20,
       }}
     >
-     { appUsers&&<FlatList
-        data={appUsers}
-        renderItem={({ item }) => (
-          <>
-            <Avatar DeleteContact={()=>{}}>
-              <Avatar.AvatarImage
-                RingScale={1}
-                AvatarRing={true}
-                AvatarScale={1}
-                ImageUrl={item.imageUrl}
-              ></Avatar.AvatarImage>
+      {appUsers && (
+        <FlatList
+          data={appUsers}
+          renderItem={({ item }) => (
+            <>
+              <Avatar DeleteContact={() => {}}>
+                <Avatar.AvatarImage
+                  RingScale={1}
+                  AvatarRing={true}
+                  AvatarScale={1}
+                  ImageUrl={item.imageUrl}
+                ></Avatar.AvatarImage>
 
-              <Avatar.LabelSection
-                width={Dimensions.get("screen").width}
-                RightComponent={true}
-                colorWhite={false}
-                LastSeen="12:00"
-              >
-                <Avatar.LabelSection.Title
-                  Title={item.userName}
-                  Color="gray"
-                />
-              </Avatar.LabelSection>
-            </Avatar>
-          </>
-        )}
-      />}
+                <Avatar.LabelSection
+                  width={Dimensions.get("screen").width}
+                  RightComponent={true}
+                  colorWhite={false}
+                  LastSeen="12:00"
+                >
+                  <Avatar.LabelSection.Title
+                    Title={item.userName}
+                    Color="gray"
+                  />
+                </Avatar.LabelSection>
+              </Avatar>
+            </>
+          )}
+        />
+      )}
 
       <TouchableOpacity
         onPress={() => {
@@ -256,7 +213,7 @@ const PureChats = ({
                 color="black"
               />
             </View>
-            <TouchableOpacity onPress={()=>{}}>
+            <TouchableOpacity onPress={() => {}}>
               <LoadingButton
                 IsLoading={IsLoading}
                 OnPress={() => {}}
@@ -270,22 +227,5 @@ const PureChats = ({
   );
 };
 
-
-
-
-const ChatsA = WithHygraphDBoperations(PureChats);
+const ChatsA = WithCrudOperations(PureChats,WithCrudOperations.GraphQl);
 export default ChatsA;
-
-
-// import { View, Text } from 'react-native'
-// import React from 'react'
-
-// const Chats = () => {
-//   return (
-//     <View>
-//       <Text>Chats</Text>
-//     </View>
-//   )
-// }
-
-// export default Chats
