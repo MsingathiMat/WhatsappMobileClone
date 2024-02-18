@@ -24,6 +24,7 @@ function WithCrudOperations<P>(
   
   type DataToSave = { [key: string]: any};
 
+  console.log(Create.length,Create.name,Create.toString())
 const ArgNo = Create.length;
 
 
@@ -34,16 +35,15 @@ const ArgNo = Create.length;
       ArgNo==2?
         async function <T>(OperationString: string,DataToSave:DataToSave): Promise<T> {
         
-
           return Create<T>(OperationString,DataToSave);
           
 
         
         }:
-        async function <T>(OperationString: string): Promise<T> {
+        async function <T>(GqlString: string): Promise<T> {
         
 
-          return Create<T>(OperationString);
+          return Create<T>(GqlString);
           
 
         
